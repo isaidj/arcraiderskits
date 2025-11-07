@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { AdsProvider } from '@/contexts/AdsContext';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const barlow = Barlow({
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -51,6 +52,7 @@ export default function RootLayout({
           {children}
         </AdsProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
