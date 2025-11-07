@@ -1,10 +1,35 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import CountdownTimer from './CountdownTimer';
 
 // Configuración de la fecha de finalización de la expedición
 // Fecha de finalización de la primera expedición
 const EXPEDITION_END_DATE = process.env.NEXT_PUBLIC_EXPEDITION_END_DATE || '2025-12-21T23:59:59';
+const EXPEDITION_START_DATE = '2025-10-27T00:00:00'; // Fecha de inicio de la expedición
 
 export default function ExpeditionCountdown() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const calculateProgress = () => {
+      const now = new Date().getTime();
+      const start = new Date(EXPEDITION_START_DATE).getTime();
+      const end = new Date(EXPEDITION_END_DATE).getTime();
+      
+      const totalDuration = end - start;
+      const elapsed = now - start;
+      const percentage = Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100);
+      
+      setProgress(percentage);
+    };
+
+    calculateProgress();
+    const interval = setInterval(calculateProgress, 60000); // Actualizar cada minuto
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen bg-linear-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a] flex items-center justify-center relative overflow-hidden pt-16">
       {/* Background City Image */}
@@ -45,6 +70,28 @@ export default function ExpeditionCountdown() {
             seconds: 'Seconds',
           }}
         />
+        
+        {/* Progress Bar */}
+        <div className="w-full max-w-2xl mx-auto mb-6 px-4">
+          <div className="relative">
+            {/* Progress bar background */}
+            <div className="h-2 bg-gray-800 rounded-full overflow-hidden border border-red-600/30">
+              {/* Progress bar fill */}
+              <div 
+                className="h-full bg-linear-to-r from-red-600 via-orange-500 to-red-600 transition-all duration-1000 ease-out relative"
+                style={{ width: `${progress}%` }}
+              >
+                {/* Glow effect */}
+                <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent animate-pulse"></div>
+              </div>
+            </div>
+            {/* Progress percentage */}
+            <div className="flex justify-between mt-2 text-xs text-red-400/80 font-mono">
+              <span>Expedition Progress</span>
+              <span>{progress.toFixed(1)}%</span>
+            </div>
+          </div>
+        </div>
         
         <p className="text-lg md:text-xl mb-4 text-[#e9e1cd]">
           Ends on December 21, 2025
