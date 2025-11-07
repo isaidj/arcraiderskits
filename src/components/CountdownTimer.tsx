@@ -57,8 +57,8 @@ export default function CountdownTimer({ targetDate, labels }: CountdownTimerPro
       <div className="grid grid-cols-4 gap-4 md:gap-8 mb-8">
         {[...Array(4)].map((_, i) => (
           <div key={i} className="countdown-item">
-            <div className="relative bg-black border-2 border-red-600 rounded-lg p-6 md:p-8 min-w-20 md:min-w-[120px] overflow-hidden">
-              <div className="relative text-4xl md:text-6xl font-bold text-red-500 mb-2 font-mono">
+            <div className="relative bg-black border-2 border-red-600 rounded-lg p-4 md:p-8 min-w-20 md:min-w-[120px] overflow-hidden flex flex-col items-center justify-center">
+              <div className="relative text-4xl md:text-6xl font-bold text-red-500 mb-1 md:mb-2 font-mono text-center">
                 00
               </div>
             </div>
@@ -79,17 +79,17 @@ export default function CountdownTimer({ targetDate, labels }: CountdownTimerPro
     <div className="grid grid-cols-4 gap-4 md:gap-8 mb-8">
       {timeUnits.map((unit, index) => (
         <div key={index} className="countdown-item">
-          <div className="relative bg-black border-2 border-red-600 rounded-lg p-6 md:p-8 min-w-20 md:min-w-[120px] overflow-hidden group">
+          <div className="relative bg-black border-2 border-red-600 rounded-lg p-4 md:p-8 min-w-20 md:min-w-[120px] overflow-hidden group flex flex-col items-center justify-center">
             {/* Retro scanline effect */}
             <div className="absolute inset-0 pointer-events-none opacity-20">
               <div className="absolute inset-0 bg-linear-to-b from-transparent via-red-500/10 to-transparent animate-scan"></div>
             </div>
             {/* CRT glow */}
             <div className="absolute inset-0 bg-red-600/5 blur-xl"></div>
-            <div className="relative text-4xl md:text-6xl font-bold text-red-500 mb-2 font-mono drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]">
+            <div className="relative text-4xl md:text-6xl font-bold text-red-500 mb-1 md:mb-2 font-mono drop-shadow-[0_0_10px_rgba(239,68,68,0.5)] text-center">
               {String(unit.value).padStart(2, '0')}
             </div>
-            <div className="relative text-xs md:text-sm text-red-400/80 uppercase tracking-wider font-mono">
+            <div className="relative text-xs md:text-sm text-red-400/80 uppercase tracking-wider font-mono text-center">
               {unit.label}
             </div>
           </div>
