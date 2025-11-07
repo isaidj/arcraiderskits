@@ -3,6 +3,7 @@ import { Barlow } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { AdsProvider } from '@/contexts/AdsContext';
+import { Analytics } from '@vercel/analytics/react';
 
 const barlow = Barlow({
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -46,6 +47,7 @@ export default function RootLayout({
         <AdsProvider>
           {children}
         </AdsProvider>
+        <Analytics />
       </body>
     </html>
   );
