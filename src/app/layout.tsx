@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ARC Raiders Expedition Countdown",
     description: "Voluntary progression reset system with 8-week cycles. First Expedition: December 15-21, 2025.",
+  },
+  other: {
+    'google-adsense-account': process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || '',
   }
 };
 
