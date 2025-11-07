@@ -28,6 +28,14 @@ export default function Navbar() {
             >
               Home
             </Link>
+            <a 
+              href="https://arcraiders.wiki/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider"
+            >
+              Wiki
+            </a>
             <span 
               className="text-gray-600 cursor-not-allowed text-sm font-medium uppercase tracking-wider"
               title="Coming Soon"
@@ -108,6 +116,15 @@ export default function Navbar() {
             >
               Home
             </Link>
+            <a
+              href="https://arcraiders.wiki/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-md text-base font-medium uppercase tracking-wider transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              Wiki
+            </a>
             <div
               className="block px-3 py-2 text-gray-600 cursor-not-allowed rounded-md text-base font-medium uppercase tracking-wider"
               title="Coming Soon"
