@@ -107,7 +107,7 @@ export default function DecorativeLines() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed bottom-0 left-0 pointer-events-none z-30"
+      className="fixed bottom-0 left-0 pointer-events-none z-0"
       style={{ width: '400px', height: '400px' }}
     />
   );
