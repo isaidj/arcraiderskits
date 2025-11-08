@@ -59,19 +59,9 @@ export default function DataMenu() {
 
         {/* Mobile Menu */}
         <div className="md:hidden">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="w-full flex items-center justify-between py-2 text-gray-300 hover:text-white transition-colors"
-          >
-            <span className="text-sm font-medium uppercase tracking-wider">
-              {menuItems.find((item) => item.path === pathname)?.name || "Menu"}
-            </span>
-            <svg
-              className={`w-5 h-5 transition-transform ${isOpen ? "rotate-180" : ""}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+          <button onClick={() => setIsOpen(!isOpen)} className="w-full flex items-center justify-between py-2 text-gray-300 hover:text-white transition-colors">
+            <span className="text-sm font-medium uppercase tracking-wider">{menuItems.find((item) => item.path === pathname)?.name || "Menu"}</span>
+            <svg className={`w-5 h-5 transition-transform ${isOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
@@ -92,9 +82,7 @@ export default function DataMenu() {
                         href={item.path}
                         onClick={() => setIsOpen(false)}
                         className={`block px-4 py-3 text-sm uppercase tracking-wider font-medium transition-colors ${
-                          isActive
-                            ? "bg-[#e5a10f] text-black"
-                            : "text-gray-300 hover:bg-gray-800/50 hover:text-[#e5a10f]"
+                          isActive ? "bg-[#e5a10f] text-black" : "text-gray-300 hover:bg-gray-800/50 hover:text-[#e5a10f]"
                         }`}
                       >
                         {item.name}
