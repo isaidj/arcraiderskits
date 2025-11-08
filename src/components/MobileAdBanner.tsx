@@ -30,19 +30,20 @@ export default function MobileAdBanner() {
   return (
     <div 
       className="fixed bottom-0 left-0 right-0 xl:hidden z-40 bg-[#0a0a0a] border-t border-red-600/20"
+      style={{ maxHeight: '60px' }}
     >
       <div 
         ref={adRef}
-        className="w-full flex items-center justify-center py-2"
-        style={{ minHeight: '50px' }}
+        className="w-full flex items-center justify-center overflow-hidden"
+        style={{ height: '50px', maxHeight: '50px' }}
       >
         <ins
           className="adsbygoogle"
-          style={{ display: 'inline-block', width: '320px', height: '50px' }}
+          style={{ display: 'inline-block', width: '320px', height: '50px', maxHeight: '50px' }}
           data-ad-client={clientId}
           data-ad-slot={slot}
-          data-ad-format="auto"
-          data-full-width-responsive="true"
+          data-ad-format="rectangle"
+          data-full-width-responsive="false"
         />
       </div>
     </div>
