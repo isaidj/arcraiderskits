@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run update-data && next dev",
+    "build": "npm run update-data && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "update-data": "node scripts/update-data.js",
+    "postinstall": "npm run update-data"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",

@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { Barlow } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import { AdsProvider } from '@/contexts/AdsContext';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { AdsProvider } from "@/contexts/AdsContext";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import Navbar from "../components/Navbar";
+import DataMenu from "../components/DataMenu";
 
 const barlow = Barlow({
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -27,15 +29,11 @@ export const metadata: Metadata = {
     description: "Voluntary progression reset system with 8-week cycles. First Expedition: December 15-21, 2025.",
   },
   other: {
-    'google-adsense-account': process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || '',
-  }
+    "google-adsense-account": process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "",
+  },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -49,6 +47,8 @@ export default function RootLayout({
       </head>
       <body className={`${barlow.variable} antialiased`} suppressHydrationWarning>
         <AdsProvider>
+          <Navbar />
+          <DataMenu />
           {children}
         </AdsProvider>
         <Analytics />
