@@ -29,7 +29,7 @@ export default function MobileAdBanner() {
 
   return (
     <div 
-      className="fixed bottom-0 left-0 right-0 xl:hidden z-40 bg-[#0a0a0a] border-t border-red-600/20"
+      className="relative bottom-0 left-0 right-0 xl:hidden z-40 bg-[#0a0a0a] border-t border-red-600/20 mt-8"
       style={{ maxHeight: '60px' }}
     >
       <div 
