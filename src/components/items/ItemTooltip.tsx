@@ -55,13 +55,13 @@ export default function ItemTooltip({ item, position }: ItemTooltipProps) {
         <div className="grid grid-cols-2 gap-2 mb-3">
           {item.value !== undefined && (
             <div className="bg-gray-900/50 rounded px-2 py-1.5">
-              <span className="text-[10px] text-gray-500 uppercase">Valor</span>
+              <span className="text-[10px] text-gray-500 uppercase">Value</span>
               <p className="text-sm font-semibold text-green-400">{item.value}</p>
             </div>
           )}
           {item.weightKg !== undefined && (
             <div className="bg-gray-900/50 rounded px-2 py-1.5">
-              <span className="text-[10px] text-gray-500 uppercase">Peso</span>
+              <span className="text-[10px] text-gray-500 uppercase">Weight</span>
               <p className="text-sm font-semibold text-gray-200">{item.weightKg} kg</p>
             </div>
           )}
@@ -76,7 +76,7 @@ export default function ItemTooltip({ item, position }: ItemTooltipProps) {
         {/* Location Tags */}
         {item.foundIn && (
           <div className="mb-3 pb-3 border-b border-gray-700">
-            <span className="text-[10px] text-gray-500 uppercase block mb-1.5">Encontrado en</span>
+            <span className="text-[10px] text-gray-500 uppercase block mb-1.5">Found In</span>
             <div className="flex flex-wrap gap-1.5">
               {item.foundIn.split(",").map((location: string, idx: number) => (
                 <span key={idx} className="px-2 py-0.5 bg-cyan-900/30 border border-cyan-700/50 rounded text-xs text-cyan-400 font-medium">
@@ -90,7 +90,7 @@ export default function ItemTooltip({ item, position }: ItemTooltipProps) {
         {/* Effects */}
         {item.effects && Object.keys(item.effects).length > 0 && (
           <div className="mb-3 pb-3 border-b border-gray-700">
-            <h4 className="text-xs font-semibold text-gray-400 uppercase mb-2">Efectos</h4>
+            <h4 className="text-xs font-semibold text-gray-400 uppercase mb-2">Effects</h4>
             <div className="space-y-1">
               {Object.entries(item.effects).map(([key, effect]: [string, any]) => (
                 <div key={key} className="flex justify-between items-center text-xs">
@@ -106,7 +106,7 @@ export default function ItemTooltip({ item, position }: ItemTooltipProps) {
         <div className="space-y-1 text-xs">
           {item.category && (
             <div className="flex justify-between">
-              <span className="text-gray-500">Categoría:</span>
+              <span className="text-gray-500">Category:</span>
               <span className="text-gray-300">{item.category}</span>
             </div>
           )}

@@ -28,29 +28,60 @@ function getSearchableText(item: Item): string {
   return searchText;
 }
 
-export function useFilteredItems(items: Item[], searchTerm: string, selectedCategory: string) {
+export function useFilteredItems(items: Item[], searchTerm: string, selectedCategory: string, sortBy: string = "name-asc") {
   return useMemo(() => {
-    if (searchTerm === "" && selectedCategory === "All") {
-      return items;
+    let filtered = items;
+
+    // Aplicar filtros
+    if (searchTerm !== "" || selectedCategory !== "All") {
+      const searchLower = searchTerm.toLowerCase();
+
+      filtered = items.filter((item) => {
+        // Primero verificar categoría (más rápido)
+        if (selectedCategory !== "All" && item.type !== selectedCategory) {
+          return false;
+        }
+
+        // Luego verificar búsqueda
+        if (searchTerm === "") {
+          return true;
+        }
+
+        const searchableText = getSearchableText(item);
+        return searchableText.includes(searchLower);
+      });
     }
 
-    const searchLower = searchTerm.toLowerCase();
-
-    return items.filter((item) => {
-      // Primero verificar categoría (más rápido)
-      if (selectedCategory !== "All" && item.type !== selectedCategory) {
-        return false;
+    // Aplicar ordenamiento
+    const sorted = [...filtered].sort((a, b) => {
+      switch (sortBy) {
+        case "name-asc":
+          return getText(a.name).localeCompare(getText(b.name));
+        case "name-desc":
+          return getText(b.name).localeCompare(getText(a.name));
+        case "rarity-asc": {
+          const rarityOrder = { Common: 1, Uncommon: 2, Rare: 3, Epic: 4, Legendary: 5 };
+          return (rarityOrder[a.rarity as keyof typeof rarityOrder] || 0) - (rarityOrder[b.rarity as keyof typeof rarityOrder] || 0);
+        }
+        case "rarity-desc": {
+          const rarityOrder = { Common: 1, Uncommon: 2, Rare: 3, Epic: 4, Legendary: 5 };
+          return (rarityOrder[b.rarity as keyof typeof rarityOrder] || 0) - (rarityOrder[a.rarity as keyof typeof rarityOrder] || 0);
+        }
+        case "value-asc":
+          return (a.value || 0) - (b.value || 0);
+        case "value-desc":
+          return (b.value || 0) - (a.value || 0);
+        case "weight-asc":
+          return (a.weightKg || 0) - (b.weightKg || 0);
+        case "weight-desc":
+          return (b.weightKg || 0) - (a.weightKg || 0);
+        default:
+          return 0;
       }
-
-      // Luego verificar búsqueda
-      if (searchTerm === "") {
-        return true;
-      }
-
-      const searchableText = getSearchableText(item);
-      return searchableText.includes(searchLower);
     });
-  }, [items, searchTerm, selectedCategory]);
+
+    return sorted;
+  }, [items, searchTerm, selectedCategory, sortBy]);
 }
 
 export function useCategories(items: Item[]) {

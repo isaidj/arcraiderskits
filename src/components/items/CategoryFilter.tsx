@@ -47,7 +47,7 @@ export default function CategoryFilter({ categories, selectedCategory, onSelectC
           onClick={() => setIsExpanded(!isExpanded)}
           className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-black/50 text-gray-300 border border-gray-700 hover:border-[#00ffff]/50 transition-all"
         >
-          <span>{isExpanded ? "Mostrar menos" : `Mostrar más (${categories.length - visibleCount})`}</span>
+          <span>{isExpanded ? "Show less" : `Show more (${categories.length - visibleCount})`}</span>
           <svg className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>

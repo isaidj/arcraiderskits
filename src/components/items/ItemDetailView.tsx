@@ -47,7 +47,7 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
           <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          <span className="font-medium">Volver</span>
+          <span className="font-medium">Back</span>
         </button>
       </nav>
 
@@ -88,13 +88,13 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {item.value !== undefined && (
                   <div className="bg-gray-900/50 rounded p-2">
-                    <span className="text-[10px] text-gray-500 uppercase block mb-0.5">Valor</span>
+                    <span className="text-[10px] text-gray-500 uppercase block mb-0.5">Value</span>
                     <p className="text-sm md:text-base font-bold text-green-400">{item.value}</p>
                   </div>
                 )}
                 {item.weightKg !== undefined && (
                   <div className="bg-gray-900/50 rounded p-2">
-                    <span className="text-[10px] text-gray-500 uppercase block mb-0.5">Peso</span>
+                    <span className="text-[10px] text-gray-500 uppercase block mb-0.5">Weight</span>
                     <p className="text-sm md:text-base font-bold text-gray-200">{item.weightKg} kg</p>
                   </div>
                 )}
@@ -109,7 +109,7 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
               {/* Location Tags */}
               {item.foundIn && (
                 <div className="mt-2 md:mt-3">
-                  <span className="text-[10px] text-gray-500 uppercase block mb-1.5">Ubicación</span>
+                  <span className="text-[10px] text-gray-500 uppercase block mb-1.5">Location</span>
                   <div className="flex flex-wrap gap-1.5">
                     {item.foundIn.split(",").map((location: string, idx: number) => (
                       <span key={idx} className="px-2 py-1 bg-cyan-900/30 border border-cyan-700/50 rounded text-xs text-cyan-400 font-medium">
@@ -123,7 +123,7 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
               {/* Description */}
               {item.description && (
                 <div className="mt-2 md:mt-3">
-                  <span className="text-[10px] text-gray-500 uppercase block mb-1.5">Descripción</span>
+                  <span className="text-[10px] text-gray-500 uppercase block mb-1.5">Description</span>
                   <p className="text-xs md:text-sm text-gray-300 leading-relaxed">{getText(item.description)}</p>
                 </div>
               )}
@@ -140,7 +140,7 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
           {/* Effects */}
           {item.effects && Object.keys(item.effects).length > 0 && (
             <div className="bg-black/50 border border-gray-700 rounded-lg p-4">
-              <h2 className="text-lg font-bold text-gray-200 mb-3">Efectos</h2>
+              <h2 className="text-lg font-bold text-gray-200 mb-3">Effects</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {Object.entries(item.effects).map(([key, effect]: [string, any]) => (
                   <div key={key} className="bg-gray-900/50 rounded p-2">
@@ -157,7 +157,7 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
           {/* Recycling Results */}
           {recyclingResults.length > 0 && (
             <div className="bg-black/50 border border-gray-700 rounded-lg p-4">
-              <h2 className="text-lg font-bold text-gray-200 mb-3">Se Recicla En</h2>
+              <h2 className="text-lg font-bold text-gray-200 mb-3">Recycles Into</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
                 {recyclingResults.map((result: any, idx: number) => (
                   <Link
@@ -192,7 +192,7 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
         {/* Can be recycled into this */}
         {canBeRecycledInto.length > 0 && (
           <div>
-            <h2 className="text-xl font-bold text-gray-200 mb-3">Se Obtiene Reciclando</h2>
+            <h2 className="text-xl font-bold text-gray-200 mb-3">Obtained by Recycling</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
               {canBeRecycledInto.map((relatedItem: Item, idx: number) => (
                 <RelatedItemCard key={idx} item={relatedItem} />
