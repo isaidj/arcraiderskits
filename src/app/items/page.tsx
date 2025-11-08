@@ -1,7 +1,24 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import ItemsFilter from "@/components/ItemsFilter";
+
+export const metadata: Metadata = {
+  title: "Items Database - Arc Raiders Kits",
+  description: "Browse and search through all items from Arc Raiders. Filter by category, rarity, and sort by various properties including value, weight, and name.",
+  keywords: ["Arc Raiders", "items", "database", "loot", "weapons", "materials", "resources", "game items"],
+  openGraph: {
+    title: "Items Database - Arc Raiders Kits",
+    description: "Browse and search through all items from Arc Raiders",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Items Database - Arc Raiders Kits",
+    description: "Browse and search through all items from Arc Raiders",
+  },
+};
 
 interface Item {
   id: string;
