@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { Suspense } from "react";
 import ItemsFilter from "@/components/ItemsFilter";
 
 interface Item {
@@ -42,7 +43,15 @@ export default async function ItemsPage() {
               <p className="text-gray-400 text-xl mb-4">No items data available yet.</p>
             </div>
           ) : (
-            <ItemsFilter items={items} />
+            <Suspense
+              fallback={
+                <div className="text-center py-20">
+                  <p className="text-gray-400 text-xl">Loading items...</p>
+                </div>
+              }
+            >
+              <ItemsFilter items={items} />
+            </Suspense>
           )}
         </div>
       </main>
