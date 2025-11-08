@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import ItemDetailView from "@/components/items/ItemDetailView";
 import { Item } from "@/components/items/types";
 
@@ -19,6 +20,58 @@ async function getItems(): Promise<Item[]> {
     console.error("Error loading items:", error);
     return [];
   }
+}
+
+function getText(text: any): string {
+  if (typeof text === "string") return text;
+  if (typeof text === "object" && text !== null) {
+    return text.en || text.es || Object.values(text)[0] || "";
+  }
+  return "";
+}
+
+export async function generateMetadata({ params }: ItemPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const items = await getItems();
+  const item = items.find((i) => i.id === id);
+
+  if (!item) {
+    return {
+      title: "Item Not Found - Arc Raiders Kits",
+    };
+  }
+
+  const itemName = getText(item.name);
+  const itemDescription = getText(item.description);
+  const rarity = item.rarity || "Unknown";
+  const type = item.type || "Item";
+
+  return {
+    title: `${itemName} - ${type} - Arc Raiders Kits`,
+    description:
+      itemDescription || `${itemName} is a ${rarity} ${type} in Arc Raiders. ${item.value ? `Value: ${item.value}.` : ""} ${item.weightKg ? `Weight: ${item.weightKg}kg.` : ""}`,
+    keywords: ["Arc Raiders", itemName, type, rarity, "item", "database", item.category || ""].filter(Boolean),
+    openGraph: {
+      title: `${itemName} - Arc Raiders Kits`,
+      description: itemDescription || `${rarity} ${type} in Arc Raiders`,
+      type: "website",
+      images:
+        item.imageFilename || item.image
+          ? [
+              {
+                url: item.imageFilename || item.image || "",
+                alt: itemName,
+              },
+            ]
+          : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${itemName} - Arc Raiders Kits`,
+      description: itemDescription || `${rarity} ${type} in Arc Raiders`,
+      images: item.imageFilename || item.image ? [item.imageFilename || item.image || ""] : [],
+    },
+  };
 }
 
 export default async function ItemPage({ params }: ItemPageProps) {
