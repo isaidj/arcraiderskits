@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { Quest } from "@/components/quests/types";
 import { Item } from "@/components/items/types";
 import { Locale, locales } from "@/config/i18n";
-import { getText } from "@/components/quests/utils";
+import { getText, generateSlug } from "@/components/quests/utils";
 import QuestDetailView from "@/components/quests/QuestDetailView";
 
 async function getQuests(): Promise<Quest[]> {
@@ -37,9 +37,10 @@ export async function generateStaticParams() {
 
   for (const locale of locales) {
     for (const quest of quests) {
+      const slug = generateSlug(quest.name, quest.id);
       params.push({
         lang: locale,
-        id: quest.id,
+        id: slug,
       });
     }
   }
@@ -51,7 +52,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale; id: string }> }): Promise<Metadata> {
   const { lang, id } = await params;
   const quests = await getQuests();
-  const quest = quests.find((q) => q.id === id);
+  
+  // Buscar quest por slug
+  const quest = quests.find((q) => generateSlug(q.name, q.id) === id);
 
   if (!quest) {
     const notFoundTitles: Record<Locale, string> = {
@@ -116,7 +119,9 @@ export default async function QuestPage({ params }: { params: Promise<{ lang: Lo
   const { lang, id } = await params;
   const quests = await getQuests();
   const items = await getItems();
-  const quest = quests.find((q) => q.id === id);
+  
+  // Buscar quest por slug
+  const quest = quests.find((q) => generateSlug(q.name, q.id) === id);
 
   if (!quest) {
     notFound();

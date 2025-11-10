@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Quest } from "./types";
 import { Item } from "@/components/items/types";
 import { Locale } from "@/config/i18n";
-import { getText, getTraderBadgeColor } from "./utils";
+import { getText, getTraderBadgeColor, generateSlug } from "./utils";
 import QuestItemCard from "./QuestItemCard";
 import BackButton from "@/components/BackButton";
 
@@ -84,13 +84,14 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
             <div className="grid grid-cols-2 gap-3">
               {quest.requiredItemIds.map((questItem, idx) => {
                 const item = getItemById(questItem.itemId);
-                return item ? (
-                  <QuestItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} />
-                ) : (
-                  <Link key={idx} href={`/${lang}/items/${questItem.itemId}`} className="block text-cyan-400 hover:text-cyan-300 text-sm hover:underline">
-                    → {questItem.itemId} x{questItem.quantity}
-                  </Link>
-                );
+                if (!item) {
+                  return (
+                    <div key={idx} className="text-cyan-400 text-sm">
+                      → {questItem.itemId} x{questItem.quantity}
+                    </div>
+                  );
+                }
+                return <QuestItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} />;
               })}
             </div>
           </div>
@@ -103,13 +104,14 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
             <div className="grid grid-cols-2 gap-3">
               {quest.grantedItemIds.map((questItem, idx) => {
                 const item = getItemById(questItem.itemId);
-                return item ? (
-                  <QuestItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} />
-                ) : (
-                  <Link key={idx} href={`/${lang}/items/${questItem.itemId}`} className="block text-cyan-400 hover:text-cyan-300 text-sm hover:underline">
-                    → {questItem.itemId} x{questItem.quantity}
-                  </Link>
-                );
+                if (!item) {
+                  return (
+                    <div key={idx} className="text-cyan-400 text-sm">
+                      → {questItem.itemId} x{questItem.quantity}
+                    </div>
+                  );
+                }
+                return <QuestItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} />;
               })}
             </div>
           </div>
@@ -122,13 +124,14 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
             <div className="grid grid-cols-2 gap-3">
               {quest.rewardItemIds.map((questItem, idx) => {
                 const item = getItemById(questItem.itemId);
-                return item ? (
-                  <QuestItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} />
-                ) : (
-                  <Link key={idx} href={`/${lang}/items/${questItem.itemId}`} className="block text-cyan-400 hover:text-cyan-300 text-sm hover:underline">
-                    → {questItem.itemId} x{questItem.quantity}
-                  </Link>
-                );
+                if (!item) {
+                  return (
+                    <div key={idx} className="text-cyan-400 text-sm">
+                      → {questItem.itemId} x{questItem.quantity}
+                    </div>
+                  );
+                }
+                return <QuestItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} />;
               })}
             </div>
           </div>
@@ -160,16 +163,19 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
               <div>
                 <h3 className="text-sm font-semibold text-gray-400 mb-3">← Previous Quests</h3>
                 <div className="space-y-2">
-                  {previousQuests.map((prevQuest) => (
-                    <Link
-                      key={prevQuest.id}
-                      href={`/${lang}/quests/${prevQuest.id}`}
-                      className="block p-3 bg-black/50 border border-[#00ffff]/20 rounded-lg hover:border-[#00ffff] transition-colors"
-                    >
-                      <p className="text-cyan-400 text-sm font-semibold">{getText(prevQuest.name, lang)}</p>
-                      <p className="text-gray-500 text-xs mt-1">{prevQuest.trader}</p>
-                    </Link>
-                  ))}
+                  {previousQuests.map((prevQuest) => {
+                    const slug = generateSlug(prevQuest.name, prevQuest.id);
+                    return (
+                      <Link
+                        key={prevQuest.id}
+                        href={`/${lang}/quests/${slug}`}
+                        className="block p-3 bg-black/50 border border-[#00ffff]/20 rounded-lg hover:border-[#00ffff] transition-colors"
+                      >
+                        <p className="text-cyan-400 text-sm font-semibold">{getText(prevQuest.name, lang)}</p>
+                        <p className="text-gray-500 text-xs mt-1">{prevQuest.trader}</p>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -179,16 +185,19 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
               <div>
                 <h3 className="text-sm font-semibold text-gray-400 mb-3">Next Quests →</h3>
                 <div className="space-y-2">
-                  {nextQuests.map((nextQuest) => (
-                    <Link
-                      key={nextQuest.id}
-                      href={`/${lang}/quests/${nextQuest.id}`}
-                      className="block p-3 bg-black/50 border border-[#00ffff]/20 rounded-lg hover:border-[#00ffff] transition-colors"
-                    >
-                      <p className="text-cyan-400 text-sm font-semibold">{getText(nextQuest.name, lang)}</p>
-                      <p className="text-gray-500 text-xs mt-1">{nextQuest.trader}</p>
-                    </Link>
-                  ))}
+                  {nextQuests.map((nextQuest) => {
+                    const slug = generateSlug(nextQuest.name, nextQuest.id);
+                    return (
+                      <Link
+                        key={nextQuest.id}
+                        href={`/${lang}/quests/${slug}`}
+                        className="block p-3 bg-black/50 border border-[#00ffff]/20 rounded-lg hover:border-[#00ffff] transition-colors"
+                      >
+                        <p className="text-cyan-400 text-sm font-semibold">{getText(nextQuest.name, lang)}</p>
+                        <p className="text-gray-500 text-xs mt-1">{nextQuest.trader}</p>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             )}

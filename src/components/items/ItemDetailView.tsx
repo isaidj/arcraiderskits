@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Item } from "./types";
-import { getText } from "./utils";
+import { getText, generateSlug } from "./utils";
 import { getRarityColors } from "./rarityColors";
 import { translateLocations } from "./locationTranslations";
 import BackButton from "@/components/BackButton";
@@ -151,28 +151,31 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
             <div className="bg-black/50 border border-gray-700 rounded-lg p-4">
               <h2 className="text-lg font-bold text-gray-200 mb-3">{lang === "es" ? "Se recicla en" : "Recycles Into"}</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-                {recyclingResults.map((result: any, idx: number) => (
-                  <Link
-                    key={idx}
-                    href={`/${lang}/items/${result.item.id}`}
-                    className={`card-chrome-border group relative bg-gray-900/50 border ${
-                      getRarityColors(result.item.rarity || "").border
-                    } rounded-lg p-2 hover:scale-105 transition-all duration-200 cursor-pointer`}
-                  >
-                    <div className="flex flex-col gap-2">
-                      {(result.item.imageFilename || result.item.image) && (
-                        <div className="relative w-full aspect-square">
-                          <Image src={result.item.imageFilename || result.item.image || ""} alt={getText(result.item.name, lang)} fill className="object-contain" />
+                {recyclingResults.map((result: any, idx: number) => {
+                  const slug = generateSlug(result.item.name, result.item.id);
+                  return (
+                    <Link
+                      key={idx}
+                      href={`/${lang}/items/${slug}`}
+                      className={`card-chrome-border group relative bg-gray-900/50 border ${
+                        getRarityColors(result.item.rarity || "").border
+                      } rounded-lg p-2 hover:scale-105 transition-all duration-200 cursor-pointer`}
+                    >
+                      <div className="flex flex-col gap-2">
+                        {(result.item.imageFilename || result.item.image) && (
+                          <div className="relative w-full aspect-square">
+                            <Image src={result.item.imageFilename || result.item.image || ""} alt={getText(result.item.name, lang)} fill className="object-contain" />
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-xs font-semibold text-gray-200 truncate">{getText(result.item.name, lang)}</h4>
+                          <p className="text-[10px] text-gray-500">{result.item.type}</p>
                         </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-xs font-semibold text-gray-200 truncate">{getText(result.item.name, lang)}</h4>
-                        <p className="text-[10px] text-gray-500">{result.item.type}</p>
+                        <span className="text-[#00ffff] font-bold text-xs absolute top-1 right-1 bg-black/70 px-1.5 py-0.5 rounded">x{result.quantity}</span>
                       </div>
-                      <span className="text-[#00ffff] font-bold text-xs absolute top-1 right-1 bg-black/70 px-1.5 py-0.5 rounded">x{result.quantity}</span>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -206,10 +209,11 @@ interface RelatedItemCardProps {
 function RelatedItemCard({ item, lang, quantity }: RelatedItemCardProps) {
   const rarityColors = getRarityColors(item.rarity || "");
   const itemImage = item.imageFilename || item.image;
+  const slug = generateSlug(item.name, item.id);
 
   return (
     <Link
-      href={`/${lang}/items/${item.id}`}
+      href={`/${lang}/items/${slug}`}
       className={`card-chrome-border group relative bg-black/50 ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg p-2 hover:scale-105 transition-all duration-300 ${rarityColors.shadow} cursor-pointer overflow-hidden`}
     >
       {/* Decorative Corner */}

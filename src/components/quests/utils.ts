@@ -7,6 +7,26 @@ export function getText(multiLangText: MultiLangText | undefined, language?: Loc
   return multiLangText[lang] || multiLangText.en || "";
 }
 
+export function generateSlug(name: MultiLangText, id: string): string {
+  // Obtener el texto en inglés
+  const text = name.en || Object.values(name)[0] || "";
+
+  if (!text) return id;
+
+  // Convertir a minúsculas, remover caracteres especiales y reemplazar espacios con guiones
+  const slug = text
+    .toLowerCase()
+    .normalize("NFD") // Normalizar caracteres unicode
+    .replace(/[\u0300-\u036f]/g, "") // Remover diacríticos
+    .replace(/[^a-z0-9\s-]/g, "") // Remover caracteres especiales
+    .trim()
+    .replace(/\s+/g, "-") // Reemplazar espacios con guiones
+    .replace(/-+/g, "-"); // Remover guiones duplicados
+
+  // Agregar el ID al final para garantizar unicidad
+  return `${slug}-${id}`;
+}
+
 // Trader color mapping
 export const traderColors: Record<string, string> = {
   Shani: "text-cyan-400",

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Item, RarityColors } from "./types";
-import { getText } from "./utils";
+import { getText, generateSlug } from "./utils";
 import { Locale } from "@/config/i18n";
 
 export type ViewMode = "normal" | "compact";
@@ -18,7 +18,8 @@ interface ItemCardProps {
 export default function ItemCard({ item, lang, viewMode = "normal", rarityColors, onMouseEnter, onMouseLeave }: ItemCardProps) {
   const itemName = getText(item.name, lang);
   const itemImage = item.imageFilename || item.image;
-  const itemUrl = lang ? `/${lang}/items/${item.id}` : `/items/${item.id}`;
+  const slug = generateSlug(item.name, item.id);
+  const itemUrl = lang ? `/${lang}/items/${slug}` : `/items/${slug}`;
 
   // Clases según el modo
   const paddingClass = viewMode === "compact" ? "p-1.5" : "p-3";

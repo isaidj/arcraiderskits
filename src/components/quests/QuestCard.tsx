@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Quest } from "./types";
 import { Locale } from "@/config/i18n";
-import { getText, getTraderBadgeColor } from "./utils";
+import { getText, getTraderBadgeColor, generateSlug } from "./utils";
 
 interface QuestCardProps {
   quest: Quest;
@@ -14,7 +14,8 @@ export default function QuestCard({ quest, lang }: QuestCardProps) {
   const hasVideo = !!quest.videoUrl;
   const hasRewards = quest.rewardItemIds && quest.rewardItemIds.length > 0;
   const hasRequirements = quest.requiredItemIds && quest.requiredItemIds.length > 0;
-  const questUrl = lang ? `/${lang}/quests/${quest.id}` : `/quests/${quest.id}`;
+  const slug = generateSlug(quest.name, quest.id);
+  const questUrl = lang ? `/${lang}/quests/${slug}` : `/quests/${slug}`;
 
   return (
     <Link href={questUrl}>

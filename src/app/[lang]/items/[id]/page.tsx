@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import ItemDetailView from "@/components/items/ItemDetailView";
 import { Item } from "@/components/items/types";
 import { Locale, locales } from "@/config/i18n";
+import { generateSlug } from "@/components/items/utils";
 
 async function getItems(): Promise<Item[]> {
   try {
@@ -32,9 +33,10 @@ export async function generateStaticParams() {
 
   for (const locale of locales) {
     for (const item of items) {
+      const slug = generateSlug(item.name, item.id);
       params.push({
         lang: locale,
-        id: item.id,
+        id: slug,
       });
     }
   }
@@ -46,7 +48,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale; id: string }> }): Promise<Metadata> {
   const { lang, id } = await params;
   const items = await getItems();
-  const item = items.find((i) => i.id === id);
+  
+  // Buscar item por slug
+  const item = items.find((i) => generateSlug(i.name, i.id) === id);
 
   if (!item) {
     const notFoundTitles: Record<Locale, string> = {
@@ -121,7 +125,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
 export default async function ItemPage({ params }: { params: Promise<{ lang: Locale; id: string }> }) {
   const { lang, id } = await params;
   const items = await getItems();
-  const item = items.find((i) => i.id === id);
+  
+  // Buscar item por slug
+  const item = items.find((i) => generateSlug(i.name, i.id) === id);
 
   if (!item) {
     notFound();

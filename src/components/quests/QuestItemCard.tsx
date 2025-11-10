@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Item } from "@/components/items/types";
 import { Locale } from "@/config/i18n";
-import { getText } from "@/components/items/utils";
+import { getText, generateSlug } from "@/components/items/utils";
 import { getRarityColors } from "@/components/items/rarityColors";
 
 interface QuestItemCardProps {
@@ -15,10 +15,11 @@ export default function QuestItemCard({ item, quantity, lang }: QuestItemCardPro
   const itemName = getText(item.name, lang);
   const itemImage = item.imageFilename || item.image;
   const rarityColors = getRarityColors(item.rarity || "Common");
+  const slug = generateSlug(item.name, item.id);
 
   return (
     <Link
-      href={`/${lang}/items/${item.id}`}
+      href={`/${lang}/items/${slug}`}
       className={`card-chrome-border group relative bg-black/50 ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg p-3 hover:scale-105 transition-all duration-300 ${rarityColors.shadow} cursor-pointer overflow-hidden block`}
     >
       {/* Decorative corner mark */}
