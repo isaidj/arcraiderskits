@@ -59,7 +59,7 @@ export const dynamicParams = true;
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale; id: string }> }): Promise<Metadata> {
   const { lang, id } = await params;
   const quests = await getQuests();
-  
+
   // Buscar quest por slug
   const quest = quests.find((q) => generateSlug(q.name, q.id) === id);
 
@@ -126,7 +126,7 @@ export default async function QuestPage({ params }: { params: Promise<{ lang: Lo
   const { lang, id } = await params;
   const quests = await getQuests();
   const items = await getItems();
-  
+
   // Buscar quest por slug
   const quest = quests.find((q) => generateSlug(q.name, q.id) === id);
 

@@ -55,7 +55,7 @@ export const dynamicParams = true;
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale; id: string }> }): Promise<Metadata> {
   const { lang, id } = await params;
   const items = await getItems();
-  
+
   // Buscar item por slug
   const item = items.find((i) => generateSlug(i.name, i.id) === id);
 
@@ -132,7 +132,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
 export default async function ItemPage({ params }: { params: Promise<{ lang: Locale; id: string }> }) {
   const { lang, id } = await params;
   const items = await getItems();
-  
+
   // Buscar item por slug
   const item = items.find((i) => generateSlug(i.name, i.id) === id);
 
