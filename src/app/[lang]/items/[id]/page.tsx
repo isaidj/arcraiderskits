@@ -31,7 +31,11 @@ export async function generateStaticParams() {
   const items = await getItems();
   const params: { lang: string; id: string }[] = [];
 
-  for (const locale of locales) {
+  // Solo generar páginas estáticas para idiomas principales durante el build
+  // Los demás idiomas se generarán bajo demanda (on-demand ISR)
+  const primaryLocales = ["en", "es", "de", "fr", "pt"];
+
+  for (const locale of primaryLocales) {
     for (const item of items) {
       const slug = generateSlug(item.name, item.id);
       params.push({
@@ -43,6 +47,9 @@ export async function generateStaticParams() {
 
   return params;
 }
+
+// Configurar generación dinámica para otros idiomas
+export const dynamicParams = true;
 
 // Metadata dinámica por idioma e item
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale; id: string }> }): Promise<Metadata> {
