@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://arcraiderskits.com
+
+# Sitemaps
+Sitemap: https://arcraiderskits.com/sitemap.xml
