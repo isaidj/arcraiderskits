@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Item } from "./types";
 import { getText } from "./utils";
+import { Locale } from "@/config/i18n";
 
 // Helper function to get all text values from a multilingual object
 function getAllTexts(textObj: any): string {
@@ -28,7 +29,7 @@ function getSearchableText(item: Item): string {
   return searchText;
 }
 
-export function useFilteredItems(items: Item[], searchTerm: string, selectedCategory: string, sortBy: string = "name-asc") {
+export function useFilteredItems(items: Item[], searchTerm: string, selectedCategory: string, sortBy: string = "name-asc", lang?: Locale) {
   return useMemo(() => {
     let filtered = items;
 
@@ -56,9 +57,9 @@ export function useFilteredItems(items: Item[], searchTerm: string, selectedCate
     const sorted = [...filtered].sort((a, b) => {
       switch (sortBy) {
         case "name-asc":
-          return getText(a.name).localeCompare(getText(b.name));
+          return getText(a.name, lang).localeCompare(getText(b.name, lang));
         case "name-desc":
-          return getText(b.name).localeCompare(getText(a.name));
+          return getText(b.name, lang).localeCompare(getText(a.name, lang));
         case "rarity-asc": {
           const rarityOrder = { Common: 1, Uncommon: 2, Rare: 3, Epic: 4, Legendary: 5 };
           return (rarityOrder[a.rarity as keyof typeof rarityOrder] || 0) - (rarityOrder[b.rarity as keyof typeof rarityOrder] || 0);
@@ -81,7 +82,7 @@ export function useFilteredItems(items: Item[], searchTerm: string, selectedCate
     });
 
     return sorted;
-  }, [items, searchTerm, selectedCategory, sortBy]);
+  }, [items, searchTerm, selectedCategory, sortBy, lang]);
 }
 
 export function useCategories(items: Item[]) {

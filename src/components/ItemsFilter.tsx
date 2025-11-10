@@ -3,18 +3,21 @@
 import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Item } from "./items/types";
+import { Locale } from "@/config/i18n";
 import SearchBar from "./items/SearchBar";
 import CategoryFilter from "./items/CategoryFilter";
 import SortSelector from "./items/SortSelector";
-import ItemsGrid from "./items/ItemsGrid";
+import ItemsGrid, { ViewMode } from "./items/ItemsGrid";
 import ItemTooltip from "./items/ItemTooltip";
 import { useFilteredItems, useCategories } from "./items/hooks";
+import { useIsMobile } from "./items/useIsMobile";
 
 interface ItemsFilterProps {
   items: Item[];
+  lang: Locale;
 }
 
-export default function ItemsFilter({ items }: ItemsFilterProps) {
+export default function ItemsFilter({ items, lang }: ItemsFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -22,16 +25,18 @@ export default function ItemsFilter({ items }: ItemsFilterProps) {
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "All");
   const [sortBy, setSortBy] = useState(searchParams.get("sort") || "name-asc");
+  const [viewMode, setViewMode] = useState<ViewMode>("normal");
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
+  const isMobile = useIsMobile();
   const categories = useCategories(items);
 
   // Usar los valores de searchParams para el filtrado real
   const actualSearch = searchParams.get("search") || "";
   const actualCategory = searchParams.get("category") || "All";
   const actualSort = searchParams.get("sort") || "name-asc";
-  const filteredItems = useFilteredItems(items, actualSearch, actualCategory, actualSort);
+  const filteredItems = useFilteredItems(items, actualSearch, actualCategory, actualSort, lang);
 
   const updateURL = (search: string, category: string, sort: string) => {
     const params = new URLSearchParams();
@@ -40,7 +45,7 @@ export default function ItemsFilter({ items }: ItemsFilterProps) {
     if (sort && sort !== "name-asc") params.set("sort", sort);
 
     startTransition(() => {
-      router.push(`/items?${params.toString()}`, { scroll: false });
+      router.push(`/${lang}/items?${params.toString()}`, { scroll: false });
     });
   };
 
@@ -64,12 +69,16 @@ export default function ItemsFilter({ items }: ItemsFilterProps) {
   };
 
   const handleItemHover = (item: Item, position: { x: number; y: number }) => {
-    setHoveredItem(item);
-    setTooltipPosition(position);
+    if (!isMobile) {
+      setHoveredItem(item);
+      setTooltipPosition(position);
+    }
   };
 
   const handleItemLeave = () => {
-    setHoveredItem(null);
+    if (!isMobile) {
+      setHoveredItem(null);
+    }
   };
 
   return (
@@ -80,7 +89,42 @@ export default function ItemsFilter({ items }: ItemsFilterProps) {
           <div className="flex-1">
             <SearchBar value={searchTerm} onChange={handleSearchChange} />
           </div>
-          <SortSelector value={sortBy} onChange={handleSortChange} />
+          <div className="flex gap-2">
+            <SortSelector value={sortBy} onChange={handleSortChange} />
+
+            {/* View Mode Toggle */}
+            <div className="flex rounded-lg overflow-hidden border border-gray-700">
+              <button
+                onClick={() => setViewMode("normal")}
+                className={`px-3 py-2 text-sm font-medium transition-colors ${viewMode === "normal" ? "bg-[#00ffff] text-black" : "bg-gray-800 text-gray-400 hover:bg-gray-700"}`}
+                title={lang === "es" ? "Vista normal" : "Normal view"}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="7" height="7" strokeWidth="2" />
+                  <rect x="14" y="3" width="7" height="7" strokeWidth="2" />
+                  <rect x="3" y="14" width="7" height="7" strokeWidth="2" />
+                  <rect x="14" y="14" width="7" height="7" strokeWidth="2" />
+                </svg>
+              </button>
+              <button
+                onClick={() => setViewMode("compact")}
+                className={`px-3 py-2 text-sm font-medium transition-colors ${viewMode === "compact" ? "bg-[#00ffff] text-black" : "bg-gray-800 text-gray-400 hover:bg-gray-700"}`}
+                title={lang === "es" ? "Vista compacta" : "Compact view"}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="4" height="4" strokeWidth="2" />
+                  <rect x="10" y="3" width="4" height="4" strokeWidth="2" />
+                  <rect x="17" y="3" width="4" height="4" strokeWidth="2" />
+                  <rect x="3" y="10" width="4" height="4" strokeWidth="2" />
+                  <rect x="10" y="10" width="4" height="4" strokeWidth="2" />
+                  <rect x="17" y="10" width="4" height="4" strokeWidth="2" />
+                  <rect x="3" y="17" width="4" height="4" strokeWidth="2" />
+                  <rect x="10" y="17" width="4" height="4" strokeWidth="2" />
+                  <rect x="17" y="17" width="4" height="4" strokeWidth="2" />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
 
         <CategoryFilter categories={categories} selectedCategory={selectedCategory} onSelectCategory={handleCategoryChange} />
@@ -93,10 +137,10 @@ export default function ItemsFilter({ items }: ItemsFilterProps) {
       </div>
 
       {/* Items Grid */}
-      <ItemsGrid items={filteredItems} onItemHover={handleItemHover} onItemLeave={handleItemLeave} />
+      <ItemsGrid items={filteredItems} lang={lang} viewMode={viewMode} onItemHover={handleItemHover} onItemLeave={handleItemLeave} />
 
-      {/* Tooltip */}
-      {hoveredItem && <ItemTooltip item={hoveredItem} position={tooltipPosition} />}
+      {/* Tooltip - Solo en desktop */}
+      {!isMobile && hoveredItem && <ItemTooltip item={hoveredItem} position={tooltipPosition} lang={lang} />}
     </div>
   );
 }

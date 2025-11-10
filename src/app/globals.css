@@ -34,5 +34,80 @@ body {
 }
 
 .animate-scan {
-  animation: scan 3s linear infinite;
+  animation: scan 5s linear infinite;
+}
+
+/* Chrome border scan effect - diagonal from bottom-left to top-right */
+@keyframes chrome-scan {
+  0% {
+    background-position: -200% -200%;
+  }
+  100% {
+    background-position: 200% 200%;
+  }
+}
+
+/* Card with chrome border animation */
+.card-chrome-border {
+  position: relative;
+  overflow: visible;
+}
+
+.card-chrome-border::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 0.5rem;
+  padding: 2px;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    #ffffff 5%,
+    #ffffff 15%,
+    #60a5fa 22%,
+    #a78bfa 29%,
+    #60a5fa 36%,
+    transparent 43%,
+    transparent 50%,
+    #ffffff 55%,
+    #ffffff 65%,
+    #60a5fa 72%,
+    #a78bfa 79%,
+    #60a5fa 86%,
+    transparent 93%,
+    #ffffff 95%,
+    #ffffff 97%,
+    #60a5fa 98%,
+    #a78bfa 99%,
+    transparent 100%
+  );
+  background-size: 200% 200%;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.6s ease-out ;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-chrome-border:hover::before {
+  opacity: 1;
+  animation: chrome-scan 20s ease-in-out infinite alternate;
+}
+
+/* Clip path for beveled edges */
+.card-chrome-border::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 0.5rem;
+  background: transparent;
+  pointer-events: none;
+  z-index: 0;
 }

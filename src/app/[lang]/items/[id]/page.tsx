@@ -4,12 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ItemDetailView from "@/components/items/ItemDetailView";
 import { Item } from "@/components/items/types";
-
-interface ItemPageProps {
-  params: {
-    id: string;
-  };
-}
+import { Locale, locales } from "@/config/i18n";
 
 async function getItems(): Promise<Item[]> {
   try {
@@ -22,39 +17,88 @@ async function getItems(): Promise<Item[]> {
   }
 }
 
-function getText(text: any): string {
+function getText(text: any, lang: Locale): string {
   if (typeof text === "string") return text;
   if (typeof text === "object" && text !== null) {
-    return text.en || text.es || Object.values(text)[0] || "";
+    return text[lang] || text.en || Object.values(text)[0] || "";
   }
   return "";
 }
 
-export async function generateMetadata({ params }: ItemPageProps): Promise<Metadata> {
-  const { id } = await params;
+// Generar todos los parámetros estáticos (lang × item)
+export async function generateStaticParams() {
+  const items = await getItems();
+  const params: { lang: string; id: string }[] = [];
+
+  for (const locale of locales) {
+    for (const item of items) {
+      params.push({
+        lang: locale,
+        id: item.id,
+      });
+    }
+  }
+
+  return params;
+}
+
+// Metadata dinámica por idioma e item
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale; id: string }> }): Promise<Metadata> {
+  const { lang, id } = await params;
   const items = await getItems();
   const item = items.find((i) => i.id === id);
 
   if (!item) {
+    const notFoundTitles: Record<Locale, string> = {
+      en: "Item Not Found - Arc Raiders Kits",
+      es: "Objeto No Encontrado - Arc Raiders Kits",
+      de: "Gegenstand Nicht Gefunden - Arc Raiders Kits",
+      fr: "Objet Non Trouvé - Arc Raiders Kits",
+      pt: "Item Não Encontrado - Arc Raiders Kits",
+      pl: "Przedmiot Nie Znaleziony - Arc Raiders Kits",
+      no: "Gjenstand Ikke Funnet - Arc Raiders Kits",
+      da: "Genstand Ikke Fundet - Arc Raiders Kits",
+      it: "Oggetto Non Trovato - Arc Raiders Kits",
+      uk: "Предмет Не Знайдено - Arc Raiders Kits",
+      kr: "아이템을 찾을 수 없습니다 - Arc Raiders Kits",
+      ru: "Предмет Не Найден - Arc Raiders Kits",
+      "zh-CN": "未找到物品 - Arc Raiders Kits",
+      ja: "アイテムが見つかりません - Arc Raiders Kits",
+      tr: "Eşya Bulunamadı - Arc Raiders Kits",
+      "zh-TW": "未找到物品 - Arc Raiders Kits",
+      sr: "Предмет Није Пронађен - Arc Raiders Kits",
+      hr: "Predmet Nije Pronađen - Arc Raiders Kits",
+    };
     return {
-      title: "Item Not Found - Arc Raiders Kits",
+      title: notFoundTitles[lang],
     };
   }
 
-  const itemName = getText(item.name);
-  const itemDescription = getText(item.description);
+  const itemName = getText(item.name, lang);
+  const itemDescription = getText(item.description, lang);
   const rarity = item.rarity || "Unknown";
   const type = item.type || "Item";
+
+  // Crear alternates para todos los idiomas
+  const languages: Record<string, string> = {};
+  locales.forEach((locale) => {
+    languages[locale] = `/${locale}/items/${id}`;
+  });
 
   return {
     title: `${itemName} - ${type} - Arc Raiders Kits`,
     description:
       itemDescription || `${itemName} is a ${rarity} ${type} in Arc Raiders. ${item.value ? `Value: ${item.value}.` : ""} ${item.weightKg ? `Weight: ${item.weightKg}kg.` : ""}`,
     keywords: ["Arc Raiders", itemName, type, rarity, "item", "database", item.category || ""].filter(Boolean),
+    alternates: {
+      canonical: `/${lang}/items/${id}`,
+      languages,
+    },
     openGraph: {
       title: `${itemName} - Arc Raiders Kits`,
       description: itemDescription || `${rarity} ${type} in Arc Raiders`,
       type: "website",
+      locale: lang,
       images:
         item.imageFilename || item.image
           ? [
@@ -74,8 +118,8 @@ export async function generateMetadata({ params }: ItemPageProps): Promise<Metad
   };
 }
 
-export default async function ItemPage({ params }: ItemPageProps) {
-  const { id } = await params;
+export default async function ItemPage({ params }: { params: Promise<{ lang: Locale; id: string }> }) {
+  const { lang, id } = await params;
   const items = await getItems();
   const item = items.find((i) => i.id === id);
 
@@ -97,15 +141,8 @@ export default async function ItemPage({ params }: ItemPageProps) {
   return (
     <main className="min-h-screen pt-32 pb-20 px-4">
       <div className="container mx-auto max-w-7xl">
-        <ItemDetailView item={item} relatedItems={relatedItems} allItems={items} />
+        <ItemDetailView item={item} relatedItems={relatedItems} allItems={items} lang={lang} />
       </div>
     </main>
   );
-}
-
-export async function generateStaticParams() {
-  const items = await getItems();
-  return items.map((item) => ({
-    id: item.id,
-  }));
 }

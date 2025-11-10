@@ -26,7 +26,13 @@ module.exports = {
     } else if (path === "/items") {
       priority = 0.9;
       changefreq = "daily";
+    } else if (path === "/quests") {
+      priority = 0.9;
+      changefreq = "daily";
     } else if (path.startsWith("/items/")) {
+      priority = 0.8;
+      changefreq = "weekly";
+    } else if (path.startsWith("/quests/")) {
       priority = 0.8;
       changefreq = "weekly";
     }

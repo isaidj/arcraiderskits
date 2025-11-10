@@ -14,7 +14,7 @@ export default function ExpeditionCountdown() {
 
   useEffect(() => {
     setMounted(true);
-    
+
     const calculateProgress = () => {
       const now = new Date().getTime();
       const start = new Date(EXPEDITION_START_DATE).getTime();

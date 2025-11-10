@@ -1,20 +1,20 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Item } from "./types";
 import { getText } from "./utils";
 import { getRarityColors } from "./rarityColors";
+import { translateLocations } from "./locationTranslations";
+import BackButton from "@/components/BackButton";
+import { Locale } from "@/config/i18n";
 
 interface ItemDetailViewProps {
   item: Item;
   relatedItems: Item[];
   allItems: Item[];
+  lang: Locale;
 }
 
-export default function ItemDetailView({ item, relatedItems, allItems }: ItemDetailViewProps) {
-  const router = useRouter();
+export default function ItemDetailView({ item, relatedItems, allItems, lang }: ItemDetailViewProps) {
   const rarityColors = getRarityColors(item.rarity || "");
   const itemImage = item.imageFilename || item.image;
 
@@ -40,15 +40,7 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
     <div>
       {/* Breadcrumb */}
       <nav className="mb-6">
-        <button
-          onClick={() => router.back()}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-[#110918] border border-[#646081] rounded-lg text-gray-300 hover:text-white hover:shadow-[0_0_20px_rgba(100,96,129,0.6)] transition-all group"
-        >
-          <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          <span className="font-medium">Back</span>
-        </button>
+        <BackButton label={lang === "es" ? "Volver" : "Back"} />
       </nav>
 
       {/* Main Content */}
@@ -69,14 +61,14 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
                       <path d="M 0 100 L 0 0 Q 0 100 100 100 Z" fill={rarityColors.color} />
                     </svg>
                   </div>
-                  <Image src={itemImage} alt={getText(item.name)} fill className="object-contain p-2 rounded" priority />
+                  <Image src={itemImage} alt={getText(item.name, lang)} fill className="object-contain p-2 rounded" priority />
                 </div>
               )}
             </div>
 
             {/* Title and Stats */}
             <div className="md:col-span-3">
-              <h1 className="text-xl md:text-2xl font-bold text-gray-100 mb-2">{getText(item.name)}</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-gray-100 mb-2">{getText(item.name, lang)}</h1>
 
               <div className="flex items-center gap-2 flex-wrap mb-3 md:mb-4">
                 {item.rarity && <span className={`px-2 py-1 rounded text-xs font-medium ${rarityColors.bg} text-white`}>{item.rarity}</span>}
@@ -88,19 +80,19 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {item.value !== undefined && (
                   <div className="bg-gray-900/50 rounded p-2">
-                    <span className="text-[10px] text-gray-500 uppercase block mb-0.5">Value</span>
+                    <span className="text-[10px] text-gray-500 uppercase block mb-0.5">{lang === "es" ? "Valor" : "Value"}</span>
                     <p className="text-sm md:text-base font-bold text-green-400">{item.value}</p>
                   </div>
                 )}
                 {item.weightKg !== undefined && (
                   <div className="bg-gray-900/50 rounded p-2">
-                    <span className="text-[10px] text-gray-500 uppercase block mb-0.5">Weight</span>
+                    <span className="text-[10px] text-gray-500 uppercase block mb-0.5">{lang === "es" ? "Peso" : "Weight"}</span>
                     <p className="text-sm md:text-base font-bold text-gray-200">{item.weightKg} kg</p>
                   </div>
                 )}
                 {item.stackSize !== undefined && (
                   <div className="bg-gray-900/50 rounded p-2">
-                    <span className="text-[10px] text-gray-500 uppercase block mb-0.5">Stack</span>
+                    <span className="text-[10px] text-gray-500 uppercase block mb-0.5">{lang === "es" ? "Pila" : "Stack"}</span>
                     <p className="text-sm md:text-base font-bold text-gray-200">{item.stackSize}</p>
                   </div>
                 )}
@@ -109,11 +101,11 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
               {/* Location Tags */}
               {item.foundIn && (
                 <div className="mt-2 md:mt-3">
-                  <span className="text-[10px] text-gray-500 uppercase block mb-1.5">Location</span>
+                  <span className="text-[10px] text-gray-500 uppercase block mb-1.5">{lang === "es" ? "Ubicación" : "Location"}</span>
                   <div className="flex flex-wrap gap-1.5">
                     {item.foundIn.split(",").map((location: string, idx: number) => (
                       <span key={idx} className="px-2 py-1 bg-cyan-900/30 border border-cyan-700/50 rounded text-xs text-cyan-400 font-medium">
-                        {location.trim()}
+                        {translateLocations(location.trim(), lang)}
                       </span>
                     ))}
                   </div>
@@ -123,8 +115,8 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
               {/* Description */}
               {item.description && (
                 <div className="mt-2 md:mt-3">
-                  <span className="text-[10px] text-gray-500 uppercase block mb-1.5">Description</span>
-                  <p className="text-xs md:text-sm text-gray-300 leading-relaxed">{getText(item.description)}</p>
+                  <span className="text-[10px] text-gray-500 uppercase block mb-1.5">{lang === "es" ? "Descripción" : "Description"}</span>
+                  <p className="text-xs md:text-sm text-gray-300 leading-relaxed">{getText(item.description, lang)}</p>
                 </div>
               )}
 
@@ -140,12 +132,12 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
           {/* Effects */}
           {item.effects && Object.keys(item.effects).length > 0 && (
             <div className="bg-black/50 border border-gray-700 rounded-lg p-4">
-              <h2 className="text-lg font-bold text-gray-200 mb-3">Effects</h2>
+              <h2 className="text-lg font-bold text-gray-200 mb-3">{lang === "es" ? "Efectos" : "Effects"}</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {Object.entries(item.effects).map(([key, effect]: [string, any]) => (
                   <div key={key} className="bg-gray-900/50 rounded p-2">
                     <div className="flex flex-col">
-                      <span className="text-xs text-gray-400">{getText(effect)}</span>
+                      <span className="text-xs text-gray-400">{getText(effect, lang)}</span>
                       {effect.value && <span className="text-[#00ffff] font-bold text-sm">{effect.value}</span>}
                     </div>
                   </div>
@@ -157,24 +149,24 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
           {/* Recycling Results */}
           {recyclingResults.length > 0 && (
             <div className="bg-black/50 border border-gray-700 rounded-lg p-4">
-              <h2 className="text-lg font-bold text-gray-200 mb-3">Recycles Into</h2>
+              <h2 className="text-lg font-bold text-gray-200 mb-3">{lang === "es" ? "Se recicla en" : "Recycles Into"}</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
                 {recyclingResults.map((result: any, idx: number) => (
                   <Link
                     key={idx}
-                    href={`/items/${result.item.id}`}
-                    className={`group relative bg-gray-900/50 border ${
+                    href={`/${lang}/items/${result.item.id}`}
+                    className={`card-chrome-border group relative bg-gray-900/50 border ${
                       getRarityColors(result.item.rarity || "").border
                     } rounded-lg p-2 hover:scale-105 transition-all duration-200 cursor-pointer`}
                   >
                     <div className="flex flex-col gap-2">
                       {(result.item.imageFilename || result.item.image) && (
                         <div className="relative w-full aspect-square">
-                          <Image src={result.item.imageFilename || result.item.image || ""} alt={getText(result.item.name)} fill className="object-contain" />
+                          <Image src={result.item.imageFilename || result.item.image || ""} alt={getText(result.item.name, lang)} fill className="object-contain" />
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-xs font-semibold text-gray-200 truncate">{getText(result.item.name)}</h4>
+                        <h4 className="text-xs font-semibold text-gray-200 truncate">{getText(result.item.name, lang)}</h4>
                         <p className="text-[10px] text-gray-500">{result.item.type}</p>
                       </div>
                       <span className="text-[#00ffff] font-bold text-xs absolute top-1 right-1 bg-black/70 px-1.5 py-0.5 rounded">x{result.quantity}</span>
@@ -192,10 +184,10 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
         {/* Can be recycled into this */}
         {canBeRecycledInto.length > 0 && (
           <div>
-            <h2 className="text-xl font-bold text-gray-200 mb-3">Obtained by Recycling</h2>
+            <h2 className="text-xl font-bold text-gray-200 mb-3">{lang === "es" ? "Obtenido al reciclar" : "Obtained by Recycling"}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
               {canBeRecycledInto.map((relatedItem: Item, idx: number) => (
-                <RelatedItemCard key={idx} item={relatedItem} />
+                <RelatedItemCard key={idx} item={relatedItem} lang={lang} />
               ))}
             </div>
           </div>
@@ -207,17 +199,18 @@ export default function ItemDetailView({ item, relatedItems, allItems }: ItemDet
 
 interface RelatedItemCardProps {
   item: Item;
+  lang: Locale;
   quantity?: number;
 }
 
-function RelatedItemCard({ item, quantity }: RelatedItemCardProps) {
+function RelatedItemCard({ item, lang, quantity }: RelatedItemCardProps) {
   const rarityColors = getRarityColors(item.rarity || "");
   const itemImage = item.imageFilename || item.image;
 
   return (
     <Link
-      href={`/items/${item.id}`}
-      className={`group relative bg-black/50 ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg p-2 hover:scale-105 transition-all duration-300 ${rarityColors.shadow} cursor-pointer overflow-hidden`}
+      href={`/${lang}/items/${item.id}`}
+      className={`card-chrome-border group relative bg-black/50 ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg p-2 hover:scale-105 transition-all duration-300 ${rarityColors.shadow} cursor-pointer overflow-hidden`}
     >
       {/* Decorative Corner */}
       <div className="absolute bottom-0 left-0 w-8 h-8 pointer-events-none">
@@ -231,11 +224,11 @@ function RelatedItemCard({ item, quantity }: RelatedItemCardProps) {
 
       {itemImage && (
         <div className="relative w-full aspect-square mb-2 rounded overflow-hidden">
-          <Image src={itemImage} alt={getText(item.name)} fill sizes="150px" className="object-contain p-1 group-hover:scale-110 transition-transform" />
+          <Image src={itemImage} alt={getText(item.name, lang)} fill sizes="150px" className="object-contain p-1 group-hover:scale-110 transition-transform" />
         </div>
       )}
 
-      <h3 className="text-xs font-semibold text-gray-200 truncate mb-1 relative z-10">{getText(item.name)}</h3>
+      <h3 className="text-xs font-semibold text-gray-200 truncate mb-1 relative z-10">{getText(item.name, lang)}</h3>
 
       <div className="flex items-center justify-between text-[10px] relative z-10">
         {item.type && <span className="text-gray-500 truncate flex-1 mr-1">{item.type}</span>}
