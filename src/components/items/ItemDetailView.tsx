@@ -7,6 +7,7 @@ import { translateLocations } from "./locationTranslations";
 import BackButton from "@/components/BackButton";
 import { Locale } from "@/config/i18n";
 import ItemCard from "./ItemCard";
+import VideoGuide from "@/components/quests/VideoGuide";
 
 interface ItemDetailViewProps {
   item: Item;
@@ -18,6 +19,10 @@ interface ItemDetailViewProps {
 export default function ItemDetailView({ item, relatedItems, allItems, lang }: ItemDetailViewProps) {
   const rarityColors = getRarityColors(item.rarity || "");
   const itemImage = item.imageFilename || item.image;
+
+  // Armar el término de búsqueda para el video
+  const itemName = getText(item.name, lang);
+  const videoSearchQuery = `Arc Raiders "${itemName}" how to get location`;
 
   // Items que se obtienen al reciclar este item
   const recyclingResults = item.recyclesInto
@@ -41,7 +46,7 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
     <div>
       {/* Breadcrumb */}
       <nav className="mb-6">
-        <BackButton label={lang === "es" ? "Volver" : "Back"} />
+        <BackButton label={lang === "es" ? "Volver" : "Back"} fallbackUrl={`/${lang}/items`} />
       </nav>
 
       {/* Main Content */}
@@ -152,9 +157,9 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
         <div className="space-y-4">
           {/* Recycling Results */}
           {recyclingResults.length > 0 && (
-            <div className="bg-[#0d111d]/50 backdrop-blur-sm border border-gray-700 rounded-lg p-4">
-              <h2 className="text-lg font-bold text-gray-200 mb-3">{lang === "es" ? "Se recicla en" : "Recycles Into"}</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+            <div className="bg-[#0d111d]/50 backdrop-blur-sm rounded-lg p-6">
+              <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">♻️ {lang === "es" ? "Se recicla en" : "Recycles Into"}</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                 {recyclingResults.map((result: any, idx: number) => {
                   return <ItemCard key={idx} item={result.item} lang={lang} rarityColors={getRarityColors(result.item.rarity || "")} />;
                 })}
@@ -163,16 +168,17 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
           )}
         </div>
       </div>
+      {/* Video Guide Section */}
+      <VideoGuide videoUrl={item.videoUrl} searchQuery={videoSearchQuery} />
 
       {/* Related Items Section */}
       <div className="space-y-6">
         {/* Can be recycled into this */}
         {canBeRecycledInto.length > 0 && (
-          <div>
-            <h2 className="text-xl font-bold text-gray-200 mb-3">{lang === "es" ? "Obtenido al reciclar" : "Obtained by Recycling"}</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
+          <div className="bg-[#0d111d]/50 backdrop-blur-sm rounded-lg p-6">
+            <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">🔄 {lang === "es" ? "Obtenido al reciclar" : "Obtained by Recycling"}</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
               {canBeRecycledInto.map((relatedItem: Item, idx: number) => (
-                // <RelatedItemCard key={idx} item={relatedItem} lang={lang} />
                 <ItemCard key={idx} item={relatedItem} lang={lang} rarityColors={getRarityColors(relatedItem.rarity || "")} />
               ))}
             </div>

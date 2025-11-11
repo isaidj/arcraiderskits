@@ -7,6 +7,7 @@ export interface Item {
   rarity?: string;
   image?: string;
   imageFilename?: string;
+  videoUrl?: string;
   [key: string]: any;
 }
 

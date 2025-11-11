@@ -33,7 +33,7 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
   return (
     <div className="max-w-5xl mx-auto space-y-2.5">
       <nav>
-        <BackButton label={lang === "es" ? "Volver" : "Back"} />
+        <BackButton label={lang === "es" ? "Volver" : "Back"} fallbackUrl={`/${lang}/quests`} />
       </nav>
       {/* Header */}
       <div className="bg-[#0d111d]/50 backdrop-blur-sm   rounded-lg p-6">
