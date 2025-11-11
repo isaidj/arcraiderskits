@@ -38,6 +38,9 @@ cd arcraiderskits
 # Install dependencies
 npm install
 
+# Copy environment variables
+cp .env.example .env.local
+
 # Run data update script
 npm run update-data
 
@@ -46,6 +49,24 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the app in your browser.
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory. See `.env.example` for all available options:
+
+```bash
+# Required: Expedition countdown end date
+NEXT_PUBLIC_EXPEDITION_END_DATE=2025-12-21T23:59:59
+
+# Optional: Google AdSense (if using ads)
+NEXT_PUBLIC_ADSENSE_CLIENT_ID=ca-pub-XXXXXXXXXXXXXXXX
+NEXT_PUBLIC_ADSENSE_ENABLED=false
+
+# Optional: Custom API base URL
+NEXT_PUBLIC_API_BASE_URL=https://cdn.arctracker.io
+```
+
+**Note**: Vercel Analytics and Speed Insights are automatically enabled when deployed to Vercel—no additional configuration needed.
 
 ### Build for Production
 
