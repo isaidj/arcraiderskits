@@ -6,6 +6,7 @@ import { getRarityColors } from "./rarityColors";
 import { translateLocations } from "./locationTranslations";
 import BackButton from "@/components/BackButton";
 import { Locale } from "@/config/i18n";
+import ItemCard from "./ItemCard";
 
 interface ItemDetailViewProps {
   item: Item;
@@ -46,7 +47,10 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
       {/* Main Content */}
       <div className="mb-8">
         {/* Header Section - Image, Title and Stats */}
-        <div className={`bg-black/50 ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg p-4 mb-6`} style={{ boxShadow: `0 0 5px ${rarityColors.glow}` }}>
+        <div
+          className={`bg-[#0d111d]/50 backdrop-blur-sm ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg p-4 mb-6`}
+          style={{ boxShadow: `0 0 5px ${rarityColors.glow}` }}
+        >
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Image */}
             <div className="md:col-span-1 max-w-[200px] mx-auto md:max-w-none w-full">
@@ -61,14 +65,14 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
                       <path d="M 0 100 L 0 0 Q 0 100 100 100 Z" fill={rarityColors.color} />
                     </svg>
                   </div>
-                  <Image src={itemImage} alt={getText(item.name, lang)} fill className="object-contain p-2 rounded" priority />
+                  <Image src={itemImage} alt={getText(item.name, lang)} fill className="object-contain p-2 rounded item-image-transition" priority />
                 </div>
               )}
             </div>
 
             {/* Title and Stats */}
             <div className="md:col-span-3">
-              <h1 className="text-xl md:text-2xl font-bold text-gray-100 mb-2">{getText(item.name, lang)}</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-gray-100 mb-2 item-title-transition">{getText(item.name, lang)}</h1>
 
               <div className="flex items-center gap-2 flex-wrap mb-3 md:mb-4">
                 {item.rarity && <span className={`px-2 py-1 rounded text-xs font-medium ${rarityColors.bg} text-white`}>{item.rarity}</span>}
@@ -120,6 +124,23 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
                 </div>
               )}
 
+              {/* Effects */}
+              {item.effects && Object.keys(item.effects).length > 0 && (
+                <div className="mt-3 md:mt-4">
+                  <span className="text-[10px] text-gray-500 uppercase block mb-1.5">{lang === "es" ? "Efectos" : "Effects"}</span>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                    {Object.entries(item.effects).map(([key, effect]: [string, any]) => (
+                      <div key={key} className="bg-gray-900/50 rounded p-2">
+                        <div className="flex flex-col">
+                          <span className="text-xs text-gray-400">{getText(effect, lang)}</span>
+                          {effect.value && <span className="text-[#00ffff] font-bold text-sm">{effect.value}</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="text-[10px] text-gray-500 mt-2">
                 <span className="text-gray-600">ID:</span> <span className="font-mono">{item.id}</span>
               </div>
@@ -129,52 +150,13 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
 
         {/* Content Sections */}
         <div className="space-y-4">
-          {/* Effects */}
-          {item.effects && Object.keys(item.effects).length > 0 && (
-            <div className="bg-black/50 border border-gray-700 rounded-lg p-4">
-              <h2 className="text-lg font-bold text-gray-200 mb-3">{lang === "es" ? "Efectos" : "Effects"}</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                {Object.entries(item.effects).map(([key, effect]: [string, any]) => (
-                  <div key={key} className="bg-gray-900/50 rounded p-2">
-                    <div className="flex flex-col">
-                      <span className="text-xs text-gray-400">{getText(effect, lang)}</span>
-                      {effect.value && <span className="text-[#00ffff] font-bold text-sm">{effect.value}</span>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Recycling Results */}
           {recyclingResults.length > 0 && (
-            <div className="bg-black/50 border border-gray-700 rounded-lg p-4">
+            <div className="bg-[#0d111d]/50 backdrop-blur-sm border border-gray-700 rounded-lg p-4">
               <h2 className="text-lg font-bold text-gray-200 mb-3">{lang === "es" ? "Se recicla en" : "Recycles Into"}</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
                 {recyclingResults.map((result: any, idx: number) => {
-                  const slug = generateSlug(result.item.name, result.item.id);
-                  return (
-                    <Link
-                      key={idx}
-                      href={`/${lang}/items/${slug}`}
-                      className={`card-chrome-border group relative bg-gray-900/50 border ${
-                        getRarityColors(result.item.rarity || "").border
-                      } rounded-lg p-2 hover:scale-105 transition-all duration-200 cursor-pointer`}
-                    >
-                      <div className="flex flex-col gap-2">
-                        {(result.item.imageFilename || result.item.image) && (
-                          <div className="relative w-full aspect-square">
-                            <Image src={result.item.imageFilename || result.item.image || ""} alt={getText(result.item.name, lang)} fill className="object-contain" />
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-xs font-semibold text-gray-200 truncate">{getText(result.item.name, lang)}</h4>
-                          <p className="text-[10px] text-gray-500">{result.item.type}</p>
-                        </div>
-                        <span className="text-[#00ffff] font-bold text-xs absolute top-1 right-1 bg-black/70 px-1.5 py-0.5 rounded">x{result.quantity}</span>
-                      </div>
-                    </Link>
-                  );
+                  return <ItemCard key={idx} item={result.item} lang={lang} rarityColors={getRarityColors(result.item.rarity || "")} />;
                 })}
               </div>
             </div>
@@ -190,54 +172,13 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
             <h2 className="text-xl font-bold text-gray-200 mb-3">{lang === "es" ? "Obtenido al reciclar" : "Obtained by Recycling"}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
               {canBeRecycledInto.map((relatedItem: Item, idx: number) => (
-                <RelatedItemCard key={idx} item={relatedItem} lang={lang} />
+                // <RelatedItemCard key={idx} item={relatedItem} lang={lang} />
+                <ItemCard key={idx} item={relatedItem} lang={lang} rarityColors={getRarityColors(relatedItem.rarity || "")} />
               ))}
             </div>
           </div>
         )}
       </div>
     </div>
-  );
-}
-
-interface RelatedItemCardProps {
-  item: Item;
-  lang: Locale;
-  quantity?: number;
-}
-
-function RelatedItemCard({ item, lang, quantity }: RelatedItemCardProps) {
-  const rarityColors = getRarityColors(item.rarity || "");
-  const itemImage = item.imageFilename || item.image;
-  const slug = generateSlug(item.name, item.id);
-
-  return (
-    <Link
-      href={`/${lang}/items/${slug}`}
-      className={`card-chrome-border group relative bg-black/50 ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg p-2 hover:scale-105 transition-all duration-300 ${rarityColors.shadow} cursor-pointer overflow-hidden`}
-    >
-      {/* Decorative Corner */}
-      <div className="absolute bottom-0 left-0 w-8 h-8 pointer-events-none">
-        <svg viewBox="0 0 100 100" className="w-full h-full group-hover:opacity-100 opacity-70 transition-opacity">
-          <path d="M 0 100 L 0 0 Q 0 100 100 100 Z" fill={rarityColors.color} />
-        </svg>
-      </div>
-
-      {/* Quantity Badge */}
-      {quantity && <div className="absolute top-1 right-1 bg-[#00ffff] text-black text-[10px] font-bold px-1.5 py-0.5 rounded z-10">x{quantity}</div>}
-
-      {itemImage && (
-        <div className="relative w-full aspect-square mb-2 rounded overflow-hidden">
-          <Image src={itemImage} alt={getText(item.name, lang)} fill sizes="150px" className="object-contain p-1 group-hover:scale-110 transition-transform" />
-        </div>
-      )}
-
-      <h3 className="text-xs font-semibold text-gray-200 truncate mb-1 relative z-10">{getText(item.name, lang)}</h3>
-
-      <div className="flex items-center justify-between text-[10px] relative z-10">
-        {item.type && <span className="text-gray-500 truncate flex-1 mr-1">{item.type}</span>}
-        {item.rarity && <span className={`px-1 py-0.5 rounded text-[10px] font-medium ${rarityColors.bg} text-white`}>{item.rarity.charAt(0)}</span>}
-      </div>
-    </Link>
   );
 }

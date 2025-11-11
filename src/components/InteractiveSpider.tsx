@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface Vector2 {
   x: number;
@@ -17,7 +17,11 @@ interface Leg {
   stepProgress: number;
 }
 
-export default function InteractiveSpider() {
+interface InteractiveSpiderProps {
+  scale?: number; // Escala general de la araña (1 = tamaño normal)
+}
+
+export default function InteractiveSpider({ scale = 0.5 }: InteractiveSpiderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const spiderRef = useRef({
@@ -30,13 +34,14 @@ export default function InteractiveSpider() {
     direction: 1,
     speed: 0.8, // Movimiento más lento
     groundLevel: 0,
+    scale: scale, // Escala general
   });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const resizeCanvas = () => {
@@ -44,34 +49,34 @@ export default function InteractiveSpider() {
       canvas.height = window.innerHeight;
       const groundLevel = canvas.height;
       spiderRef.current.groundLevel = groundLevel;
-      spiderRef.current.y = groundLevel - 15;
-      spiderRef.current.targetY = groundLevel - 15;
+      spiderRef.current.y = groundLevel - 15 * spiderRef.current.scale;
+      spiderRef.current.targetY = groundLevel - 15 * spiderRef.current.scale;
     };
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
 
     // Inicializar 4 patas
     const initLegs = () => {
       const spider = spiderRef.current;
       const legOffsets = [
-        { x: -12, y: -8 },  // Pata izquierda frontal
-        { x: -12, y: 8 },   // Pata izquierda trasera
-        { x: 12, y: 8 },    // Pata derecha trasera
-        { x: 12, y: -8 },   // Pata derecha frontal
+        { x: -12 * spider.scale, y: -8 * spider.scale }, // Pata izquierda frontal
+        { x: -12 * spider.scale, y: 8 * spider.scale }, // Pata izquierda trasera
+        { x: 12 * spider.scale, y: 8 * spider.scale }, // Pata derecha trasera
+        { x: 12 * spider.scale, y: -8 * spider.scale }, // Pata derecha frontal
       ];
 
       spider.legs = legOffsets.map((offset, index) => {
         const side = index < 2 ? -1 : 1;
-        const legReach = 60;
+        const legReach = 60 * spider.scale;
         return {
           basePos: { x: spider.x + offset.x, y: spider.y + offset.y },
-          currentPos: { 
-            x: spider.x + offset.x + side * legReach, 
-            y: spider.groundLevel 
+          currentPos: {
+            x: spider.x + offset.x + side * legReach,
+            y: spider.groundLevel,
           },
-          targetPos: { 
-            x: spider.x + offset.x + side * legReach, 
-            y: spider.groundLevel 
+          targetPos: {
+            x: spider.x + offset.x + side * legReach,
+            y: spider.groundLevel,
           },
           isMoving: false,
           offset: offset,
@@ -92,9 +97,9 @@ export default function InteractiveSpider() {
 
     const updateLegs = () => {
       const spider = spiderRef.current;
-      const stepDistance = 40;
-      const legReach = 60;
-      const stepHeightMax = 20;
+      const stepDistance = 40 * spider.scale;
+      const legReach = 60 * spider.scale;
+      const stepHeightMax = 20 * spider.scale;
 
       spider.legs.forEach((leg, index) => {
         leg.basePos.x = spider.x + leg.offset.x;
@@ -105,23 +110,21 @@ export default function InteractiveSpider() {
         if (!leg.isMoving) {
           const idealFootPos = {
             x: leg.basePos.x + side * legReach,
-            y: spider.groundLevel
+            y: spider.groundLevel,
           };
-          
+
           const distToIdeal = distance(leg.currentPos, idealFootPos);
-          
+
           if (distToIdeal > stepDistance) {
-            const group = (index === 0 || index === 3) ? 0 : 1;
-            const otherLegsInGroup = spider.legs.filter((_, i) => 
-              i !== index && ((i === 0 || i === 3) ? 0 : 1) === group
-            );
-            
-            const groupIsMoving = otherLegsInGroup.some(l => l.isMoving);
-            
+            const group = index === 0 || index === 3 ? 0 : 1;
+            const otherLegsInGroup = spider.legs.filter((_, i) => i !== index && (i === 0 || i === 3 ? 0 : 1) === group);
+
+            const groupIsMoving = otherLegsInGroup.some((l) => l.isMoving);
+
             if (!groupIsMoving) {
               leg.isMoving = true;
               leg.stepProgress = 0;
-              leg.targetPos.x = idealFootPos.x + spider.direction * 15;
+              leg.targetPos.x = idealFootPos.x + spider.direction * 15 * spider.scale;
               leg.targetPos.y = spider.groundLevel;
             }
           }
@@ -151,14 +154,14 @@ export default function InteractiveSpider() {
       if (!isDragging) {
         spider.targetX += spider.speed * spider.direction;
 
-        if (spider.targetX > canvas.width - 80) {
+        if (spider.targetX > canvas.width - 80 * spider.scale) {
           spider.direction = -1;
-        } else if (spider.targetX < 80) {
+        } else if (spider.targetX < 80 * spider.scale) {
           spider.direction = 1;
         }
 
         spider.x = lerp(spider.x, spider.targetX, 0.1);
-        spider.y = spider.groundLevel - 15;
+        spider.y = spider.groundLevel - 15 * spider.scale;
       }
     };
 
@@ -169,25 +172,25 @@ export default function InteractiveSpider() {
       spider.legs.forEach((leg, index) => {
         const angle = Math.atan2(leg.currentPos.y - leg.basePos.y, leg.currentPos.x - leg.basePos.x);
         const side = index < 2 ? 1 : -1;
-        const kneeOffset = 25;
+        const kneeOffset = 25 * spider.scale;
         const midX = (leg.basePos.x + leg.currentPos.x) / 2 + Math.cos(angle + Math.PI / 2) * kneeOffset * side;
         const midY = (leg.basePos.y + leg.currentPos.y) / 2 + Math.sin(angle + Math.PI / 2) * kneeOffset * side;
 
         // Segmento superior grueso
-        ctx.strokeStyle = '#4a4a4a';
-        ctx.lineWidth = 8;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        
+        ctx.strokeStyle = "#4a4a4a";
+        ctx.lineWidth = 8 * spider.scale;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+
         ctx.beginPath();
         ctx.moveTo(leg.basePos.x, leg.basePos.y);
         ctx.lineTo(midX, midY);
         ctx.stroke();
 
         // Segmento inferior delgado
-        ctx.strokeStyle = '#4a4a4a';
-        ctx.lineWidth = 4;
-        
+        ctx.strokeStyle = "#4a4a4a";
+        ctx.lineWidth = 4 * spider.scale;
+
         ctx.beginPath();
         ctx.moveTo(midX, midY);
         ctx.lineTo(leg.currentPos.x, leg.currentPos.y);
@@ -195,39 +198,39 @@ export default function InteractiveSpider() {
       });
 
       // Cuerpo simple
-      ctx.fillStyle = '#4a4a4a';
+      ctx.fillStyle = "#4a4a4a";
       ctx.beginPath();
-      ctx.arc(spider.x, spider.y, spider.bodySize, 0, Math.PI * 2);
+      ctx.arc(spider.x, spider.y, spider.bodySize * spider.scale, 0, Math.PI * 2);
       ctx.fill();
 
       // OJO con borde rojo brillante
-      const eyeSize = spider.bodySize * 0.5;
-      const eyeX = spider.x + spider.direction * (spider.bodySize * 0.5);
-      const eyeY = spider.y - 2;
-      
+      const eyeSize = spider.bodySize * 0.5 * spider.scale;
+      const eyeX = spider.x + spider.direction * (spider.bodySize * 0.5 * spider.scale);
+      const eyeY = spider.y - 2 * spider.scale;
+
       // Brillo rojo desde el borde
       const eyeGlow = ctx.createRadialGradient(eyeX, eyeY, eyeSize * 0.7, eyeX, eyeY, eyeSize * 1.3);
-      eyeGlow.addColorStop(0, 'rgba(255, 0, 0, 0)');
-      eyeGlow.addColorStop(0.5, 'rgba(255, 0, 0, 0.2)');
-      eyeGlow.addColorStop(0.8, 'rgba(255, 0, 0, 0.1)');
-      eyeGlow.addColorStop(1, 'rgba(255, 0, 0, 0)');
-      
+      eyeGlow.addColorStop(0, "rgba(255, 0, 0, 0)");
+      eyeGlow.addColorStop(0.5, "rgba(255, 0, 0, 0.2)");
+      eyeGlow.addColorStop(0.8, "rgba(255, 0, 0, 0.1)");
+      eyeGlow.addColorStop(1, "rgba(255, 0, 0, 0)");
+
       ctx.fillStyle = eyeGlow;
       ctx.beginPath();
       ctx.arc(eyeX, eyeY, eyeSize * 1.3, 0, Math.PI * 2);
       ctx.fill();
 
       // Círculo interior negro
-      ctx.fillStyle = '#1a1a1a';
+      ctx.fillStyle = "#1a1a1a";
       ctx.beginPath();
       ctx.arc(eyeX, eyeY, eyeSize, 0, Math.PI * 2);
       ctx.fill();
 
       // Borde rojo brillante
-      ctx.strokeStyle = '#ff0000';
-      ctx.lineWidth = 2;
-      ctx.shadowColor = '#ff0000';
-      ctx.shadowBlur = 8;
+      ctx.strokeStyle = "#ff0000";
+      ctx.lineWidth = 2 * spider.scale;
+      ctx.shadowColor = "#ff0000";
+      ctx.shadowBlur = 8 * spider.scale;
       ctx.beginPath();
       ctx.arc(eyeX, eyeY, eyeSize, 0, Math.PI * 2);
       ctx.stroke();
@@ -250,7 +253,7 @@ export default function InteractiveSpider() {
       const mouseY = e.clientY - rect.top;
       const spider = spiderRef.current;
       const dist = distance({ x: mouseX, y: mouseY }, { x: spider.x, y: spider.y });
-      if (dist < spider.bodySize + 20) {
+      if (dist < (spider.bodySize + 20) * spider.scale) {
         setIsDragging(true);
       }
     };
@@ -271,7 +274,7 @@ export default function InteractiveSpider() {
     const handleMouseUp = () => {
       if (isDragging) {
         setIsDragging(false);
-        spiderRef.current.targetY = spiderRef.current.groundLevel - 15;
+        spiderRef.current.targetY = spiderRef.current.groundLevel - 15 * spiderRef.current.scale;
       }
     };
 
@@ -282,7 +285,7 @@ export default function InteractiveSpider() {
       const touchY = touch.clientY - rect.top;
       const spider = spiderRef.current;
       const dist = distance({ x: touchX, y: touchY }, { x: spider.x, y: spider.y });
-      if (dist < spider.bodySize + 20) {
+      if (dist < (spider.bodySize + 20) * spider.scale) {
         setIsDragging(true);
         e.preventDefault();
       }
@@ -304,25 +307,25 @@ export default function InteractiveSpider() {
     const handleTouchEnd = () => {
       if (isDragging) {
         setIsDragging(false);
-        spiderRef.current.targetY = spiderRef.current.groundLevel - 15;
+        spiderRef.current.targetY = spiderRef.current.groundLevel - 15 * spiderRef.current.scale;
       }
     };
 
-    canvas.addEventListener('mousedown', handleMouseDown);
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseup', handleMouseUp);
-    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
-    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
-    canvas.addEventListener('touchend', handleTouchEnd);
+    canvas.addEventListener("mousedown", handleMouseDown);
+    canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("mouseup", handleMouseUp);
+    canvas.addEventListener("touchstart", handleTouchStart, { passive: false });
+    canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
+    canvas.addEventListener("touchend", handleTouchEnd);
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      canvas.removeEventListener('mousedown', handleMouseDown);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseup', handleMouseUp);
-      canvas.removeEventListener('touchstart', handleTouchStart);
-      canvas.removeEventListener('touchmove', handleTouchMove);
-      canvas.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener("resize", resizeCanvas);
+      canvas.removeEventListener("mousedown", handleMouseDown);
+      canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("mouseup", handleMouseUp);
+      canvas.removeEventListener("touchstart", handleTouchStart);
+      canvas.removeEventListener("touchmove", handleTouchMove);
+      canvas.removeEventListener("touchend", handleTouchEnd);
     };
   }, [isDragging]);
 
@@ -330,9 +333,9 @@ export default function InteractiveSpider() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-50"
-      style={{ 
-        cursor: isDragging ? 'grabbing' : 'default',
-        mixBlendMode: 'normal'
+      style={{
+        cursor: isDragging ? "grabbing" : "default",
+        mixBlendMode: "normal",
       }}
     />
   );

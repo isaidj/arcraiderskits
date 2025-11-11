@@ -33,8 +33,8 @@ export default function CategoryFilter({ categories, selectedCategory, onSelectC
           <button
             key={category}
             onClick={() => onSelectCategory(category)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              selectedCategory === category ? "bg-[#00ffff] text-black" : "bg-black/50 text-gray-300 border border-[#00ffff]/30 hover:border-[#00ffff]"
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+              selectedCategory === category ? "bg-gray-100 text-gray-700  " : "bg-[#2a2d3c]/50 card-chrome-border  backdrop-blur-sm text-gray-300   hover:border-[#00ffff]"
             }`}
           >
             {category}
@@ -45,7 +45,7 @@ export default function CategoryFilter({ categories, selectedCategory, onSelectC
       {isMobile && hasMore && (
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-black/50 text-gray-300 border border-gray-700 hover:border-[#00ffff]/50 transition-all"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-[#0d111d]/50 backdrop-blur-sm text-gray-300 border border-gray-700 hover:border-[#00ffff]/50 transition-all"
         >
           <span>{isExpanded ? "Show less" : `Show more (${categories.length - visibleCount})`}</span>
           <svg className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

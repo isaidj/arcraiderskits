@@ -4,11 +4,11 @@ import { useState, useTransition, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Quest, TraderType } from "./types";
 import { useFilteredQuests, useTraders, useQuestStats } from "./hooks";
-import { useDebounce } from "../items/useDebounce";
 import { Locale } from "@/config/i18n";
-import SearchBar from "./SearchBar";
+
 import TraderFilter from "./TraderFilter";
 import QuestsGrid from "./QuestsGrid";
+import SearchBar from "../SearchBar";
 
 interface QuestsFilterProps {
   quests: Quest[];
@@ -24,22 +24,20 @@ export default function QuestsFilter({ quests, lang }: QuestsFilterProps) {
   const [searchInput, setSearchInput] = useState(searchParams.get("search") || "");
   const [selectedTrader, setSelectedTrader] = useState<TraderType>((searchParams.get("trader") as TraderType) || "All");
 
-  // Debounced search term
-  const debouncedSearch = useDebounce(searchInput, 300);
-
   // Get traders and stats
   const traders = useTraders(quests);
   const stats = useQuestStats(quests);
 
-  // Filter quests
-  const filteredQuests = useFilteredQuests(quests, debouncedSearch, selectedTrader, lang);
+  // Use actual URL params for filtering
+  const actualSearch = searchParams.get("search") || "";
+  const filteredQuests = useFilteredQuests(quests, actualSearch, selectedTrader, lang);
 
   // Update URL params when filters change
   useEffect(() => {
     const params = new URLSearchParams();
 
-    if (debouncedSearch) {
-      params.set("search", debouncedSearch);
+    if (searchInput) {
+      params.set("search", searchInput);
     }
 
     if (selectedTrader !== "All") {
@@ -49,7 +47,7 @@ export default function QuestsFilter({ quests, lang }: QuestsFilterProps) {
     startTransition(() => {
       router.push(`/${lang}/quests?${params.toString()}`, { scroll: false });
     });
-  }, [debouncedSearch, selectedTrader, router, lang]);
+  }, [searchInput, selectedTrader, router, lang]);
 
   const handleSearchChange = (value: string) => {
     setSearchInput(value);

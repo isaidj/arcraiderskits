@@ -4,13 +4,12 @@ import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Item } from "./items/types";
 import { Locale } from "@/config/i18n";
-import SearchBar from "./items/SearchBar";
+
 import CategoryFilter from "./items/CategoryFilter";
 import SortSelector from "./items/SortSelector";
 import ItemsGrid, { ViewMode } from "./items/ItemsGrid";
-import ItemTooltip from "./items/ItemTooltip";
 import { useFilteredItems, useCategories } from "./items/hooks";
-import { useIsMobile } from "./items/useIsMobile";
+import SearchBar from "./SearchBar";
 
 interface ItemsFilterProps {
   items: Item[];
@@ -26,10 +25,7 @@ export default function ItemsFilter({ items, lang }: ItemsFilterProps) {
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "All");
   const [sortBy, setSortBy] = useState(searchParams.get("sort") || "name-asc");
   const [viewMode, setViewMode] = useState<ViewMode>("normal");
-  const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-  const isMobile = useIsMobile();
   const categories = useCategories(items);
 
   // Usar los valores de searchParams para el filtrado real
@@ -51,11 +47,7 @@ export default function ItemsFilter({ items, lang }: ItemsFilterProps) {
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
-    // Actualizar URL después de 300ms
-    const timer = setTimeout(() => {
-      updateURL(value, selectedCategory, sortBy);
-    }, 300);
-    return () => clearTimeout(timer);
+    updateURL(value, selectedCategory, sortBy);
   };
 
   const handleCategoryChange = (category: string) => {
@@ -66,19 +58,6 @@ export default function ItemsFilter({ items, lang }: ItemsFilterProps) {
   const handleSortChange = (sort: string) => {
     setSortBy(sort);
     updateURL(searchTerm, selectedCategory, sort);
-  };
-
-  const handleItemHover = (item: Item, position: { x: number; y: number }) => {
-    if (!isMobile) {
-      setHoveredItem(item);
-      setTooltipPosition(position);
-    }
-  };
-
-  const handleItemLeave = () => {
-    if (!isMobile) {
-      setHoveredItem(null);
-    }
   };
 
   return (
@@ -137,10 +116,7 @@ export default function ItemsFilter({ items, lang }: ItemsFilterProps) {
       </div>
 
       {/* Items Grid */}
-      <ItemsGrid items={filteredItems} lang={lang} viewMode={viewMode} onItemHover={handleItemHover} onItemLeave={handleItemLeave} />
-
-      {/* Tooltip - Solo en desktop */}
-      {!isMobile && hoveredItem && <ItemTooltip item={hoveredItem} position={tooltipPosition} lang={lang} />}
+      <ItemsGrid items={filteredItems} lang={lang} viewMode={viewMode} />
     </div>
   );
 }

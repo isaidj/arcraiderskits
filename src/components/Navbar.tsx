@@ -22,7 +22,7 @@ export default function Navbar() {
   }, [pathname]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-red-900/20">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0d111d]/50 backdrop-blur-sm backdrop-blur-md border-b border-red-900/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}

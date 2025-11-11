@@ -43,7 +43,7 @@
 //               {projects.map((project, index) => (
 //                 <div
 //                   key={`${project.id}-${index}`}
-//                   className="bg-black/50 border border-[#00ffff]/30 rounded-lg p-6 hover:border-[#00ffff] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)]"
+//                   className="bg-[#0d111d]/50 backdrop-blur-sm border  rounded-lg p-6 hover:border-[#00ffff] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)]"
 //                 >
 //                   <h3 className="text-xl font-bold text-[#00ffff] mb-3">{project.name || "Unknown Project"}</h3>
 

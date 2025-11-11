@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="relative bg-black/90 border-t border-gray-800 py-8 mt-20">
+    <footer className="relative bg-[#0d111d]/50 backdrop-blur-sm border-t border-gray-800 py-8 mt-20">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           {/* Data Attribution */}

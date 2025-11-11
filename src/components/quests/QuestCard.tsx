@@ -19,7 +19,7 @@ export default function QuestCard({ quest, lang }: QuestCardProps) {
 
   return (
     <Link href={questUrl}>
-      <div className=" group relative bg-black/90 border border-[#00ffff]/30 rounded-lg p-6 hover:border-[#00ffff] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] cursor-pointer h-full flex flex-col">
+      <div className=" group relative bg-[#0d111d]/50 backdrop-blur-sm   rounded-lg p-6 hover:border-[#00ffff] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] cursor-pointer h-full flex flex-col">
         {/* Decorative corner */}
         <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#00ffff]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#00ffff]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

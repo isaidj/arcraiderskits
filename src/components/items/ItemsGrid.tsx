@@ -9,11 +9,9 @@ interface ItemsGridProps {
   items: Item[];
   lang?: Locale;
   viewMode?: ViewMode;
-  onItemHover: (item: Item, position: { x: number; y: number }) => void;
-  onItemLeave: () => void;
 }
 
-export default function ItemsGrid({ items, lang, viewMode = "normal", onItemHover, onItemLeave }: ItemsGridProps) {
+export default function ItemsGrid({ items, lang, viewMode = "normal" }: ItemsGridProps) {
   if (items.length === 0) {
     return (
       <div className="text-center py-20">
@@ -33,23 +31,7 @@ export default function ItemsGrid({ items, lang, viewMode = "normal", onItemHove
       {items.map((item, index) => {
         const rarityColors = getRarityColors(item.rarity || "");
 
-        return (
-          <ItemCard
-            key={`${item.id}-${index}`}
-            item={item}
-            lang={lang}
-            viewMode={viewMode}
-            rarityColors={rarityColors}
-            onMouseEnter={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              onItemHover(item, {
-                x: rect.left + rect.width / 2,
-                y: rect.top,
-              });
-            }}
-            onMouseLeave={onItemLeave}
-          />
-        );
+        return <ItemCard key={`${item.id}-${index}`} item={item} lang={lang} viewMode={viewMode} rarityColors={rarityColors} />;
       })}
     </div>
   );

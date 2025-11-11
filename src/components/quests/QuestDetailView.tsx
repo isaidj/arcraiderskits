@@ -3,8 +3,10 @@ import { Quest } from "./types";
 import { Item } from "@/components/items/types";
 import { Locale } from "@/config/i18n";
 import { getText, getTraderBadgeColor, generateSlug } from "./utils";
-import QuestItemCard from "./QuestItemCard";
+import ItemCard from "@/components/items/ItemCard";
+import { getRarityColors } from "@/components/items/rarityColors";
 import BackButton from "@/components/BackButton";
+import VideoGuide from "./VideoGuide";
 
 interface QuestDetailViewProps {
   quest: Quest;
@@ -17,6 +19,9 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
   const name = getText(quest.name, lang);
   const description = getText(quest.description, lang);
 
+  // Armar el término de búsqueda para el video
+  const videoSearchQuery = `Arc Raiders "${name}" quest guide`;
+
   // Get related quests
   const previousQuests = quest.previousQuestIds.map((id) => allQuests.find((q) => q.id === id)).filter(Boolean) as Quest[];
 
@@ -26,12 +31,12 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
   const getItemById = (itemId: string) => allItems.find((item) => item.id === itemId);
 
   return (
-    <div className="max-w-5xl mx-auto">
-      <nav className="mb-6">
+    <div className="max-w-5xl mx-auto space-y-2.5">
+      <nav>
         <BackButton label={lang === "es" ? "Volver" : "Back"} />
       </nav>
       {/* Header */}
-      <div className="bg-black/50 border border-[#00ffff]/30 rounded-lg p-6 mb-6">
+      <div className="bg-[#0d111d]/50 backdrop-blur-sm   rounded-lg p-6">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex-1">
             <h1 className="text-3xl md:text-4xl font-bold text-[#00ffff] mb-3">{name}</h1>
@@ -45,43 +50,35 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
               )}
             </div>
           </div>
-
-          {quest.videoUrl && (
-            <Link
-              href={quest.videoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-red-500/20 border border-red-500/50 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors text-sm font-semibold"
-            >
-              🎥 Watch Video
-            </Link>
-          )}
         </div>
 
         {description && <p className="text-gray-300 text-base leading-relaxed">{description}</p>}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Objectives */}
-        {quest.objectives && quest.objectives.length > 0 && (
-          <div className="bg-black/50 border border-[#00ffff]/30 rounded-lg p-6">
-            <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">📋 Objectives</h2>
-            <ul className="space-y-3">
-              {quest.objectives.map((objective, idx) => (
-                <li key={idx} className="flex items-start gap-3">
-                  <span className="text-[#00ffff] font-bold mt-1 text-sm">{idx + 1}.</span>
-                  <span className="text-gray-300 text-sm leading-relaxed">{getText(objective, lang)}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+      {/* Video Guide Section - Primera prioridad */}
+      <VideoGuide videoUrl={quest.videoUrl} searchQuery={videoSearchQuery} />
 
+      {/* Objectives - Segunda prioridad */}
+      {quest.objectives && quest.objectives.length > 0 && (
+        <div className="bg-[#0d111d]/50 backdrop-blur-sm   rounded-lg p-6">
+          <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">📋 Objectives</h2>
+          <ul className="space-y-3">
+            {quest.objectives.map((objective, idx) => (
+              <li key={idx} className="flex items-start gap-3">
+                <span className="text-[#00ffff] font-bold mt-1 text-sm">{idx + 1}.</span>
+                <span className="text-gray-300 text-sm leading-relaxed">{getText(objective, lang)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Requirements */}
         {quest.requiredItemIds && quest.requiredItemIds.length > 0 && (
-          <div className="bg-black/50 border border-[#00ffff]/30 rounded-lg p-6">
+          <div className="bg-[#0d111d]/50 backdrop-blur-sm border  rounded-lg p-6">
             <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">📦 Required Items</h2>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-3">
               {quest.requiredItemIds.map((questItem, idx) => {
                 const item = getItemById(questItem.itemId);
                 if (!item) {
@@ -91,7 +88,8 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
                     </div>
                   );
                 }
-                return <QuestItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} />;
+                const rarityColors = getRarityColors(item.rarity || "Common");
+                return <ItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} rarityColors={rarityColors} />;
               })}
             </div>
           </div>
@@ -99,9 +97,9 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
 
         {/* Granted Items */}
         {quest.grantedItemIds && quest.grantedItemIds.length > 0 && (
-          <div className="bg-black/50 border border-[#00ffff]/30 rounded-lg p-6">
+          <div className="bg-[#0d111d]/50 backdrop-blur-sm   rounded-lg p-6">
             <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">🎁 Granted Items</h2>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-3">
               {quest.grantedItemIds.map((questItem, idx) => {
                 const item = getItemById(questItem.itemId);
                 if (!item) {
@@ -111,51 +109,38 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
                     </div>
                   );
                 }
-                return <QuestItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} />;
+                const rarityColors = getRarityColors(item.rarity || "Common");
+                return <ItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} rarityColors={rarityColors} />;
               })}
             </div>
-          </div>
-        )}
-
-        {/* Rewards */}
-        {quest.rewardItemIds && quest.rewardItemIds.length > 0 && (
-          <div className="bg-black/50 border border-[#00ffff]/30 rounded-lg p-6">
-            <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">⭐ Rewards</h2>
-            <div className="grid grid-cols-2 gap-3">
-              {quest.rewardItemIds.map((questItem, idx) => {
-                const item = getItemById(questItem.itemId);
-                if (!item) {
-                  return (
-                    <div key={idx} className="text-cyan-400 text-sm">
-                      → {questItem.itemId} x{questItem.quantity}
-                    </div>
-                  );
-                }
-                return <QuestItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} />;
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Tips */}
-        {quest.tips && quest.tips.length > 0 && (
-          <div className="bg-black/50 border border-yellow-500/30 rounded-lg p-6 lg:col-span-2">
-            <h2 className="text-xl font-bold text-yellow-400 mb-4 flex items-center gap-2">💡 Tips</h2>
-            <ul className="space-y-2">
-              {quest.tips.map((tip, idx) => (
-                <li key={idx} className="text-gray-300 text-sm flex items-start gap-2">
-                  <span className="text-yellow-400">•</span>
-                  <span>{tip}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         )}
       </div>
 
+      {/* Rewards - Ancho completo horizontal */}
+      {quest.rewardItemIds && quest.rewardItemIds.length > 0 && (
+        <div className="bg-[#0d111d]/50 backdrop-blur-sm  rounded-lg p-6">
+          <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">⭐ Rewards</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            {quest.rewardItemIds.map((questItem, idx) => {
+              const item = getItemById(questItem.itemId);
+              if (!item) {
+                return (
+                  <div key={idx} className="text-cyan-400 text-sm">
+                    → {questItem.itemId} x{questItem.quantity}
+                  </div>
+                );
+              }
+              const rarityColors = getRarityColors(item.rarity || "Common");
+              return <ItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} rarityColors={rarityColors} />;
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Quest Chain */}
       {(previousQuests.length > 0 || nextQuests.length > 0) && (
-        <div className="mt-6 bg-black/50 border border-[#00ffff]/30 rounded-lg p-6">
+        <div className="bg-[#0d111d]/50 backdrop-blur-sm   rounded-lg p-6">
           <h2 className="text-xl font-bold text-[#00ffff] mb-4">Quest Chain</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Previous Quests */}
@@ -169,7 +154,7 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
                       <Link
                         key={prevQuest.id}
                         href={`/${lang}/quests/${slug}`}
-                        className="block p-3 bg-black/50 border border-[#00ffff]/20 rounded-lg hover:border-[#00ffff] transition-colors"
+                        className="block p-3 bg-[#0d111d]/50 backdrop-blur-sm border  rounded-lg hover:border-[#00ffff] transition-colors"
                       >
                         <p className="text-cyan-400 text-sm font-semibold">{getText(prevQuest.name, lang)}</p>
                         <p className="text-gray-500 text-xs mt-1">{prevQuest.trader}</p>
@@ -191,7 +176,7 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
                       <Link
                         key={nextQuest.id}
                         href={`/${lang}/quests/${slug}`}
-                        className="block p-3 bg-black/50 border border-[#00ffff]/20 rounded-lg hover:border-[#00ffff] transition-colors"
+                        className="block p-3 bg-[#0d111d]/50 backdrop-blur-sm border border-[#00ffff]/20 rounded-lg hover:border-[#00ffff] transition-colors"
                       >
                         <p className="text-cyan-400 text-sm font-semibold">{getText(nextQuest.name, lang)}</p>
                         <p className="text-gray-500 text-xs mt-1">{nextQuest.trader}</p>
@@ -206,7 +191,7 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
       )}
 
       {/* Metadata */}
-      <div className="mt-6 text-xs text-gray-500 text-center">
+      <div className="text-xs text-gray-500 text-center">
         Last updated: {quest.updatedAt} • Quest ID: {quest.id}
       </div>
     </div>
