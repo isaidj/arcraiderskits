@@ -107,13 +107,6 @@ export default function VideoGuide({ videoUrl, searchQuery }: VideoGuideProps) {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={searchYouTubeVideo}
-              className="flex-1 px-4 py-3 bg-[#00ffff]/20 border border-[#00ffff]/50 text-[#00ffff] rounded-lg hover:bg-[#00ffff]/30 transition-colors font-semibold"
-            >
-              🔄 Try Again
-            </button>
-
             <a
               href={manualSearchUrl}
               target="_blank"
