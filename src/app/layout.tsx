@@ -23,11 +23,11 @@ export const metadata: Metadata = {
   keywords: ["ARC Raiders", "Expedition", "wipe", "countdown", "reset", "progression", "voluntary reset", "Expedition Project", "timer", "Embark Studios"],
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.ico', type: 'image/x-icon' },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.ico", type: "image/x-icon" },
     ],
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
   },
   openGraph: {
     title: "ARC Raiders Expedition Countdown",
