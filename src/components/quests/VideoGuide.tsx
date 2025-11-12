@@ -210,7 +210,7 @@ export default function VideoGuide({ videoUrl, searchQuery, lang = "en" }: Video
 
                 {/* Texto */}
                 <div className="text-center space-y-2">
-                  <h3 className="text-lg font-bold text-white group-hover:text-[#00ffff] transition-colors">🔍 Play Video Guide</h3>
+                  <h3 className="text-lg font-bold text-white group-hover:text-[#e5a10f] transition-colors"> Play Video Guide</h3>
                 </div>
               </div>
             </a>
