@@ -34,11 +34,3 @@ npm run dev
 Busca en la consola del navegador (F12):
 - Primera búsqueda: `💾 Saved to cache...`
 - Segunda búsqueda: `✅ Cache hit...`
-
-## 📊 Resultado
-
-- **Reducción de cuota**: Hasta 99%
-- **Duración del caché**: 7 días
-- **Búsquedas gratuitas**: Ilimitadas para queries cacheadas
-
-Ver guía completa en `SUPABASE_SETUP.md`
