@@ -56,7 +56,7 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
       </div>
 
       {/* Video Guide Section - Primera prioridad */}
-      <VideoGuide videoUrl={quest.videoUrl} searchQuery={videoSearchQuery} />
+      <VideoGuide videoUrl={quest.videoUrl} searchQuery={videoSearchQuery} lang={lang} />
 
       {/* Objectives - Segunda prioridad */}
       {quest.objectives && quest.objectives.length > 0 && (

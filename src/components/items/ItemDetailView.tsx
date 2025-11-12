@@ -169,7 +169,7 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
         </div>
       </div>
       {/* Video Guide Section */}
-      <VideoGuide videoUrl={item.videoUrl} searchQuery={videoSearchQuery} />
+      <VideoGuide videoUrl={item.videoUrl} searchQuery={videoSearchQuery} lang={lang} />
 
       {/* Related Items Section */}
       <div className="space-y-6">

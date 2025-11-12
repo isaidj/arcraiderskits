@@ -1,18 +1,43 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import LiteYouTubeEmbed from "react-lite-youtube-embed";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 
 interface VideoGuideProps {
   videoUrl?: string;
   searchQuery: string;
+  lang?: string;
 }
 
-export default function VideoGuide({ videoUrl, searchQuery }: VideoGuideProps) {
+// Traducciones para el botón "Guía"
+const guideTranslations: Record<string, string> = {
+  en: "Guide",
+  es: "Guía",
+  de: "Anleitung",
+  fr: "Guide",
+  pt: "Guia",
+  pl: "Przewodnik",
+  no: "Veiledning",
+  da: "Guide",
+  it: "Guida",
+  uk: "Посібник",
+  kr: "가이드",
+  ru: "Руководство",
+  "zh-CN": "指南",
+  ja: "ガイド",
+  tr: "Rehber",
+  "zh-TW": "指南",
+  sr: "Водич",
+  hr: "Vodič",
+};
+
+export default function VideoGuide({ videoUrl, searchQuery, lang = "en" }: VideoGuideProps) {
   const [videoId, setVideoId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showFloatingButton, setShowFloatingButton] = useState(true);
+  const videoGuideRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (videoUrl) {
@@ -27,6 +52,37 @@ export default function VideoGuide({ videoUrl, searchQuery }: VideoGuideProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoUrl, searchQuery]);
+
+  // Detectar scroll para mostrar/ocultar botón
+  useEffect(() => {
+    const handleScroll = () => {
+      if (videoGuideRef.current) {
+        const rect = videoGuideRef.current.getBoundingClientRect();
+        // Tolerancia: el botón se oculta solo cuando el video está visible con un margen de 200px
+        const tolerance = 400;
+        const heightMenu = 100; // altura estimada del menú u otros elementos fijos
+        const isVisible = rect.top < window.innerHeight - tolerance && rect.bottom > tolerance;
+        setShowFloatingButton(!isVisible);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Check inicial
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToVideoGuide = () => {
+    if (videoGuideRef.current) {
+      const elementPosition = videoGuideRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - 140; // 140px = altura de navbar (64px) + DataMenu (aprox 60px) + margen (16px)
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const extractYouTubeId = (url: string): string | null => {
     // Patrones comunes de URLs de YouTube
@@ -75,49 +131,92 @@ export default function VideoGuide({ videoUrl, searchQuery }: VideoGuideProps) {
 
   const manualSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}`;
 
+  const guideText = guideTranslations[lang] || guideTranslations.en;
+
   return (
-    <div className="bg-[#0d111d]/50 backdrop-blur-sm   rounded-lg p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-[#00ffff] flex items-center gap-2">🎥 Video Guide</h2>
-      </div>
+    <>
+      {/* Botón Flotante */}
+      {showFloatingButton && (
+        <button onClick={scrollToVideoGuide} className="fixed bottom-6 right-6 z-50 group" aria-label={`Scroll to ${guideText}`}>
+          <div className="relative">
+            {/* Botón principal */}
+            <div className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full shadow-lg shadow-red-600/50 flex items-center gap-2 transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-red-600/60">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              <span className="font-bold text-sm">{guideText}</span>
+            </div>
 
-      {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-16 space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00ffff]"></div>
-          <p className="text-gray-400 text-sm">Searching for video guide...</p>
-          <p className="text-xs text-gray-500">Query: {searchQuery}</p>
-        </div>
-      ) : videoId ? (
-        <div className="space-y-4">
-          <div className="relative card-chrome-border w-full rounded-lg overflow-hidden bg-black" style={{ aspectRatio: "16/9" }}>
-            <LiteYouTubeEmbed id={videoId} title={`${searchQuery} - Quest Guide`} poster="hqdefault" noCookie={true} />
+            {/* Anillo de pulso */}
+            <div className="absolute inset-0 bg-red-600/30 rounded-full animate-ping" />
           </div>
-          <div className="flex items-center justify-between">
-            <p className="text-xs text-gray-500">{videoUrl ? "Official guide" : "Auto-searched community guide"}</p>
-            <a href={manualSearchUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-[#00ffff] hover:text-[#00ffff]/80 transition-colors">
-              🔍 Find more guides
-            </a>
-          </div>
-        </div>
-      ) : error ? (
-        <div className="space-y-4">
-          <div className="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-            <p className="text-yellow-400 text-sm mb-2">{error}</p>
-            <p className="text-xs text-gray-400">Searched for: {searchQuery}</p>
-          </div>
+        </button>
+      )}
 
-          <div className="flex flex-col sm:flex-row gap-3">
+      {/* Contenedor del Video Guide */}
+      <div ref={videoGuideRef} className="bg-[#0d111d]/50 backdrop-blur-sm   rounded-lg p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-[#00ffff] flex items-center gap-2">🎥 Video Guide</h2>
+        </div>
+
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-16 space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00ffff]"></div>
+            <p className="text-gray-400 text-sm">Searching for video guide...</p>
+            <p className="text-xs text-gray-500">Query: {searchQuery}</p>
+          </div>
+        ) : videoId ? (
+          <div className="space-y-4">
+            <div className="relative card-chrome-border-active w-full rounded-lg overflow-hidden bg-black" style={{ aspectRatio: "16/9" }}>
+              <LiteYouTubeEmbed id={videoId} title={`${searchQuery} - Quest Guide`} poster="hqdefault" noCookie={true} />
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-gray-500">{videoUrl ? "Official guide" : "Auto-searched community guide"}</p>
+              <a href={manualSearchUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-[#00ffff] hover:text-[#00ffff]/80 transition-colors">
+                🔍 Find more guides
+              </a>
+            </div>
+          </div>
+        ) : error ? (
+          <div className="space-y-4">
+            {/* Reproductor Placeholder Clickeable */}
             <a
               href={manualSearchUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 px-4 py-3 bg-red-500/20 border border-red-500/50 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors font-semibold text-center"
+              className="block relative card-chrome-border-active w-full rounded-lg overflow-hidden bg-black group cursor-pointer transition-all hover:scale-[1.02]"
+              style={{ aspectRatio: "16/9" }}
             >
-              📺 Search on YouTube
+              {/* Fondo oscuro con patrón sutil */}
+              <div className="absolute inset-0 bg-linear-to-br from-gray-950 via-black to-gray-950" />
+
+              {/* Patrón de ruido sutil */}
+              <div className="absolute inset-0 opacity-10 bg-[url('/arcraiders_616x353.jpg')] bg-cover" />
+              {/* Overlay hover */}
+              <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-all" />
+
+              {/* Contenido */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4 p-6">
+                {/* Botón Play grande estilo YouTube */}
+                <div className="relative">
+                  <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center group-hover:bg-red-700 transition-all group-hover:scale-110 shadow-lg shadow-red-600/50">
+                    <svg className="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                  {/* Anillo de pulso */}
+                  <div className="absolute inset-0 w-20 h-20 bg-red-600/30 rounded-full animate-ping" />
+                </div>
+
+                {/* Texto */}
+                <div className="text-center space-y-2">
+                  <h3 className="text-lg font-bold text-white group-hover:text-[#00ffff] transition-colors">🔍 Play Video Guide</h3>
+                </div>
+              </div>
             </a>
           </div>
-        </div>
-      ) : null}
-    </div>
+        ) : null}
+      </div>
+    </>
   );
 }
