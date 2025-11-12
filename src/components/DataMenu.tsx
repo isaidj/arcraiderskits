@@ -2,21 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { isValidLocale, defaultLocale, type Locale } from "@/config/i18n";
+import { menuTranslations } from "./DataMenu/translations";
 
-const menuItems = [
-  { name: "Home", path: "/", disabled: false },
-  { name: "Items", path: "/items", disabled: false },
-  { name: "Quests", path: "/quests", disabled: false },
-  { name: "Projects", path: "/projects", disabled: true },
-  { name: "Hideout Modules", path: "/hideout", disabled: true },
-  { name: "Skill Nodes", path: "/skills", disabled: true },
+type MenuItemKey = "home" | "items" | "quests" | "projects" | "hideoutModules" | "skillNodes";
+
+const menuItems: Array<{ key: MenuItemKey; path: string; disabled: boolean }> = [
+  { key: "home", path: "/", disabled: false },
+  { key: "items", path: "/items", disabled: false },
+  { key: "quests", path: "/quests", disabled: false },
+  // { key: "projects", path: "/projects", disabled: true },
+  { key: "hideoutModules", path: "/hideout", disabled: true },
+  // { key: "skillNodes", path: "/skills", disabled: true },
 ];
 
 export default function DataMenu() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
 
   // Extract current language from pathname
   const currentLang = useMemo(() => {
@@ -26,6 +28,9 @@ export default function DataMenu() {
     }
     return defaultLocale;
   }, [pathname]);
+
+  // Get translations for current language
+  const t = menuTranslations[currentLang];
 
   // Generate paths with language prefix
   const getLocalizedPath = (path: string) => {
@@ -66,10 +71,10 @@ export default function DataMenu() {
                       transition-all duration-300 whitespace-nowrap uppercase tracking-wider font-medium
                       border bg-transparent text-gray-600 border-gray-700 cursor-not-allowed opacity-50"
                     >
-                      {item.name}
+                      {t[item.key]}
                     </div>
                     <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-[#00ffff] text-[#00ffff] text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
-                      Coming Soon
+                      {t.comingSoon}
                     </span>
                   </div>
                 ) : (
@@ -82,7 +87,7 @@ export default function DataMenu() {
                       ${isActive ? "bg-[#e5a10f] text-black border-[#e5a10f]" : "bg-transparent text-gray-300 border-gray-600 hover:text-[#e5a10f] hover:border-[#e5a10f]"}
                     `}
                   >
-                    {item.name}
+                    {t[item.key]}
                   </Link>
                 )}
               </li>
@@ -90,43 +95,44 @@ export default function DataMenu() {
           })}
         </ul>
 
-        {/* Mobile Menu */}
-        <div className="md:hidden">
-          <button onClick={() => setIsOpen(!isOpen)} className="w-full flex items-center justify-between py-2 text-gray-300 hover:text-white transition-colors">
-            <span className="text-sm font-medium uppercase tracking-wider">{menuItems.find((item) => isItemActive(item))?.name || "Menu"}</span>
-            <svg className={`w-5 h-5 transition-transform ${isOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-
-          {isOpen && (
-            <ul className="absolute left-0 right-0 bg-[#110918] border-t border-[#646081] shadow-lg max-h-[70vh] overflow-y-auto">
-              {menuItems.map((item) => {
-                const localizedPath = getLocalizedPath(item.path);
-                const isActive = isItemActive(item);
-                return (
-                  <li key={item.path} className="border-b border-gray-800 last:border-b-0">
-                    {item.disabled ? (
-                      <div className="px-4 py-3 text-gray-600 text-sm uppercase tracking-wider font-medium flex items-center justify-between">
-                        <span>{item.name}</span>
-                        <span className="text-xs text-[#00ffff]">Coming Soon</span>
-                      </div>
-                    ) : (
-                      <Link
-                        href={localizedPath}
-                        onClick={() => setIsOpen(false)}
-                        className={`block px-4 py-3 text-sm uppercase tracking-wider font-medium transition-colors ${
-                          isActive ? "bg-[#e5a10f] text-black" : "text-gray-300 hover:bg-gray-800/50 hover:text-[#e5a10f]"
-                        }`}
+        {/* Mobile Menu - Horizontal Scroll */}
+        <div className="md:hidden overflow-x-auto scrollbar-hide">
+          <ul className="flex items-center gap-2 py-2 min-w-max px-2">
+            {menuItems.map((item) => {
+              const localizedPath = getLocalizedPath(item.path);
+              const isActive = isItemActive(item);
+              return (
+                <li key={item.path} className="relative shrink-0">
+                  {item.disabled ? (
+                    <div className="relative group">
+                      <div
+                        className="px-3 py-1.5 rounded text-xs
+                        transition-all duration-300 whitespace-nowrap uppercase tracking-wider font-medium
+                        border bg-transparent text-gray-600 border-gray-700 cursor-not-allowed opacity-50"
                       >
-                        {item.name}
-                      </Link>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+                        {t[item.key]}
+                      </div>
+                      <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-[#00ffff] text-[#00ffff] text-xs px-2 py-1 rounded opacity-0 group-active:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+                        {t.comingSoon}
+                      </span>
+                    </div>
+                  ) : (
+                    <Link
+                      href={localizedPath}
+                      className={`
+                        px-3 py-1.5 rounded text-xs
+                        transition-all duration-300 whitespace-nowrap uppercase tracking-wider font-medium
+                        border
+                        ${isActive ? "bg-[#e5a10f] text-black border-[#e5a10f]" : "bg-transparent text-gray-300 border-gray-600 hover:text-[#e5a10f] hover:border-[#e5a10f]"}
+                      `}
+                    >
+                      {t[item.key]}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
     </nav>
