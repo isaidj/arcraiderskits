@@ -34,24 +34,7 @@ export default function ExpeditionCountdown() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a] flex items-center justify-center relative overflow-hidden pt-32">
-      {/* Background City Image */}
-      <div
-        className="absolute inset-0 bg-[url('/backgroundcity.png')] bg-cover bg-center bg-no-repeat opacity-20 mix-blend-luminosity"
-        style={{
-          filter: "grayscale(0.5) brightness(0.6) contrast(1.1)",
-        }}
-      ></div>
-
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-linear-to-b from-[#0a0a0a]/70 via-[#121212]/50 to-[#0a0a0a]/70"></div>
-
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5"></div>
-
-      {/* Red Glow Effect */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full blur-[120px]"></div>
-
+    <div className="min-h-screen flex items-center justify-center pt-32">
       <main className="relative z-10 flex flex-col items-center justify-center px-4 text-center">
         {/* Title */}
         <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tight text-[#e9e1cd]">ARC RAIDERS</h1>

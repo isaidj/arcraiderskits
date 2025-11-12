@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface CountdownTimerProps {
   targetDate: string;
@@ -58,9 +58,7 @@ export default function CountdownTimer({ targetDate, labels }: CountdownTimerPro
         {[...Array(4)].map((_, i) => (
           <div key={i} className="countdown-item">
             <div className="relative bg-black border-2 border-red-600 rounded-lg p-4 md:p-8 min-w-20 md:min-w-[120px] overflow-hidden flex flex-col items-center justify-center">
-              <div className="relative text-4xl md:text-6xl font-bold text-red-500 mb-1 md:mb-2 font-mono text-center">
-                00
-              </div>
+              <div className="relative text-4xl md:text-6xl font-bold text-red-500 mb-1 md:mb-2 font-mono text-center">00</div>
             </div>
           </div>
         ))}
@@ -87,11 +85,9 @@ export default function CountdownTimer({ targetDate, labels }: CountdownTimerPro
             {/* CRT glow */}
             <div className="absolute inset-0 bg-red-600/5 blur-xl"></div>
             <div className="relative text-4xl md:text-6xl font-bold text-red-500 mb-1 md:mb-2 font-mono drop-shadow-[0_0_10px_rgba(239,68,68,0.5)] text-center">
-              {String(unit.value).padStart(2, '0')}
+              {String(unit.value).padStart(2, "0")}
             </div>
-            <div className="relative text-xs md:text-sm text-red-400/80 uppercase tracking-wider font-mono text-center">
-              {unit.label}
-            </div>
+            <div className="relative text-xs md:text-sm text-red-400/80 uppercase tracking-wider font-mono text-center">{unit.label}</div>
           </div>
         </div>
       ))}
