@@ -21,6 +21,14 @@ export const metadata: Metadata = {
   title: "ARC Raiders Expedition Countdown - Voluntary Wipe Timer & Project Tracker",
   description: "Track the Arc Raiders Expedition Project countdown. Voluntary progression reset system with 8-week cycles. First Expedition window: December 15-21, 2025.",
   keywords: ["ARC Raiders", "Expedition", "wipe", "countdown", "reset", "progression", "voluntary reset", "Expedition Project", "timer", "Embark Studios"],
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.ico', type: 'image/x-icon' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
   openGraph: {
     title: "ARC Raiders Expedition Countdown",
     description: "Track when the next voluntary progression reset (Expedition) begins. The Expedition Project runs in 8-week cycles, valuing your time spent in the game.",
