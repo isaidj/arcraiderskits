@@ -40,7 +40,7 @@ export default function ItemPopover({ item, lang = "en", children }: ItemPopover
         <div className="flex items-start gap-3 mb-3">
           {(item.imageFilename || item.image) && (
             <div className="relative w-16 h-16 shrink-0 bg-gray-900 rounded overflow-hidden">
-              <Image src={item.imageFilename || item.image || ""} alt={getText(item.name, lang)} fill className="object-contain p-1" />
+              <Image src={item.imageFilename || item.image || ""} alt={getText(item.name, lang)} fill className="object-contain p-1" unoptimized />
             </div>
           )}
           <div className="flex-1 min-w-0">

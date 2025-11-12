@@ -70,7 +70,7 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
                       <path d="M 0 100 L 0 0 Q 0 100 100 100 Z" fill={rarityColors.color} />
                     </svg>
                   </div>
-                  <Image src={itemImage} alt={getText(item.name, lang)} fill className="object-contain p-2 rounded item-image-transition" priority />
+                  <Image src={itemImage} alt={getText(item.name, lang)} fill className="object-contain p-2 rounded item-image-transition" priority unoptimized />
                 </div>
               )}
             </div>
