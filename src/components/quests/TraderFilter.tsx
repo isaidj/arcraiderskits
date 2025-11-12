@@ -11,7 +11,7 @@ interface TraderFilterProps {
 export default function TraderFilter({ traders, selectedTrader, onTraderChange, questCounts }: TraderFilterProps) {
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Filter by Trader</h3>
+      <h3 className="text-sm font-semibold text-gray-400 uppercase  tracking-wider">Filter by Trader</h3>
       <div className="flex flex-wrap gap-2">
         {/* All traders button */}
         <button
