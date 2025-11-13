@@ -164,10 +164,39 @@ export default function VideoGuide({ videoUrl, searchQuery, lang = "en" }: Video
         </div>
 
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-16 space-y-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00ffff]"></div>
-            <p className="text-gray-400 text-sm">Searching for video guide...</p>
-            <p className="text-xs text-gray-500">Query: {searchQuery}</p>
+          <div className="space-y-4">
+            {/* Skeleton del reproductor */}
+            <div className="relative card-chrome-border-active w-full rounded-lg overflow-hidden bg-black animate-pulse" style={{ aspectRatio: "16/9" }}>
+              {/* Fondo oscuro con patrón sutil */}
+              <div className="absolute inset-0 bg-linear-to-br from-gray-950 via-black to-gray-950" />
+
+              {/* Patrón de ruido sutil */}
+              <div className="absolute inset-0 opacity-50 bg-[url('/arcraiders_616x353.jpg')] bg-cover" />
+
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-black/60" />
+
+              {/* Contenido */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4 p-6">
+                {/* Spinner estilo loading */}
+                <div className="relative">
+                  <div className="w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center animate-pulse">
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#00ffff]"></div>
+                  </div>
+                </div>
+
+                {/* Texto */}
+                <div className="text-center space-y-2">
+                  <h3 className="text-lg font-bold text-gray-400">Loading video guide...</h3>
+                </div>
+              </div>
+            </div>
+
+            {/* Skeleton de la descripción */}
+            <div className="flex items-center justify-between">
+              <div className="h-3 bg-gray-700 rounded w-32 animate-pulse"></div>
+              <div className="h-3 bg-gray-700 rounded w-24 animate-pulse"></div>
+            </div>
           </div>
         ) : videoId ? (
           <div className="space-y-4">
@@ -195,7 +224,7 @@ export default function VideoGuide({ videoUrl, searchQuery, lang = "en" }: Video
               <div className="absolute inset-0 bg-linear-to-br from-gray-950 via-black to-gray-950" />
 
               {/* Patrón de ruido sutil */}
-              <div className="absolute inset-0 opacity-10 bg-[url('/arcraiders_616x353.jpg')] bg-cover" />
+              <div className="absolute inset-0 opacity-50 bg-[url('/arcraiders_616x353.jpg')] bg-cover" />
               {/* Overlay hover */}
               <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-all" />
 
