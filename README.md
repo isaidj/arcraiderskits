@@ -20,6 +20,7 @@ A comprehensive, multilingual web application for Arc Raiders game data. Browse 
 - 🔗 **SEO Optimized**: Human-readable URLs with slug-based routing
 - 📱 **Mobile First**: Fully responsive across all devices
 - 🚀 **Performance**: Static generation with on-demand ISR for optimal loading
+- 📲 **Progressive Web App (PWA)**: Installable app with offline support powered by Serwist
 
 ## 🚀 Getting Started
 
@@ -190,6 +191,25 @@ The script (`scripts/update-data.js`) fetches:
 - Quests and missions
 - Hideout modules
 - Skill nodes
+
+## 📲 Progressive Web App (PWA)
+
+This application is a fully functional PWA powered by [Serwist](https://serwist.pages.dev/):
+
+### PWA Features
+- **Installable**: Users can install the app on their devices (mobile & desktop)
+- **Offline Support**: Works offline with cached content and custom offline page
+- **Service Worker**: Automatic caching and update strategies
+- **App-like Experience**: Standalone mode without browser UI
+- **Fast Loading**: Pre-cached static assets for instant navigation
+
+### Installation
+Users can install the app by:
+1. Visiting the website on a supported browser
+2. Clicking the "Install" button in the browser's address bar
+3. Or using the browser's "Add to Home Screen" option
+
+For more details, see [PWA_SETUP.md](PWA_SETUP.md).
 
 ## 🎨 Features in Detail
 
