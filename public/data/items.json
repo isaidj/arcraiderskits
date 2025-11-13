@@ -3561,10 +3561,68 @@
         "hr": "Zdravlje",
         "sr": "Zdravlje",
         "value": 500
+      },
+      "Duration": {
+        "en": "Duration",
+        "value": "500 Health"
       }
     },
     "imageFilename": "https://cdn.arctracker.io/items/barricade_kit.png",
-    "updatedAt": "11/03/2025"
+    "updatedAt": "11/13/2025",
+    "recipe": {
+      "mechanical_components": 1
+    },
+    "craftBench": "utility_bench",
+    "stationLevelRequired": 1
+  },
+  {
+    "id": "barricade_kit_blueprint",
+    "name": {
+      "en": "Barricade Kit Blueprint",
+      "de": "Barrikaden-Set Blaupause",
+      "fr": "Plan de kit de barricade",
+      "es": "Plano de kit de barricada",
+      "pt": "Projeto de kit de barricada",
+      "pl": "Projekt zestawu barykady",
+      "no": "Barrikade-sett-tegning",
+      "da": "Barrikade-sæt-tegning",
+      "it": "Progetto kit barricata",
+      "ru": "Чертёж набора баррикад",
+      "ja": "バリケードキット設計図",
+      "zh-TW": "路障套組藍圖",
+      "uk": "Креслення набору барикад",
+      "zh-CN": "路障套件蓝图",
+      "kr": "바리케이드 키트 설계도",
+      "tr": "Barikat Kiti Planı",
+      "hr": "Nacrt za komplet barikade",
+      "sr": "Nacrt za komplet barikade"
+    },
+    "description": {
+      "en": "A deployable cover that can block incoming damage until it breaks.",
+      "de": "Eine einsetzbare Deckung, die eingehenden Schaden blockieren kann, bis sie zerstört wird.",
+      "fr": "Une couverture déployable qui peut bloquer les dégâts entrants jusqu'à ce qu'elle se brise.",
+      "es": "Una cobertura desplegable que puede bloquear el daño entrante hasta que se rompa.",
+      "pt": "Uma cobertura implantável que pode bloquear dano recebido até quebrar.",
+      "pl": "Rozmieszczalna osłona, która może blokować nadchodzące obrażenia, dopóki się nie zniszczy.",
+      "no": "En utplasserbar dekning som kan blokkere innkommende skade til den går i stykker.",
+      "da": "En udplaceringsdækning, der kan blokere indgående skade, indtil den går i stykker.",
+      "it": "Una copertura schierabile che può bloccare i danni in arrivo finché non si rompe.",
+      "ru": "Развёртываемое укрытие, которое блокирует входящий урон до разрушения.",
+      "ja": "展開可能な遮蔽物。破壊されるまで攻撃を防ぐことができる。",
+      "zh-TW": "可部署的掩體，能夠阻擋傷害直到被摧毀。",
+      "uk": "Розгортаюче укриття, яке блокує вхідну шкоду до руйнування.",
+      "zh-CN": "可部署的掩体，能够阻挡伤害直到被摧毁。",
+      "kr": "배치 가능한 엄폐물로, 파괴될 때까지 들어오는 피해를 막아줍니다.",
+      "tr": "Kırılana kadar gelen hasarı engelleyebilen konuşlandırılabilir bir siper.",
+      "hr": "Pokretni zaklon koji može blokirati dolaznu štetu dok se ne slomi.",
+      "sr": "Pokretni zaklon koji može blokirati dolaznu štetu dok se ne slomi."
+    },
+    "type": "Blueprint",
+    "value": 5000,
+    "weightKg": 0,
+    "imageFilename": "https://cdn.arctracker.io/items/barricade_kit.png",
+    "rarity": "Legendary",
+    "updatedAt": "11/13/2025"
   },
   {
     "id": "bastion_cell",
@@ -4763,6 +4821,55 @@
     "updatedAt": "10/30/2025"
   },
   {
+    "id": "blaze_grenade_blueprint",
+    "name": {
+      "en": "Blaze Grenade Blueprint",
+      "de": "Flammen-Granate Blaupause",
+      "fr": "Plan de grenade flamboyante",
+      "es": "Plano de granada de fuego",
+      "pt": "Projeto de granada de fogo",
+      "pl": "Projekt granatu płomiennego",
+      "no": "Flammegranate-tegning",
+      "da": "Flammegranate-tegning",
+      "it": "Progetto granata incendiaria",
+      "ru": "Чертёж огненной гранаты",
+      "ja": "ブレイズグレネード設計図",
+      "zh-TW": "烈焰手榴彈藍圖",
+      "uk": "Креслення вогняної гранати",
+      "zh-CN": "烈焰手榴弹蓝图",
+      "kr": "화염 수류탄 설계도",
+      "tr": "Alev Bombası Planı",
+      "hr": "Nacrt za vatrenu granatu",
+      "sr": "Nacrt za vatrenu granatu"
+    },
+    "description": {
+      "en": "A grenade that detonates on impact, covering an area in fire that deals damage over time.",
+      "de": "Eine Granate, die beim Aufprall detoniert und ein Gebiet mit Feuer bedeckt, das im Laufe der Zeit Schaden verursacht.",
+      "fr": "Une grenade qui explose à l'impact et recouvre la zone de flammes qui infligent des dégâts au fil du temps.",
+      "es": "Una granada que detona al impacto, cubriendo un área con fuego que causa daño con el tiempo.",
+      "pt": "Uma granada que detona no impacto, cobrindo uma área com fogo que causa dano ao longo do tempo.",
+      "pl": "Granat, który detonuje przy uderzeniu, pokrywając obszar ogniem, który zadaje obrażenia w czasie.",
+      "no": "En granate som detonerer ved treff, dekker et område med ild som påfører skade over tid.",
+      "da": "En granate, der detonerer ved sammenstød, dækker et område med ild, der forårsager skade over tid.",
+      "it": "Una granata che detona all'impatto, coprendo un'area di fuoco che infligge danni nel tempo.",
+      "ru": "Граната, взрывающаяся при ударе и покрывающая область огнём, наносящим урон со временем.",
+      "ja": "着弾時に爆発し、範囲を炎で覆って継続ダメージを与える手榴弾。",
+      "zh-TW": "撞擊時引爆的手榴彈，會在區域內產生持續造成傷害的火焰。",
+      "uk": "Граната, що вибухає при ударі та покриває область вогнем, який завдає шкоди з часом.",
+      "zh-CN": "撞击时引爆的手榴弹，会在区域内产生持续造成伤害的火焰。",
+      "kr": "충격 시 폭발하여 지속 피해를 주는 화염으로 지역을 뒤덮는 수류탄입니다.",
+      "tr": "Çarpma anında patlayan ve bir alanı zaman içinde hasar veren ateşle kaplayan bomba.",
+      "hr": "Granata koja eksplodira pri udaru, prekrivajući područje vatrom koja nanosi štetu tijekom vremena.",
+      "sr": "Granata koja eksplodira pri udaru, prekrivajući područje vatrom koja nanosi štetu tokom vremena."
+    },
+    "type": "Blueprint",
+    "value": 5000,
+    "weightKg": 0,
+    "imageFilename": "https://cdn.arctracker.io/items/blaze_grenade.png",
+    "rarity": "Legendary",
+    "updatedAt": "11/13/2025"
+  },
+  {
     "id": "blaze_grenade_trap",
     "name": {
       "en": "Blaze Grenade Trap",
@@ -5588,7 +5695,7 @@
       "sr": "Ključ za oblasti unutar bolnice zakopanog grada."
     },
     "type": "Key",
-    "rarity": "Uncommon",
+    "rarity": "Rare",
     "value": 100,
     "recyclesInto": {},
     "updatedAt": "10/30/2025"
@@ -11903,15 +12010,16 @@
     "type": "Recyclable",
     "rarity": "Rare",
     "value": 1000,
+    "foundIn": "Technological",
     "recyclesInto": {
       "plastic_parts": 5,
-      "electrical_components": 1
+      "electrical_components": 2
     },
     "salvagesInto": {
       "wires": 5
     },
     "imageFilename": "https://cdn.arctracker.io/items/fried_motherboard.png",
-    "updatedAt": "10/30/2025"
+    "updatedAt": "11/13/2025"
   },
   {
     "id": "fruit_mix",
@@ -18701,24 +18809,24 @@
       "sr": "Pljačkanje Mk. 2"
     },
     "description": {
-      "en": "Significantly increases looting potential; adds slots for trinkets. Automatically throws off attached Ticks after 1s.",
-      "de": "Erhöht das Plünderungspotenzial erheblich; fügt Plätze für Schmuckstücke hinzu. Wirft automatisch angehängte Zecken nach 1s ab.",
-      "fr": "Augmente considérablement le potentiel de pillage ; ajoute des emplacements pour les bibelots. Éjecte automatiquement les Tiques attachées après 1s.",
-      "es": "Aumenta significativamente el potencial de saqueo; añade ranuras para baratijas. Arroja automáticamente las garrapatas adheridas después de 1s.",
-      "pt": "Aumenta significativamente o potencial de saque; adiciona espaços para bugigangas. Remove automaticamente carrapatos anexados após 1s.",
-      "pl": "Znacząco zwiększa potencjał grabieży; dodaje miejsca na drobiazgi. Automatycznie zrzuca przyczepione kleszcze po 1s.",
-      "no": "Øker plyndringspotensialet betydelig; legger til plasser for smykker. Kaster automatisk av festede flått etter 1s.",
-      "da": "Øger plyndringspotensialet betydeligt; tilføjer pladser til smykker. Kaster automatisk vedhæftede flåter af efter 1s.",
-      "it": "Aumenta significativamente il potenziale di saccheggio; aggiunge slot per ninnoli. Rimuove automaticamente le zecche attaccate dopo 1s.",
-      "ru": "Значительно увеличивает потенциал мародёрства; добавляет слоты для безделушек. Автоматически сбрасывает прикрепившихся клещей через 1 сек.",
-      "ja": "略奪能力を大幅に向上させ、装身具用のスロットを追加する。1秒後に付着したティックを自動的に振り払う。",
-      "zh-TW": "大幅提升掠奪潛力；增加飾品欄位。1秒後自動甩掉附著的蜱蟲。",
-      "uk": "Значно збільшує потенціал мародерства; додає слоти для дрібничок. Автоматично скидає прикріплених кліщів через 1 сек.",
-      "zh-CN": "大幅提升掠夺潜力；增加饰品栏位。1秒后自动甩掉附着的蜱虫。",
-      "kr": "약탈 잠재력을 크게 증가시키고 장신구 슬롯을 추가한다. 1초 후 부착된 진드기를 자동으로 떨어뜨린다.",
-      "tr": "Yağmalama potansiyelini önemli ölçüde artırır; biblolar için yuva ekler. 1 saniye sonra yapışan Keneleri otomatik olarak atar.",
-      "hr": "Značajno povećava potencijal pljačkanja; dodaje slotove za sitnice. Automatski odbacuje pričvršćene Krpelje nakon 1s.",
-      "sr": "Značajno povećava potencijal pljačkanja; dodaje slotove za sitnice. Automatski odbacuje pričvršćene Krpelje nakon 1s."
+      "en": "Significantly increases looting potential; adds slots for trinkets. Automatically throws off attached Ticks after 0.5s.",
+      "de": "Erhöht das Plünderungspotenzial erheblich; fügt Plätze für Schmuckstücke hinzu. Wirft automatisch angehängte Zecken nach 0.5s ab.",
+      "fr": "Augmente considérablement le potentiel de pillage ; ajoute des emplacements pour les bibelots. Éjecte automatiquement les Tiques attachées après 0.5s.",
+      "es": "Aumenta significativamente el potencial de saqueo; añade ranuras para baratijas. Arroja automáticamente las garrapatas adheridas después de 0.5s.",
+      "pt": "Aumenta significativamente o potencial de saque; adiciona espaços para bugigangas. Remove automaticamente carrapatos anexados após 0.5s.",
+      "pl": "Znacząco zwiększa potencjał grabieży; dodaje miejsca na drobiazgi. Automatycznie zrzuca przyczepione kleszcze po 0.5s.",
+      "no": "Øker plyndringspotensialet betydelig; legger til plasser for smykker. Kaster automatisk av festede flått etter 0.5s.",
+      "da": "Øger plyndringspotensialet betydeligt; tilføjer pladser til smykker. Kaster automatisk vedhæftede flåter af efter 0.5s.",
+      "it": "Aumenta significativamente il potenziale di saccheggio; aggiunge slot per ninnoli. Rimuove automaticamente le zecche attaccate dopo 0.5s.",
+      "ru": "Значительно увеличивает потенциал мародёрства; добавляет слоты для безделушек. Автоматически сбрасывает прикрепившихся клещей через 0.5 сек.",
+      "ja": "略奪能力を大幅に向上させ、装身具用のスロットを追加する。0.5秒後に付着したティックを自動的に振り払う。",
+      "zh-TW": "大幅提升掠奪潛力；增加飾品欄位。0.5秒後自動甩掉附著的蜱蟲。",
+      "uk": "Значно збільшує потенціал мародерства; додає слоти для дрібничок. Автоматично скидає прикріплених кліщів через 0.5 сек.",
+      "zh-CN": "大幅提升掠夺潜力；增加饰品栏位。0.5秒后自动甩掉附着的蜱虫。",
+      "kr": "약탈 잠재력을 크게 증가시키고 장신구 슬롯을 추가한다. 0.5초 후 부착된 진드기를 자동으로 떨어뜨린다.",
+      "tr": "Yağmalama potansiyelini önemli ölçüde artırır; biblolar için yuva ekler. 0.5 saniye sonra yapışan Keneleri otomatik olarak atar.",
+      "hr": "Značajno povećava potencijal pljačkanja; dodaje slotove za sitnice. Automatski odbacuje pričvršćene Krpelje nakon 0.5s.",
+      "sr": "Značajno povećava potencijal pljačkanja; dodaje slotove za sitnice. Automatski odbacuje pričvršćene Krpelje nakon 0.5s."
     },
     "type": "Augment",
     "rarity": "Rare",
@@ -27801,10 +27909,14 @@
     "rarity": "Uncommon",
     "value": 2000,
     "recyclesInto": {
-      "arc_alloy": 4
+      "arc_alloy": 1,
+      "electrical_components": 2
+    },
+    "salvageInto": {
+      "electrical_components": 1
     },
     "imageFilename": "https://cdn.arctracker.io/items/snitch_scanner.png",
-    "updatedAt": "10/31/2025",
+    "updatedAt": "11/13/2025",
     "weightKg": 0.75,
     "stackSize": 3,
     "foundIn": "ARC"

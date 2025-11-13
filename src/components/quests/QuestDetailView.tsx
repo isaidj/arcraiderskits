@@ -73,49 +73,47 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Requirements */}
-        {quest.requiredItemIds && quest.requiredItemIds.length > 0 && (
-          <div className="bg-[#0d111d]/50 backdrop-blur-sm border  rounded-lg p-6">
-            <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">📦 Required Items</h2>
-            <div className="space-y-3">
-              {quest.requiredItemIds.map((questItem, idx) => {
-                const item = getItemById(questItem.itemId);
-                if (!item) {
-                  return (
-                    <div key={idx} className="text-cyan-400 text-sm">
-                      → {questItem.itemId} x{questItem.quantity}
-                    </div>
-                  );
-                }
-                const rarityColors = getRarityColors(item.rarity || "Common");
-                return <ItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} rarityColors={rarityColors} />;
-              })}
-            </div>
+      {/* Requirements */}
+      {quest.requiredItemIds && quest.requiredItemIds.length > 0 && (
+        <div className="bg-[#0d111d]/50 backdrop-blur-sm   rounded-lg p-6">
+          <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">📦 Required Items</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            {quest.requiredItemIds.map((questItem, idx) => {
+              const item = getItemById(questItem.itemId);
+              if (!item) {
+                return (
+                  <div key={idx} className="text-cyan-400 text-sm">
+                    → {questItem.itemId} x{questItem.quantity}
+                  </div>
+                );
+              }
+              const rarityColors = getRarityColors(item.rarity || "Common");
+              return <ItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} rarityColors={rarityColors} />;
+            })}
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Granted Items */}
-        {quest.grantedItemIds && quest.grantedItemIds.length > 0 && (
-          <div className="bg-[#0d111d]/50 backdrop-blur-sm   rounded-lg p-6">
-            <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">🎁 Granted Items</h2>
-            <div className="space-y-3">
-              {quest.grantedItemIds.map((questItem, idx) => {
-                const item = getItemById(questItem.itemId);
-                if (!item) {
-                  return (
-                    <div key={idx} className="text-cyan-400 text-sm">
-                      → {questItem.itemId} x{questItem.quantity}
-                    </div>
-                  );
-                }
-                const rarityColors = getRarityColors(item.rarity || "Common");
-                return <ItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} rarityColors={rarityColors} />;
-              })}
-            </div>
+      {/* Granted Items */}
+      {quest.grantedItemIds && quest.grantedItemIds.length > 0 && (
+        <div className="bg-[#0d111d]/50 backdrop-blur-sm   rounded-lg p-6">
+          <h2 className="text-xl font-bold text-[#00ffff] mb-4 flex items-center gap-2">🎁 Granted Items</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            {quest.grantedItemIds.map((questItem, idx) => {
+              const item = getItemById(questItem.itemId);
+              if (!item) {
+                return (
+                  <div key={idx} className="text-cyan-400 text-sm">
+                    → {questItem.itemId} x{questItem.quantity}
+                  </div>
+                );
+              }
+              const rarityColors = getRarityColors(item.rarity || "Common");
+              return <ItemCard key={idx} item={item} quantity={questItem.quantity} lang={lang} rarityColors={rarityColors} />;
+            })}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Rewards - Ancho completo horizontal */}
       {quest.rewardItemIds && quest.rewardItemIds.length > 0 && (
