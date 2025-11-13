@@ -3,6 +3,7 @@ import path from "path";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ItemDetailView from "@/components/items/ItemDetailView";
+import TrackItemView from "@/components/TrackItemView";
 import { Item } from "@/components/items/types";
 import { Locale } from "@/config/i18n";
 import { generateSlug } from "@/components/items/utils";
@@ -79,6 +80,7 @@ export default async function ItemPage({ params }: { params: Promise<{ lang: Loc
 
   return (
     <main className="min-h-screen pt-32 pb-20 px-4">
+      <TrackItemView itemId={item.id} />
       <div className="container mx-auto max-w-7xl">
         <ItemDetailView item={item} relatedItems={relatedItems} allItems={items} lang={lang} />
       </div>

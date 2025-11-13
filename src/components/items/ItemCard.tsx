@@ -5,7 +5,7 @@ import { getText, generateSlug } from "./utils";
 import { Locale } from "@/config/i18n";
 import ItemPopover from "./ItemPopover";
 
-export type ViewMode = "normal" | "compact";
+export type ViewMode = "normal" | "compact" | "horizontal";
 
 interface ItemCardProps {
   item: Item;
@@ -13,15 +13,62 @@ interface ItemCardProps {
   viewMode?: ViewMode;
   rarityColors: RarityColors;
   quantity?: number;
+  topRightValue?: string | number;
 }
 
-export default function ItemCard({ item, lang, viewMode = "normal", rarityColors, quantity }: ItemCardProps) {
+export default function ItemCard({ item, lang, viewMode = "normal", rarityColors, quantity, topRightValue }: ItemCardProps) {
   const itemName = getText(item.name, lang);
   const itemImage = item.imageFilename || item.image;
   const slug = generateSlug(item.name, item.id);
   const itemUrl = lang ? `/${lang}/items/${slug}` : `/items/${slug}`;
 
-  // Clases según el modo
+  // Vista horizontal (imagen a la izquierda, título a la derecha)
+  if (viewMode === "horizontal") {
+    return (
+      <ItemPopover item={item} lang={lang}>
+        <div className="w-full">
+          <Link href={itemUrl} className="group relative flex cursor-pointer">
+            <div
+              className={`card-chrome-border w-full relative flex items-center bg-[#0d111d]/50 backdrop-blur-sm ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg p-2 hover:scale-[1.02] transition-all duration-300 ${rarityColors.shadow} overflow-hidden`}
+            >
+              {/* Valor arriba a la derecha */}
+              {topRightValue !== undefined && (
+                <div
+                  className={`absolute -top-2 -right-2 bg-linear-to-br from-[#0d111d] to-[#1a1f2e] border-2 ${rarityColors.border} text-gray-100 text-sm font-bold px-2.5 py-1 rounded-md shadow-lg z-20 backdrop-blur-sm`}
+                >
+                  {topRightValue}
+                </div>
+              )}
+
+              {/* Imagen a la izquierda */}
+              {itemImage && (
+                <div className="relative w-16 h-16 shrink-0 rounded overflow-hidden">
+                  <Image src={itemImage} alt={itemName || "Item"} fill sizes="64px" className="object-contain p-1 group-hover:scale-110 transition-transform" unoptimized />
+                </div>
+              )}
+
+              {/* Título a la derecha */}
+              <div className="flex-1 ml-3 min-w-0">
+                <h3 className="text-base font-semibold text-gray-200 truncate relative z-10">{itemName || "Unknown Item"}</h3>
+              </div>
+
+              {/* Quantity badge */}
+              {quantity && quantity > 1 && <div className="ml-2 bg-[#00ffff]/90 text-black font-bold text-xs px-2 py-1 rounded-full shrink-0">x{quantity}</div>}
+
+              {/* Marca decorativa curva en esquina inferior izquierda */}
+              <div className="absolute bottom-0 left-0 w-8 h-8 pointer-events-none rounded-bl-sm overflow-hidden">
+                <svg viewBox="0 0 100 100" className="w-full h-full group-hover:opacity-100 opacity-70 transition-opacity">
+                  <path d="M 0 100 L 0 0 Q 0 100 100 100 Z" fill={rarityColors.color} />
+                </svg>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </ItemPopover>
+    );
+  }
+
+  // Clases según el modo (normal/compact)
   const paddingClass = viewMode === "compact" ? "p-1.5" : "p-3";
   const marginBottomClass = viewMode === "compact" ? "mb-1" : "mb-2";
   const cornerSize = viewMode === "compact" ? "w-8 h-8" : "w-12 h-12";

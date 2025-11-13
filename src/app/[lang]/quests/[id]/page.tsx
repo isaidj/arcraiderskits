@@ -7,6 +7,7 @@ import { Item } from "@/components/items/types";
 import { Locale } from "@/config/i18n";
 import { generateSlug } from "@/components/quests/utils";
 import QuestDetailView from "@/components/quests/QuestDetailView";
+import TrackQuestView from "@/components/TrackQuestView";
 import { generateQuestMetadata } from "./metadata";
 
 async function getQuests(): Promise<Quest[]> {
@@ -79,6 +80,7 @@ export default async function QuestPage({ params }: { params: Promise<{ lang: Lo
 
   return (
     <main className="min-h-screen pt-32 pb-20 px-4">
+      <TrackQuestView questId={quest.id} />
       <div className="container mx-auto max-w-7xl">
         <QuestDetailView quest={quest} allQuests={quests} allItems={items} lang={lang} />
       </div>

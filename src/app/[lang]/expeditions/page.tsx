@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
 import { Locale, locales } from "@/config/i18n";
-import TrendingSection from "@/components/TrendingSection";
+import ExpeditionCountdown from "@/components/ExpeditionCountdown";
+import InteractiveSpider from "@/components/InteractiveSpider";
 import AdBanner from "@/components/AdBanner";
 import MobileAdBanner from "@/components/MobileAdBanner";
-import { createClient } from "@supabase/supabase-js";
-import { promises as fs } from "fs";
-import path from "path";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 // Generate static params for all languages
 export async function generateStaticParams() {
@@ -93,112 +88,11 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
 
 export default async function HomePage({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params;
-
-  // Fetch trending data from server
-  let trendingData: any = { period: "24h", items: [], quests: [] };
-
-  try {
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // Leer archivos de datos
-    const itemsPath = path.join(process.cwd(), "public", "data", "items.json");
-    const questsPath = path.join(process.cwd(), "public", "data", "quests.json");
-
-    const [itemsContent, questsContent] = await Promise.all([fs.readFile(itemsPath, "utf8"), fs.readFile(questsPath, "utf8")]);
-
-    const itemsData = JSON.parse(itemsContent);
-    const questsData = JSON.parse(questsContent);
-
-    // Intentar obtener de vistas materializadas primero
-    let { data: trendingItems } = await supabase.from("trending_items_24h").select("*").limit(12);
-
-    // Si está vacío, calcular directamente de la tabla base
-    if (!trendingItems || trendingItems.length === 0) {
-      const { data: directItems } = await supabase
-        .from("item_views")
-        .select("item_id")
-        .gte("viewed_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
-
-      if (directItems && directItems.length > 0) {
-        // Contar vistas por item_id
-        const itemCounts = directItems.reduce((acc: any, curr: any) => {
-          acc[curr.item_id] = (acc[curr.item_id] || 0) + 1;
-          return acc;
-        }, {});
-
-        // Convertir a array y ordenar
-        trendingItems = Object.entries(itemCounts)
-          .map(([item_id, count]) => ({
-            item_id,
-            view_count: count as number,
-            last_viewed: new Date().toISOString(),
-          }))
-          .sort((a, b) => b.view_count - a.view_count)
-          .slice(0, 12);
-      }
-    }
-
-    // Hacer lo mismo para quests
-    let { data: trendingQuests } = await supabase.from("trending_quests_24h").select("*").limit(12);
-
-    if (!trendingQuests || trendingQuests.length === 0) {
-      const { data: directQuests } = await supabase
-        .from("quest_views")
-        .select("quest_id")
-        .gte("viewed_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
-
-      if (directQuests && directQuests.length > 0) {
-        const questCounts = directQuests.reduce((acc: any, curr: any) => {
-          acc[curr.quest_id] = (acc[curr.quest_id] || 0) + 1;
-          return acc;
-        }, {});
-
-        trendingQuests = Object.entries(questCounts)
-          .map(([quest_id, count]) => ({
-            quest_id,
-            view_count: count as number,
-            last_viewed: new Date().toISOString(),
-          }))
-          .sort((a, b) => b.view_count - a.view_count)
-          .slice(0, 12);
-      }
-    }
-
-    // Enriquecer los datos
-    const enrichedItems = (trendingItems || [])
-      .map((item: any) => {
-        const itemData = itemsData.find((i: any) => i.id === item.item_id);
-        return {
-          ...item,
-          data: itemData,
-        };
-      })
-      .filter((item) => item.data);
-
-    const enrichedQuests = (trendingQuests || [])
-      .map((quest: any) => {
-        const questData = questsData.find((q: any) => q.id === quest.quest_id);
-        return {
-          ...quest,
-          data: questData,
-        };
-      })
-      .filter((quest) => quest.data);
-
-    trendingData = {
-      period: "24h",
-      items: enrichedItems,
-      quests: enrichedQuests,
-    };
-  } catch (error) {
-    console.error("Error fetching trending data:", error);
-  }
-
   return (
     <>
       <AdBanner position="left" />
       <AdBanner position="right" />
-      <TrendingSection lang={lang} trendingData={trendingData} />
+      <ExpeditionCountdown />
       <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full blur-[120px]" style={{ zIndex: -15 }} />
 
       <MobileAdBanner />

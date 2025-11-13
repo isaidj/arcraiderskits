@@ -8,7 +8,7 @@ interface BackButtonProps {
   fallbackUrl?: string;
 }
 
-export default function BackButton({ label, fallbackUrl = "/" }: BackButtonProps) {
+export default function BackButton({ label }: BackButtonProps) {
   const router = useRouter();
   const [canGoBack, setCanGoBack] = useState(false);
 
@@ -19,11 +19,7 @@ export default function BackButton({ label, fallbackUrl = "/" }: BackButtonProps
   }, []);
 
   const handleBack = () => {
-    if (canGoBack) {
-      router.back();
-    } else {
-      router.push(fallbackUrl);
-    }
+    router.back();
   };
 
   return (
