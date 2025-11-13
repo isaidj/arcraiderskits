@@ -126,10 +126,31 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     return { name, image };
   };
 
+  const backButtonTexts: Record<Locale, string> = {
+    en: "Back to Projects",
+    es: "Volver a Proyectos",
+    de: "Zurück zu Projekten",
+    fr: "Retour aux projets",
+    pt: "Voltar para Projetos",
+    pl: "Powrót do projektów",
+    no: "Tilbake til prosjekter",
+    da: "Tilbage til projekter",
+    it: "Torna ai progetti",
+    uk: "Назад до проектів",
+    kr: "프로젝트로 돌아가기",
+    ru: "Назад к проектам",
+    "zh-CN": "返回项目",
+    ja: "プロジェクトに戻る",
+    tr: "Projelere dön",
+    "zh-TW": "返回專案",
+    sr: "Назад на пројекте",
+    hr: "Povratak na projekte",
+  };
+
   return (
     <main className="min-h-screen pt-32 pb-20 px-4">
       <div className="container mx-auto max-w-5xl">
-        <BackButton lang={lang} />
+        <BackButton label={backButtonTexts[lang]} fallbackUrl={`/${lang}/projects`} />
 
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-[#00ffff] mb-4">{projectName}</h1>
