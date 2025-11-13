@@ -7,19 +7,23 @@ This document summarizes the Progressive Web App (PWA) implementation for the AR
 ## 📦 What Was Implemented
 
 ### 1. Dependencies
-- ✅ `@serwist/next@^9.2.1` - Serwist integration for Next.js
+- ✅ `@serwist/turbopack@^9.2.1` - Serwist integration for Next.js 16 with Turbopack
 - ✅ `serwist@^9.2.1` - Core Serwist library
 
 ### 2. Configuration Files
 
 #### next.config.ts
-- Integrated Serwist using `withSerwist` higher-order function
+- Clean Next.js configuration without webpack plugins
+- Turbopack compatible (Next.js 16 default)
+- No special Serwist configuration needed in config file
+
+#### Route Handler (src/app/sw/[[...path]]/route.ts)
+- Uses `@serwist/turbopack` Route Handler approach
+- Serves service worker at `/sw.js`
 - Configured to:
   - Build service worker from `src/sw.ts`
-  - Output to `public/sw.js`
-  - Enable cache on navigation
-  - Reload on coming back online
-  - Disabled in development mode for easier debugging
+  - Serve via Next.js Route Handler
+  - Works with Turbopack out of the box
 
 #### tsconfig.json
 - Added `"webworker"` to lib array for service worker TypeScript support
@@ -89,19 +93,20 @@ Added to metadata:
 5. **Auto Updates**: Service worker automatically updates when new version is deployed
 
 ### For Developers:
-1. **Development Mode**: Service worker disabled during development
+1. **Turbopack Compatible**: Works seamlessly with Next.js 16's Turbopack
 2. **TypeScript Support**: Full type checking for service worker code
-3. **Build Integration**: Automatic service worker generation on build
+3. **Build Integration**: Service worker served via Route Handler
 4. **Caching Strategies**: Serwist's optimized default caching strategies
-5. **Easy Maintenance**: Single configuration point in `next.config.ts`
+5. **Easy Maintenance**: Minimal configuration needed
 
 ## 🚀 How It Works
 
 ### Build Process:
-1. `npm run build` triggers Next.js build
-2. Serwist plugin compiles `src/sw.ts` to `public/sw.js`
-3. Precache manifest is injected into the service worker
-4. Static assets are identified and added to cache list
+1. `npm run build` triggers Next.js build with Turbopack
+2. `@serwist/turbopack` compiles `src/sw.ts`
+3. Service worker is served via Route Handler at `/sw.js`
+4. Precache manifest is injected into the service worker
+5. Static assets are identified and added to cache list
 
 ### Runtime:
 1. User visits the site

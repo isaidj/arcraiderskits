@@ -1,6 +1,6 @@
 # PWA Implementation with Serwist
 
-This project has been configured as a Progressive Web App (PWA) using Serwist for Next.js 16.
+This project has been configured as a Progressive Web App (PWA) using Serwist for Next.js 16 with Turbopack support.
 
 ## Features
 
@@ -9,6 +9,7 @@ This project has been configured as a Progressive Web App (PWA) using Serwist fo
 - ✅ **Caching Strategy**: Smart caching for improved performance
 - ✅ **Offline Fallback**: Custom offline page shown when network is unavailable
 - ✅ **PWA Icons**: Optimized icons for various devices (192x192, 512x512)
+- ✅ **Turbopack Compatible**: Works with Next.js 16's Turbopack by default
 
 ## Configuration
 
@@ -27,14 +28,15 @@ The PWA manifest is located at `public/manifest.json` and includes:
 - Icons for different sizes
 
 ### Build Configuration
-The Next.js configuration (`next.config.ts`) uses the `@serwist/next` plugin to:
-- Generate the service worker at build time
-- Inject precache manifest
-- Disable service worker in development mode
+This implementation uses `@serwist/turbopack` for Next.js 16 compatibility:
+- Service worker is served through a Route Handler at `src/app/sw/[[...path]]/route.ts`
+- Compatible with Turbopack (Next.js 16 default)
+- No webpack configuration needed
+- Works in both development and production modes
 
 ## Development
 
-During development, the service worker is disabled for easier debugging. It will only work in production builds.
+The service worker works in both development and production environments with Turbopack.
 
 ### Building
 ```bash
@@ -43,8 +45,8 @@ npm run build
 
 This will:
 1. Update Arc Raiders data
-2. Build the Next.js application
-3. Generate the service worker at `public/sw.js`
+2. Build the Next.js application with Turbopack
+3. Generate the service worker and serve it via Route Handler
 4. Create the sitemap
 
 ### Testing PWA Locally
@@ -79,6 +81,7 @@ A custom offline page is available at `/~offline` and will be shown when users n
 
 ### New Files
 - `src/sw.ts` - Service worker configuration
+- `src/app/sw/[[...path]]/route.ts` - Route Handler for serving service worker (Turbopack)
 - `src/components/PWARegister.tsx` - Client-side service worker registration
 - `src/app/~offline/page.tsx` - Offline fallback page
 - `public/manifest.json` - PWA manifest
@@ -87,11 +90,11 @@ A custom offline page is available at `/~offline` and will be shown when users n
 - `scripts/generate-pwa-icons.js` - Script to generate PWA icons
 
 ### Modified Files
-- `next.config.ts` - Added Serwist configuration
+- `next.config.ts` - Clean configuration without webpack plugins
 - `src/app/layout.tsx` - Added manifest metadata and PWARegister component
 - `tsconfig.json` - Added webworker lib
 - `.gitignore` - Excluded generated service worker files
-- `package.json` - Added Serwist dependencies
+- `package.json` - Added Serwist dependencies (@serwist/turbopack)
 
 ## Deployment
 
