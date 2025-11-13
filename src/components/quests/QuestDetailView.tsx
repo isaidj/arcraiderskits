@@ -16,11 +16,12 @@ interface QuestDetailViewProps {
 }
 
 export default function QuestDetailView({ quest, allQuests, allItems, lang }: QuestDetailViewProps) {
-  const name = getText(quest.name, lang);
-  const description = getText(quest.description, "en");
+  const name = getText(quest.name, "en");
+  const description = getText(quest.description, lang);
 
   // Armar el término de búsqueda para el video
-  const videoSearchQuery = `Arc Raiders "${name}" quest guide`;
+  const nameForSearch = getText(quest.name, "en");
+  const videoSearchQuery = `Arc Raiders "${nameForSearch}" quest guide`;
 
   // Get related quests
   const previousQuests = quest.previousQuestIds.map((id) => allQuests.find((q) => q.id === id)).filter(Boolean) as Quest[];

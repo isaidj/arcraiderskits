@@ -21,8 +21,8 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
   const itemImage = item.imageFilename || item.image;
 
   // Armar el término de búsqueda para el video
-  const itemName = getText(item.name, "en");
-  const videoSearchQuery = `Arc Raiders "${itemName}" how to get location`;
+  const nameForSearch = getText(item.name, "en");
+  const videoSearchQuery = `Arc Raiders "${nameForSearch}" how to get location`;
 
   // Items que se obtienen al reciclar este item
   const recyclingResults = item.recyclesInto
