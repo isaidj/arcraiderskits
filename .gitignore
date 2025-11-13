@@ -46,3 +46,9 @@ next-env.d.ts
 # Arc Raiders downloaded data (images and large files)
 public/data/images/
 public/data/*.json
+
+# PWA service worker
+public/sw.js
+public/sw.js.map
+public/swe-worker-*.js
+public/swe-worker-*.js.map

@@ -1,0 +1,24 @@
+{
+  "name": "ARC Raiders Expedition Countdown",
+  "short_name": "ARC Raiders",
+  "description": "Track the Arc Raiders Expedition Project countdown. Voluntary progression reset system with 8-week cycles.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#1a1a1a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -10,6 +10,7 @@ import DataMenu from "../components/DataMenu";
 import DecorativeLines from "../components/DecorativeLines";
 import Footer from "../components/Footer";
 import InteractiveSpider from "../components/InteractiveSpider";
+import PWARegister from "../components/PWARegister";
 
 const barlow = Barlow({
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -28,6 +29,12 @@ export const metadata: Metadata = {
     ],
     shortcut: "/favicon.ico",
     apple: "/favicon.ico",
+  },
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "ARC Raiders",
   },
   openGraph: {
     title: "ARC Raiders Expedition Countdown",
@@ -67,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </AdsProvider>
         <Analytics />
         <SpeedInsights />
+        <PWARegister />
       </body>
     </html>
   );
