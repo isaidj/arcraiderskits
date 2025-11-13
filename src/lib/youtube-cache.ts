@@ -91,11 +91,7 @@ export async function saveCachedVideo(
     const normalizedQuery = normalizeQuery(query);
 
     // Primero intentar buscar si existe un registro con este query (usando cliente normal)
-    const { data: existing } = await supabase
-      .from("youtube_cache")
-      .select("id")
-      .ilike("query", normalizedQuery)
-      .single();
+    const { data: existing } = await supabase.from("youtube_cache").select("id").ilike("query", normalizedQuery).single();
 
     const cacheData = {
       query: normalizedQuery,
@@ -121,9 +117,7 @@ export async function saveCachedVideo(
       console.log(`🔄 Updated cache for: "${query}" (videoId: ${videoData.videoId})`);
     } else {
       // Insertar nuevo registro (usando cliente admin)
-      const { error } = await supabaseAdmin
-        .from("youtube_cache")
-        .insert(cacheData);
+      const { error } = await supabaseAdmin.from("youtube_cache").insert(cacheData);
 
       if (error) {
         console.error("❌ Error inserting to cache:", error);
