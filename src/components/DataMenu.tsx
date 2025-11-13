@@ -6,14 +6,16 @@ import { useMemo } from "react";
 import { isValidLocale, defaultLocale, type Locale } from "@/config/i18n";
 import { menuTranslations } from "./DataMenu/translations";
 
-type MenuItemKey = "home" | "items" | "quests" | "projects" | "hideoutModules" | "skillNodes";
+type MenuItemKey = "home" | "items" | "quests" | "projects" | "hideoutModules" | "bots" | "trades" | "skillNodes";
 
 const menuItems: Array<{ key: MenuItemKey; path: string; disabled: boolean }> = [
   { key: "home", path: "/", disabled: false },
   { key: "items", path: "/items", disabled: false },
   { key: "quests", path: "/quests", disabled: false },
-  // { key: "projects", path: "/projects", disabled: true },
-  { key: "hideoutModules", path: "/hideout", disabled: true },
+  { key: "projects", path: "/projects", disabled: false },
+  { key: "hideoutModules", path: "/hideout", disabled: false },
+  { key: "bots", path: "/bots", disabled: false },
+  { key: "trades", path: "/trades", disabled: false },
   // { key: "skillNodes", path: "/skills", disabled: true },
 ];
 
