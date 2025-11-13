@@ -16,7 +16,7 @@ interface QuestDetailViewProps {
 }
 
 export default function QuestDetailView({ quest, allQuests, allItems, lang }: QuestDetailViewProps) {
-  const name = getText(quest.name, "en");
+  const name = getText(quest.name, lang);
   const description = getText(quest.description, lang);
 
   // Armar el término de búsqueda para el video
