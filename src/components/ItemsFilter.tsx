@@ -104,7 +104,7 @@ export default function ItemsFilter({ items, lang }: ItemsFilterProps) {
       </div>
 
       {/* Items Grid */}
-      <ItemsGrid items={filteredItems} lang={lang} viewMode={viewMode} layoutMode="list" size="xs" />
+      <ItemsGrid items={filteredItems} lang={lang} viewMode={viewMode} />
     </div>
   );
 }

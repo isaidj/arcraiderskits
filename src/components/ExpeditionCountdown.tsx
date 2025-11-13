@@ -34,7 +34,7 @@ export default function ExpeditionCountdown() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center pt-32">
+    <div className="min-h-screen flex items-center justify-center ">
       <main className="relative z-10 flex flex-col items-center justify-center px-4 text-center">
         {/* Title */}
         <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tight text-[#e9e1cd]">ARC RAIDERS</h1>

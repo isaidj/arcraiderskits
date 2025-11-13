@@ -199,8 +199,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
       <AdBanner position="left" />
       <AdBanner position="right" />
       <TrendingSection lang={lang} trendingData={trendingData} />
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full blur-[120px]" style={{ zIndex: -15 }} />
-
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-700/10 rounded-full blur-[120px]" style={{ zIndex: -15 }} />
       <MobileAdBanner />
     </>
   );

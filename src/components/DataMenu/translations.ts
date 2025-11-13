@@ -9,6 +9,7 @@ export const menuTranslations: Record<
     projects: string;
     hideoutModules: string;
     skillNodes: string;
+    expeditions: string;
     comingSoon: string;
   }
 > = {
@@ -19,6 +20,7 @@ export const menuTranslations: Record<
     projects: "Projects",
     hideoutModules: "Hideout Modules",
     skillNodes: "Skill Nodes",
+    expeditions: "Expeditions",
     comingSoon: "Coming Soon",
   },
   es: {
@@ -28,6 +30,7 @@ export const menuTranslations: Record<
     projects: "Proyectos",
     hideoutModules: "Módulos de Refugio",
     skillNodes: "Nodos de Habilidad",
+    expeditions: "Expediciones",
     comingSoon: "Próximamente",
   },
   de: {
@@ -37,6 +40,7 @@ export const menuTranslations: Record<
     projects: "Projekte",
     hideoutModules: "Versteck-Module",
     skillNodes: "Fähigkeitsknoten",
+    expeditions: "Expeditionen",
     comingSoon: "Demnächst",
   },
   fr: {
@@ -46,6 +50,7 @@ export const menuTranslations: Record<
     projects: "Projets",
     hideoutModules: "Modules de Planque",
     skillNodes: "Nœuds de Compétence",
+    expeditions: "Expéditions",
     comingSoon: "Bientôt Disponible",
   },
   pt: {
@@ -55,6 +60,7 @@ export const menuTranslations: Record<
     projects: "Projetos",
     hideoutModules: "Módulos de Esconderijo",
     skillNodes: "Nós de Habilidade",
+    expeditions: "Expedições",
     comingSoon: "Em Breve",
   },
   pl: {
@@ -64,6 +70,7 @@ export const menuTranslations: Record<
     projects: "Projekty",
     hideoutModules: "Moduły Kryjówki",
     skillNodes: "Węzły Umiejętności",
+    expeditions: "Ekspedycje",
     comingSoon: "Wkrótce",
   },
   no: {
@@ -73,6 +80,7 @@ export const menuTranslations: Record<
     projects: "Prosjekter",
     hideoutModules: "Skjulested-moduler",
     skillNodes: "Ferdighetsnoder",
+    expeditions: "Ekspedisjoner",
     comingSoon: "Kommer Snart",
   },
   da: {
@@ -82,6 +90,7 @@ export const menuTranslations: Record<
     projects: "Projekter",
     hideoutModules: "Skjulested-moduler",
     skillNodes: "Færdighedsnoder",
+    expeditions: "Ekspeditioner",
     comingSoon: "Kommer Snart",
   },
   it: {
@@ -91,6 +100,7 @@ export const menuTranslations: Record<
     projects: "Progetti",
     hideoutModules: "Moduli Nascondiglio",
     skillNodes: "Nodi Abilità",
+    expeditions: "Spedizioni",
     comingSoon: "Prossimamente",
   },
   uk: {
@@ -100,6 +110,7 @@ export const menuTranslations: Record<
     projects: "Проєкти",
     hideoutModules: "Модулі Схованки",
     skillNodes: "Вузли Навичок",
+    expeditions: "Експедиції",
     comingSoon: "Незабаром",
   },
   kr: {
@@ -109,6 +120,7 @@ export const menuTranslations: Record<
     projects: "프로젝트",
     hideoutModules: "은신처 모듈",
     skillNodes: "스킬 노드",
+    expeditions: "원정",
     comingSoon: "출시 예정",
   },
   ru: {
@@ -118,6 +130,7 @@ export const menuTranslations: Record<
     projects: "Проекты",
     hideoutModules: "Модули Убежища",
     skillNodes: "Узлы Навыков",
+    expeditions: "Экспедиции",
     comingSoon: "Скоро",
   },
   "zh-CN": {
@@ -127,6 +140,7 @@ export const menuTranslations: Record<
     projects: "项目",
     hideoutModules: "藏身处模块",
     skillNodes: "技能节点",
+    expeditions: "探险",
     comingSoon: "即将推出",
   },
   ja: {
@@ -136,6 +150,7 @@ export const menuTranslations: Record<
     projects: "プロジェクト",
     hideoutModules: "隠れ家モジュール",
     skillNodes: "スキルノード",
+    expeditions: "遠征",
     comingSoon: "近日公開",
   },
   tr: {
@@ -145,6 +160,7 @@ export const menuTranslations: Record<
     projects: "Projeler",
     hideoutModules: "Sığınak Modülleri",
     skillNodes: "Yetenek Düğümleri",
+    expeditions: "Seferler",
     comingSoon: "Yakında",
   },
   "zh-TW": {
@@ -154,6 +170,7 @@ export const menuTranslations: Record<
     projects: "專案",
     hideoutModules: "藏身處模組",
     skillNodes: "技能節點",
+    expeditions: "探險",
     comingSoon: "即將推出",
   },
   sr: {
@@ -163,6 +180,7 @@ export const menuTranslations: Record<
     projects: "Пројекти",
     hideoutModules: "Модули Скривнице",
     skillNodes: "Чворови Вештина",
+    expeditions: "Експедиције",
     comingSoon: "Ускоро",
   },
   hr: {
@@ -172,6 +190,7 @@ export const menuTranslations: Record<
     projects: "Projekti",
     hideoutModules: "Moduli Skrovišta",
     skillNodes: "Čvorovi Vještina",
+    expeditions: "Ekspedicije",
     comingSoon: "Uskoro",
   },
 };
