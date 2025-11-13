@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run update-data && next dev",
-    "build": "npm run update-data && next build",
+    "dev": "next dev",
+    "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "eslint",
     "update-data": "node scripts/update-data.js",
-    "postinstall": "npm run update-data"
+    "import-data": "node scripts/import-to-supabase.js",
+    "validate-sync": "node scripts/validate-sync.js",
+    "sync-data": "npm run update-data && npm run import-data"
   },
   "dependencies": {
     "@radix-ui/react-popover": "^1.1.15",
