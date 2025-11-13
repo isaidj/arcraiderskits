@@ -8,6 +8,63 @@ const TEMP_DIR = path.join(__dirname, "..", ".tmp-arcraiders-data");
 
 console.log("🔄 Updating Arc Raiders data...");
 
+/**
+ * Combina todos los archivos JSON de una carpeta en un solo array
+ */
+function combineJsonFiles(folderPath, outputFileName) {
+  if (!fs.existsSync(folderPath)) {
+    console.warn(`⚠️  Folder ${path.basename(folderPath)} not found in repository`);
+    return;
+  }
+
+  const files = fs.readdirSync(folderPath).filter((file) => file.endsWith(".json"));
+  const combinedData = [];
+
+  files.forEach((file) => {
+    const filePath = path.join(folderPath, file);
+    try {
+      const content = fs.readFileSync(filePath, "utf8");
+      const data = JSON.parse(content);
+      combinedData.push(data);
+    } catch (error) {
+      console.error(`❌ Error reading ${file}:`, error.message);
+    }
+  });
+
+  const outputPath = path.join(DATA_DIR, outputFileName);
+  fs.writeFileSync(outputPath, JSON.stringify(combinedData, null, 2), "utf8");
+  console.log(`✅ Combined ${files.length} files into ${outputFileName}`);
+}
+
+/**
+ * Combina todos los archivos JSON de hideout en un solo objeto con categorías
+ */
+function combineHideoutFiles(folderPath, outputFileName) {
+  if (!fs.existsSync(folderPath)) {
+    console.warn(`⚠️  Folder hideout not found in repository`);
+    return;
+  }
+
+  const files = fs.readdirSync(folderPath).filter((file) => file.endsWith(".json"));
+  const combinedData = {};
+
+  files.forEach((file) => {
+    const filePath = path.join(folderPath, file);
+    const moduleName = path.basename(file, ".json");
+    try {
+      const content = fs.readFileSync(filePath, "utf8");
+      const data = JSON.parse(content);
+      combinedData[moduleName] = data;
+    } catch (error) {
+      console.error(`❌ Error reading ${file}:`, error.message);
+    }
+  });
+
+  const outputPath = path.join(DATA_DIR, outputFileName);
+  fs.writeFileSync(outputPath, JSON.stringify(combinedData, null, 2), "utf8");
+  console.log(`✅ Combined ${files.length} hideout modules into ${outputFileName}`);
+}
+
 try {
   // Crear directorio de datos si no existe
   if (!fs.existsSync(DATA_DIR)) {
@@ -24,10 +81,15 @@ try {
     execSync("git pull origin main", { cwd: TEMP_DIR, stdio: "inherit" });
   }
 
-  // Copiar archivos JSON al directorio de datos
-  const filesToCopy = ["items.json", "quests.json", "projects.json", "hideoutModules.json", "skillNodes.json"];
+  // Combinar archivos de carpetas en JSON únicos
+  combineJsonFiles(path.join(TEMP_DIR, "items"), "items.json");
+  combineJsonFiles(path.join(TEMP_DIR, "quests"), "quests.json");
+  combineHideoutFiles(path.join(TEMP_DIR, "hideout"), "hideoutModules.json");
 
-  filesToCopy.forEach((file) => {
+  // Copiar archivos JSON directos que aún existen en la raíz
+  const directFiles = ["projects.json", "skillNodes.json", "bots.json", "trades.json"];
+
+  directFiles.forEach((file) => {
     const source = path.join(TEMP_DIR, file);
     const dest = path.join(DATA_DIR, file);
 

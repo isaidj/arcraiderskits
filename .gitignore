@@ -42,3 +42,7 @@ next-env.d.ts
 
 # Arc Raiders data temporary directory
 .tmp-arcraiders-data
+
+# Arc Raiders downloaded data (images and large files)
+public/data/images/
+public/data/*.json
