@@ -10,7 +10,7 @@
  * 4. Guardar nuevo resultado en caché
  */
 
-import { supabase, type YouTubeCacheRow, type YouTubeCacheInsert } from "./supabase";
+import { supabase, supabaseAdmin, type YouTubeCacheRow, type YouTubeCacheInsert } from "./supabase";
 
 // ⏱️ Tiempo de expiración del caché (en días)
 const CACHE_EXPIRATION_DAYS = 7;
@@ -90,7 +90,14 @@ export async function saveCachedVideo(
   try {
     const normalizedQuery = normalizeQuery(query);
 
-    const cacheData: YouTubeCacheInsert = {
+    // Primero intentar buscar si existe un registro con este query (usando cliente normal)
+    const { data: existing } = await supabase
+      .from("youtube_cache")
+      .select("id")
+      .ilike("query", normalizedQuery)
+      .single();
+
+    const cacheData = {
       query: normalizedQuery,
       video_id: videoData.videoId,
       title: videoData.title,
@@ -100,18 +107,30 @@ export async function saveCachedVideo(
       published_at: videoData.publishedAt || null,
     };
 
-    // Usar upsert para actualizar si ya existe
-    const { error } = await supabase.from("youtube_cache").upsert(cacheData, {
-      onConflict: "query",
-      ignoreDuplicates: false,
-    });
+    if (existing) {
+      // Actualizar registro existente (usando cliente admin)
+      const { error } = await supabaseAdmin
+        .from("youtube_cache")
+        .update({ ...cacheData, updated_at: new Date().toISOString() })
+        .eq("id", existing.id);
 
-    if (error) {
-      console.error("❌ Error saving to cache:", error);
-      throw error;
+      if (error) {
+        console.error("❌ Error updating cache:", error);
+        throw error;
+      }
+      console.log(`🔄 Updated cache for: "${query}" (videoId: ${videoData.videoId})`);
+    } else {
+      // Insertar nuevo registro (usando cliente admin)
+      const { error } = await supabaseAdmin
+        .from("youtube_cache")
+        .insert(cacheData);
+
+      if (error) {
+        console.error("❌ Error inserting to cache:", error);
+        throw error;
+      }
+      console.log(`💾 Cached video for: "${query}" (videoId: ${videoData.videoId})`);
     }
-
-    console.log(`💾 Cached video for: "${query}" (videoId: ${videoData.videoId})`);
   } catch (error) {
     console.error("❌ Error in saveCachedVideo:", error);
     // No lanzar error para que la aplicación continúe aunque falle el caché
@@ -127,7 +146,8 @@ export async function cleanupExpiredCache(): Promise<number> {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() - CACHE_EXPIRATION_DAYS);
 
-    const { data, error } = await supabase.from("youtube_cache").delete().lt("updated_at", expirationDate.toISOString()).select("id");
+    // Usar cliente admin para operaciones de escritura
+    const { data, error } = await supabaseAdmin.from("youtube_cache").delete().lt("updated_at", expirationDate.toISOString()).select("id");
 
     if (error) {
       console.error("❌ Error cleaning up cache:", error);

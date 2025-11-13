@@ -10,6 +10,7 @@ import { createClient } from "@supabase/supabase-js";
 // Validar que existan las variables de entorno
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error("⚠️ Missing Supabase environment variables. " + "Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local");
@@ -18,7 +19,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 /**
  * Cliente de Supabase con autenticación anónima
  * - Permite lectura pública (SELECT)
- * - Para escritura, usa service_role key en servidor
+ * - Usar solo para operaciones de lectura
  */
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -29,6 +30,24 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     schema: "public",
   },
 });
+
+/**
+ * Cliente de Supabase con service_role key (admin)
+ * - Bypasea Row Level Security (RLS)
+ * - Usar SOLO en servidor (API routes, server components)
+ * - NUNCA exponer al cliente
+ */
+export const supabaseAdmin = supabaseServiceRoleKey
+  ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+      db: {
+        schema: "public",
+      },
+    })
+  : supabase; // Fallback al cliente normal si no hay service_role key
 
 /**
  * Tipos TypeScript para la tabla youtube_cache

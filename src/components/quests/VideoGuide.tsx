@@ -105,7 +105,7 @@ export default function VideoGuide({ videoUrl, searchQuery, lang = "en" }: Video
     setError(null);
 
     try {
-      // Llamar a nuestra API route
+      // Llamar a nuestra API route (con fallback automático en el servidor)
       const encodedQuery = encodeURIComponent(searchQuery);
       const response = await fetch(`/api/youtube-search?q=${encodedQuery}`);
 
@@ -118,6 +118,10 @@ export default function VideoGuide({ videoUrl, searchQuery, lang = "en" }: Video
 
       if (data.videoId) {
         setVideoId(data.videoId);
+        // Log opcional para ver qué fuente se usó (youtube o invidious)
+        if (data.source) {
+          console.log(`✅ Video loaded from: ${data.source}`);
+        }
       } else {
         setError("No video guides found for this quest.");
       }
