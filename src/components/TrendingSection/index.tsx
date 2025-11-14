@@ -56,7 +56,7 @@ export default function TrendingSection({ lang, trendingData }: TrendingSectionP
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-[#e8e4cf] mb-4">{t.itemsTab}</h2>
               </div>
-              <div className="grid grid-cols-3  md:grid-cols-3  gap-2">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {trendingData.items.length > 0 ? (
                   trendingData.items.map((item) => (
                     <ItemCard
