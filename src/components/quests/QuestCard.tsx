@@ -2,17 +2,22 @@ import Link from "next/link";
 import { Quest } from "./types";
 import { Locale } from "@/config/i18n";
 import { getText, getTraderBadgeColor, generateSlug } from "./utils";
+import TrendIndicator from "@/components/TrendIndicator";
 
 export type QuestViewMode = "normal" | "horizontal";
+
+type TrendDirection = "up" | "down" | "same" | "new";
 
 interface QuestCardProps {
   quest: Quest;
   lang?: Locale;
   viewMode?: QuestViewMode;
   topRightValue?: string | number;
+  trendDirection?: TrendDirection;
+  rankChange?: number;
 }
 
-export default function QuestCard({ quest, lang, viewMode = "normal", topRightValue }: QuestCardProps) {
+export default function QuestCard({ quest, lang, viewMode = "normal", topRightValue, trendDirection, rankChange = 0 }: QuestCardProps) {
   const name = getText(quest.name, lang);
   const description = getText(quest.description, lang);
   const slug = generateSlug(quest.name, quest.id);
@@ -27,6 +32,13 @@ export default function QuestCard({ quest, lang, viewMode = "normal", topRightVa
           {topRightValue !== undefined && (
             <div className="absolute -top-2 -right-2 bg-linear-to-br from-[#0d111d] to-[#1a1f2e] border-2 border-[#00ffff]/50 text-gray-100 text-sm font-bold px-2.5 py-1 rounded-md shadow-lg z-20 ">
               {topRightValue}
+            </div>
+          )}
+
+          {/* Trend Indicator */}
+          {trendDirection && (
+            <div className="absolute -top-2 -left-2 z-20">
+              <TrendIndicator direction={trendDirection} rankChange={rankChange} size="sm" showLabel={false} />
             </div>
           )}
 

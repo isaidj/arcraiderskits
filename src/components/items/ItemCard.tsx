@@ -4,8 +4,11 @@ import { Item, RarityColors } from "./types";
 import { getText, generateSlug } from "./utils";
 import { Locale } from "@/config/i18n";
 import ItemPopover from "./ItemPopover";
+import TrendIndicator from "@/components/TrendIndicator";
 
 export type ViewMode = "normal" | "compact" | "horizontal";
+
+type TrendDirection = "up" | "down" | "same" | "new";
 
 interface ItemCardProps {
   item: Item;
@@ -14,9 +17,11 @@ interface ItemCardProps {
   rarityColors: RarityColors;
   quantity?: number;
   topRightValue?: string | number;
+  trendDirection?: TrendDirection;
+  rankChange?: number;
 }
 
-export default function ItemCard({ item, lang, viewMode = "normal", rarityColors, quantity, topRightValue }: ItemCardProps) {
+export default function ItemCard({ item, lang, viewMode = "normal", rarityColors, quantity, topRightValue, trendDirection, rankChange = 0 }: ItemCardProps) {
   const itemName = getText(item.name, lang);
   const itemImage = item.imageFilename || item.image;
   const slug = generateSlug(item.name, item.id);
@@ -37,6 +42,13 @@ export default function ItemCard({ item, lang, viewMode = "normal", rarityColors
                   className={`absolute -top-2 -right-2 bg-linear-to-br from-[#0d111d] to-[#1a1f2e] border-2 ${rarityColors.border} text-gray-100 text-sm font-bold px-2.5 py-1 rounded-md shadow-lg z-20 backdrop-blur-sm`}
                 >
                   {topRightValue}
+                </div>
+              )}
+
+              {/* Trend Indicator */}
+              {trendDirection && (
+                <div className="absolute -top-2 -left-2 z-20">
+                  <TrendIndicator direction={trendDirection} rankChange={rankChange} size="sm" showLabel={false} />
                 </div>
               )}
 

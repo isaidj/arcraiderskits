@@ -12,12 +12,20 @@ interface TrendingData {
     item_id: string;
     view_count: number;
     last_viewed: string;
+    current_rank: number;
+    previous_rank: number | null;
+    trend_direction: "up" | "down" | "same" | "new";
+    rank_change: number;
     data: Item;
   }>;
   quests: Array<{
     quest_id: string;
     view_count: number;
     last_viewed: string;
+    current_rank: number;
+    previous_rank: number | null;
+    trend_direction: "up" | "down" | "same" | "new";
+    rank_change: number;
     data: Quest;
   }>;
 }
@@ -66,6 +74,8 @@ export default function TrendingSection({ lang, trendingData }: TrendingSectionP
                       viewMode="horizontal"
                       rarityColors={getRarityColors(item.data.rarity || "common")}
                       topRightValue={item.view_count}
+                      trendDirection={item.trend_direction}
+                      rankChange={item.rank_change}
                     />
                   ))
                 ) : (
@@ -81,7 +91,17 @@ export default function TrendingSection({ lang, trendingData }: TrendingSectionP
               </div>
               <div className="flex flex-col gap-3">
                 {trendingData.quests.length > 0 ? (
-                  trendingData.quests.map((quest) => <QuestCard key={quest.quest_id} quest={quest.data} lang={lang} viewMode="horizontal" topRightValue={quest.view_count} />)
+                  trendingData.quests.map((quest) => (
+                    <QuestCard
+                      key={quest.quest_id}
+                      quest={quest.data}
+                      lang={lang}
+                      viewMode="horizontal"
+                      topRightValue={quest.view_count}
+                      trendDirection={quest.trend_direction}
+                      rankChange={quest.rank_change}
+                    />
+                  ))
                 ) : (
                   <div className="col-span-full text-center py-10 text-gray-400">{t.noData}</div>
                 )}
