@@ -134,14 +134,16 @@ export default function ItemDetailView({ item, relatedItems, allItems, lang }: I
                 <div className="mt-3 md:mt-4">
                   <span className="text-[10px] text-gray-500 uppercase block mb-1.5">{lang === "es" ? "Efectos" : "Effects"}</span>
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                    {Object.entries(item.effects).map(([key, effect]: [string, any]) => (
-                      <div key={key} className="bg-gray-900/50 rounded p-2">
-                        <div className="flex flex-col">
-                          <span className="text-xs text-gray-400">{getText(effect, lang)}</span>
-                          {effect.value && <span className="text-[#00ffff] font-bold text-sm">{effect.value}</span>}
+                    {Object.entries(item.effects).map(([key, effect]: [string, any]) =>
+                      effect ? (
+                        <div key={key} className="bg-gray-900/50 rounded p-2">
+                          <div className="flex flex-col">
+                            <span className="text-xs text-gray-400">{getText(effect, lang)}</span>
+                            {effect.value && <span className="text-[#00ffff] font-bold text-sm">{effect.value}</span>}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ) : null
+                    )}
                   </div>
                 </div>
               )}

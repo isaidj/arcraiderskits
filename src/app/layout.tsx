@@ -61,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AdsProvider>
           <Navbar />
           <DataMenu />
-          <div className="mt-24">{children}</div>
+          <div className="mt-30">{children}</div>
           <Footer />
           <DecorativeLines />
           <InteractiveSpider />

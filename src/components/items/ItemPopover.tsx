@@ -108,8 +108,8 @@ export default function ItemPopover({ item, lang = "en", children }: ItemPopover
             <div className="space-y-1">
               {Object.entries(item.effects).map(([key, effect]: [string, any]) => (
                 <div key={key} className="flex justify-between items-center text-xs">
-                  <span className="text-gray-400">{getText(effect, lang)}</span>
-                  {effect.value && <span className="text-[#00ffff] font-medium">{effect.value}</span>}
+                  <span className="text-gray-400">{typeof effect === "string" ? effect : getText(effect, lang)}</span>
+                  {typeof effect === "object" && effect?.value && <span className="text-[#00ffff] font-medium">{effect.value}</span>}
                 </div>
               ))}
             </div>

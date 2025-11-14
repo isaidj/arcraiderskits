@@ -99,12 +99,14 @@ export default function ItemTooltip({ item, position, lang = "en" }: ItemTooltip
           <div className="mb-3 pb-3 border-b border-gray-700">
             <h4 className="text-xs font-semibold text-gray-400 uppercase mb-2">{lang === "es" ? "Efectos" : "Effects"}</h4>
             <div className="space-y-1">
-              {Object.entries(item.effects).map(([key, effect]: [string, any]) => (
-                <div key={key} className="flex justify-between items-center text-xs">
-                  <span className="text-gray-400">{getText(effect, lang)}</span>
-                  {effect.value && <span className="text-[#00ffff] font-medium">{effect.value}</span>}
-                </div>
-              ))}
+              {Object.entries(item.effects).map(([key, effect]: [string, any]) =>
+                effect ? (
+                  <div key={key} className="flex justify-between items-center text-xs">
+                    <span className="text-gray-400">{getText(effect, lang)}</span>
+                    {effect.value && <span className="text-[#00ffff] font-medium">{effect.value}</span>}
+                  </div>
+                ) : null
+              )}
             </div>
           </div>
         )}

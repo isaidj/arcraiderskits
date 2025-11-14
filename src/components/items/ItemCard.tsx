@@ -34,7 +34,7 @@ export default function ItemCard({ item, lang, viewMode = "normal", rarityColors
         <div className="w-full">
           <Link href={itemUrl} className="group relative flex cursor-pointer">
             <div
-              className={`card-chrome-border w-full relative flex items-center bg-[#0d111d]/90 ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg p-2 hover:scale-[1.02] transition-all duration-300 ${rarityColors.shadow} overflow-hidden`}
+              className={`card-chrome-border w-full relative flex items-center bg-[#0d111d]/90 ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg px-2 hover:scale-[1.02] transition-all duration-300 ${rarityColors.shadow} overflow-hidden`}
             >
               {/* Valor arriba a la derecha */}
               {topRightValue !== undefined && (

@@ -79,7 +79,7 @@ export default async function ItemPage({ params }: { params: Promise<{ lang: Loc
   });
 
   return (
-    <main className="min-h-screen pt-32 pb-20 px-4">
+    <main className="min-h-screen pt-10 pb-20 px-4">
       <TrackItemView itemId={item.id} />
       <div className="container mx-auto max-w-7xl">
         <ItemDetailView item={item} relatedItems={relatedItems} allItems={items} lang={lang} />

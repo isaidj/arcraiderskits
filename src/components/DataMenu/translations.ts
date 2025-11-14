@@ -10,6 +10,7 @@ export const menuTranslations: Record<
     hideoutModules: string;
     skillNodes: string;
     expeditions: string;
+    arc: string;
     comingSoon: string;
   }
 > = {
@@ -21,6 +22,7 @@ export const menuTranslations: Record<
     hideoutModules: "Hideout Modules",
     skillNodes: "Skill Nodes",
     expeditions: "Expeditions",
+    arc: "ARC",
     comingSoon: "Coming Soon",
   },
   es: {
@@ -31,6 +33,7 @@ export const menuTranslations: Record<
     hideoutModules: "Módulos de Refugio",
     skillNodes: "Nodos de Habilidad",
     expeditions: "Expediciones",
+    arc: "ARC",
     comingSoon: "Próximamente",
   },
   de: {
@@ -41,6 +44,7 @@ export const menuTranslations: Record<
     hideoutModules: "Versteck-Module",
     skillNodes: "Fähigkeitsknoten",
     expeditions: "Expeditionen",
+    arc: "ARC",
     comingSoon: "Demnächst",
   },
   fr: {
@@ -51,6 +55,7 @@ export const menuTranslations: Record<
     hideoutModules: "Modules de Planque",
     skillNodes: "Nœuds de Compétence",
     expeditions: "Expéditions",
+    arc: "ARC",
     comingSoon: "Bientôt Disponible",
   },
   pt: {
@@ -61,6 +66,7 @@ export const menuTranslations: Record<
     hideoutModules: "Módulos de Esconderijo",
     skillNodes: "Nós de Habilidade",
     expeditions: "Expedições",
+    arc: "ARC",
     comingSoon: "Em Breve",
   },
   pl: {
@@ -71,6 +77,7 @@ export const menuTranslations: Record<
     hideoutModules: "Moduły Kryjówki",
     skillNodes: "Węzły Umiejętności",
     expeditions: "Ekspedycje",
+    arc: "ARC",
     comingSoon: "Wkrótce",
   },
   no: {
@@ -81,6 +88,7 @@ export const menuTranslations: Record<
     hideoutModules: "Skjulested-moduler",
     skillNodes: "Ferdighetsnoder",
     expeditions: "Ekspedisjoner",
+    arc: "ARC",
     comingSoon: "Kommer Snart",
   },
   da: {
@@ -91,6 +99,7 @@ export const menuTranslations: Record<
     hideoutModules: "Skjulested-moduler",
     skillNodes: "Færdighedsnoder",
     expeditions: "Ekspeditioner",
+    arc: "ARC",
     comingSoon: "Kommer Snart",
   },
   it: {
@@ -101,6 +110,7 @@ export const menuTranslations: Record<
     hideoutModules: "Moduli Nascondiglio",
     skillNodes: "Nodi Abilità",
     expeditions: "Spedizioni",
+    arc: "ARC",
     comingSoon: "Prossimamente",
   },
   uk: {
@@ -111,6 +121,7 @@ export const menuTranslations: Record<
     hideoutModules: "Модулі Схованки",
     skillNodes: "Вузли Навичок",
     expeditions: "Експедиції",
+    arc: "ARC",
     comingSoon: "Незабаром",
   },
   kr: {
@@ -121,6 +132,7 @@ export const menuTranslations: Record<
     hideoutModules: "은신처 모듈",
     skillNodes: "스킬 노드",
     expeditions: "원정",
+    arc: "ARC",
     comingSoon: "출시 예정",
   },
   ru: {
@@ -131,6 +143,7 @@ export const menuTranslations: Record<
     hideoutModules: "Модули Убежища",
     skillNodes: "Узлы Навыков",
     expeditions: "Экспедиции",
+    arc: "ARC",
     comingSoon: "Скоро",
   },
   "zh-CN": {
@@ -141,6 +154,7 @@ export const menuTranslations: Record<
     hideoutModules: "藏身处模块",
     skillNodes: "技能节点",
     expeditions: "探险",
+    arc: "ARC",
     comingSoon: "即将推出",
   },
   ja: {
@@ -151,6 +165,7 @@ export const menuTranslations: Record<
     hideoutModules: "隠れ家モジュール",
     skillNodes: "スキルノード",
     expeditions: "遠征",
+    arc: "ARC",
     comingSoon: "近日公開",
   },
   tr: {
@@ -161,6 +176,7 @@ export const menuTranslations: Record<
     hideoutModules: "Sığınak Modülleri",
     skillNodes: "Yetenek Düğümleri",
     expeditions: "Seferler",
+    arc: "ARC",
     comingSoon: "Yakında",
   },
   "zh-TW": {
@@ -171,6 +187,7 @@ export const menuTranslations: Record<
     hideoutModules: "藏身處模組",
     skillNodes: "技能節點",
     expeditions: "探險",
+    arc: "ARC",
     comingSoon: "即將推出",
   },
   sr: {
@@ -181,6 +198,7 @@ export const menuTranslations: Record<
     hideoutModules: "Модули Скривнице",
     skillNodes: "Чворови Вештина",
     expeditions: "Експедиције",
+    arc: "ARC",
     comingSoon: "Ускоро",
   },
   hr: {
@@ -191,6 +209,7 @@ export const menuTranslations: Record<
     hideoutModules: "Moduli Skrovišta",
     skillNodes: "Čvorovi Vještina",
     expeditions: "Ekspedicije",
+    arc: "ARC",
     comingSoon: "Uskoro",
   },
 };
