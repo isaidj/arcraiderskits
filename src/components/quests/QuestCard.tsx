@@ -22,10 +22,10 @@ export default function QuestCard({ quest, lang, viewMode = "normal", topRightVa
   if (viewMode === "horizontal") {
     return (
       <Link href={questUrl}>
-        <div className="group relative bg-[#0d111d]/50 backdrop-blur-sm rounded-lg border-2 border-[#00ffff]/30 hover:border-[#00ffff] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] cursor-pointer ">
+        <div className="group relative bg-[#0d111d]  rounded-lg border-2 border-[#00ffff]/30 hover:border-[#00ffff] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] cursor-pointer ">
           {/* Valor arriba a la derecha */}
           {topRightValue !== undefined && (
-            <div className="absolute -top-2 -right-2 bg-linear-to-br from-[#0d111d] to-[#1a1f2e] border-2 border-[#00ffff]/50 text-gray-100 text-sm font-bold px-2.5 py-1 rounded-md shadow-lg z-20 backdrop-blur-sm">
+            <div className="absolute -top-2 -right-2 bg-linear-to-br from-[#0d111d] to-[#1a1f2e] border-2 border-[#00ffff]/50 text-gray-100 text-sm font-bold px-2.5 py-1 rounded-md shadow-lg z-20 ">
               {topRightValue}
             </div>
           )}
@@ -57,7 +57,7 @@ export default function QuestCard({ quest, lang, viewMode = "normal", topRightVa
 
   return (
     <Link href={questUrl}>
-      <div className="group relative bg-[#0d111d]/50 backdrop-blur-sm rounded-lg p-6 border border-transparent hover:border-[#00ffff] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] cursor-pointer h-full flex flex-col">
+      <div className="group relative bg-[#0d111d]/90  rounded-lg p-6 border border-transparent hover:border-[#00ffff] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] cursor-pointer h-full flex flex-col">
         {/* Decorative corner */}
         <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#00ffff]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#00ffff]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

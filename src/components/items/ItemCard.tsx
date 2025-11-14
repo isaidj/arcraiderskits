@@ -29,7 +29,7 @@ export default function ItemCard({ item, lang, viewMode = "normal", rarityColors
         <div className="w-full">
           <Link href={itemUrl} className="group relative flex cursor-pointer">
             <div
-              className={`card-chrome-border w-full relative flex items-center bg-[#0d111d]/50 backdrop-blur-sm ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg p-2 hover:scale-[1.02] transition-all duration-300 ${rarityColors.shadow} overflow-hidden`}
+              className={`card-chrome-border w-full relative flex items-center bg-[#0d111d]/90 ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg p-2 hover:scale-[1.02] transition-all duration-300 ${rarityColors.shadow} overflow-hidden`}
             >
               {/* Valor arriba a la derecha */}
               {topRightValue !== undefined && (
@@ -41,9 +41,13 @@ export default function ItemCard({ item, lang, viewMode = "normal", rarityColors
               )}
 
               {/* Imagen a la izquierda */}
-              {itemImage && (
+              {itemImage ? (
                 <div className="relative w-16 h-16 shrink-0 rounded overflow-hidden">
                   <Image src={itemImage} alt={itemName || "Item"} fill sizes="64px" className="object-contain p-1 group-hover:scale-110 transition-transform" unoptimized />
+                </div>
+              ) : (
+                <div className="w-16 h-16 shrink-0 bg-[#0d111d]/90 rounded flex items-center justify-center ">
+                  <span className="text-gray-500 text-sm"></span>
                 </div>
               )}
 
