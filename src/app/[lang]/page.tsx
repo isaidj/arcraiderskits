@@ -10,6 +10,9 @@ import path from "path";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
+// Revalidate trending data every 5 minutes
+export const revalidate = 300;
+
 // Generate static params for all languages
 export async function generateStaticParams() {
   return locales.map((locale) => ({
