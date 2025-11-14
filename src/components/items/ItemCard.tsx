@@ -39,7 +39,7 @@ export default function ItemCard({ item, lang, viewMode = "normal", rarityColors
               {/* Valor arriba a la derecha */}
               {topRightValue !== undefined && (
                 <div
-                  className={`absolute -top-2 -right-2 bg-linear-to-br from-[#0d111d] to-[#1a1f2e] border-2 ${rarityColors.border} text-gray-100 text-sm font-bold px-2.5 py-1 rounded-md shadow-lg z-20 backdrop-blur-sm`}
+                  className={`absolute -top-2 -right-2 bg-linear-to-br from-[#0d111d] to-[#1a1f2e] border-2 ${rarityColors.border} text-gray-100 text-sm font-bold px-2.5 py-1 rounded-md shadow-lg z-20 `}
                 >
                   {topRightValue}
                 </div>
@@ -94,7 +94,7 @@ export default function ItemCard({ item, lang, viewMode = "normal", rarityColors
       <div className="w-full aspect-square">
         <Link href={itemUrl} className="h-full w-full group relative flex flex-col justify-end cursor-pointer">
           <div
-            className={`card-chrome-border h-full w-full relative flex flex-col justify-end bg-[#0d111d]/50 backdrop-blur-sm ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg ${paddingClass} hover:scale-105 transition-all duration-300 ${rarityColors.shadow} overflow-hidden`}
+            className={`card-chrome-border h-full w-full relative flex flex-col justify-end bg-[#0d111d]/50 backdrop-blur-xs will-change-[backdrop-filter] transform-gpu ${rarityColors.gradient} border-2 ${rarityColors.border} rounded-lg ${paddingClass} hover:scale-105 transition-all duration-300 ${rarityColors.shadow} overflow-hidden`}
           >
             {/* Marca decorativa curva en esquina inferior izquierda */}
             <div className={`absolute bottom-0 left-0 ${cornerSize} pointer-events-none rounded-bl-sm overflow-hidden`}>
