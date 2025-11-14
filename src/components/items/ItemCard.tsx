@@ -47,8 +47,8 @@ export default function ItemCard({ item, lang, viewMode = "normal", rarityColors
 
               {/* Trend Indicator */}
               {trendDirection && (
-                <div className="absolute -top-2 -left-2 z-20">
-                  <TrendIndicator direction={trendDirection} rankChange={rankChange} size="sm" showLabel={false} />
+                <div className="absolute -bottom-1.5 -right-2 z-20">
+                  <TrendIndicator direction={trendDirection} rankChange={rankChange} size="md" showLabel={false} />
                 </div>
               )}
 

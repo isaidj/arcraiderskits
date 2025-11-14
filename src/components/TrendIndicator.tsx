@@ -30,21 +30,21 @@ const TrendIndicator: React.FC<TrendIndicatorProps> = ({ direction, rankChange, 
         return {
           icon: <ChevronsUp className={iconSizes[size]} />,
           color: "text-green-400",
-          bgColor: "bg-green-500/10",
+          bgColor: "bg-green-500/20",
           label: `+${Math.abs(rankChange)}`,
         };
       case "down":
         return {
           icon: <ChevronsDown className={iconSizes[size]} />,
           color: "text-red-400",
-          bgColor: "bg-red-500/10",
+          bgColor: "bg-red-500/20",
           label: `${rankChange}`,
         };
       case "new":
         return {
           icon: <Flame className={iconSizes[size]} />,
           color: "text-yellow-400",
-          bgColor: "bg-yellow-500/10",
+          bgColor: "bg-yellow-500/20",
           label: "NEW",
         };
       case "same":
@@ -52,7 +52,7 @@ const TrendIndicator: React.FC<TrendIndicatorProps> = ({ direction, rankChange, 
         return {
           icon: <Equal className={iconSizes[size]} />,
           color: "text-gray-400",
-          bgColor: "bg-gray-500/10",
+          bgColor: "bg-gray-500/20",
           label: "—",
         };
     }
