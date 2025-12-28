@@ -7,8 +7,8 @@ import { createClient } from "@supabase/supabase-js";
 import { promises as fs } from "fs";
 import path from "path";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
 // Revalidate trending data every 5 minutes
 export const revalidate = 300;
@@ -101,8 +101,6 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
   let trendingData: any = { period: "24h", items: [], quests: [] };
 
   try {
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
     // Leer archivos de datos
     const itemsPath = path.join(process.cwd(), "public", "data", "items.json");
     const questsPath = path.join(process.cwd(), "public", "data", "quests.json");
@@ -112,87 +110,128 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
     const itemsData = JSON.parse(itemsContent);
     const questsData = JSON.parse(questsContent);
 
-    // Intentar obtener de vistas materializadas primero
-    let { data: trendingItems } = await supabase.from("trending_items_24h").select("*").limit(12);
+    // Si Supabase está configurado, obtener datos de trending
+    if (supabaseUrl && supabaseKey) {
+      const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Si está vacío, calcular directamente de la tabla base
-    if (!trendingItems || trendingItems.length === 0) {
-      const { data: directItems } = await supabase
-        .from("item_views")
-        .select("item_id")
-        .gte("viewed_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+      // Obtener trending items con ranking actual
+      let { data: trendingItems } = await supabase.from("trending_items_24h_ranked").select("*").limit(12);
 
-      if (directItems && directItems.length > 0) {
-        // Contar vistas por item_id
-        const itemCounts = directItems.reduce((acc: any, curr: any) => {
-          acc[curr.item_id] = (acc[curr.item_id] || 0) + 1;
-          return acc;
-        }, {});
-
-        // Convertir a array y ordenar
-        trendingItems = Object.entries(itemCounts)
-          .map(([item_id, count]) => ({
-            item_id,
-            view_count: count as number,
-            last_viewed: new Date().toISOString(),
-          }))
-          .sort((a, b) => b.view_count - a.view_count)
-          .slice(0, 12);
+      // Fallback a vista simple si la ranked no existe
+      if (!trendingItems || trendingItems.length === 0) {
+        const { data: simpleItems } = await supabase.from("trending_items_24h").select("*").limit(12);
+        trendingItems = simpleItems;
       }
-    }
 
-    // Hacer lo mismo para quests
-    let { data: trendingQuests } = await supabase.from("trending_quests_24h").select("*").limit(12);
+      // Obtener rankings anteriores para comparar
+      const { data: previousItems } = await supabase.from("trending_items_previous_24h_ranked").select("*");
+      const previousItemsMap = new Map((previousItems || []).map((item: any) => [item.item_id, item.previous_rank]));
 
-    if (!trendingQuests || trendingQuests.length === 0) {
-      const { data: directQuests } = await supabase
-        .from("quest_views")
-        .select("quest_id")
-        .gte("viewed_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+      // Obtener trending quests con ranking actual
+      let { data: trendingQuests } = await supabase.from("trending_quests_24h_ranked").select("*").limit(12);
 
-      if (directQuests && directQuests.length > 0) {
-        const questCounts = directQuests.reduce((acc: any, curr: any) => {
-          acc[curr.quest_id] = (acc[curr.quest_id] || 0) + 1;
-          return acc;
-        }, {});
-
-        trendingQuests = Object.entries(questCounts)
-          .map(([quest_id, count]) => ({
-            quest_id,
-            view_count: count as number,
-            last_viewed: new Date().toISOString(),
-          }))
-          .sort((a, b) => b.view_count - a.view_count)
-          .slice(0, 12);
+      // Fallback a vista simple si la ranked no existe
+      if (!trendingQuests || trendingQuests.length === 0) {
+        const { data: simpleQuests } = await supabase.from("trending_quests_24h").select("*").limit(12);
+        trendingQuests = simpleQuests;
       }
+
+      // Obtener rankings anteriores para quests
+      const { data: previousQuests } = await supabase.from("trending_quests_previous_24h_ranked").select("*");
+      const previousQuestsMap = new Map((previousQuests || []).map((quest: any) => [quest.quest_id, quest.previous_rank]));
+
+      // Función para calcular dirección de tendencia
+      const getTrendDirection = (currentRank: number | undefined, previousRank: number | null): { direction: "up" | "down" | "same" | "new"; change: number } => {
+        if (previousRank === null || previousRank === undefined) {
+          return { direction: "new", change: 0 };
+        }
+        const current = currentRank || 999;
+        const change = previousRank - current;
+        if (change > 0) {
+          return { direction: "up", change };
+        } else if (change < 0) {
+          return { direction: "down", change };
+        }
+        return { direction: "same", change: 0 };
+      };
+
+      // Enriquecer los datos de items
+      const enrichedItems = (trendingItems || [])
+        .map((item: any, index: number) => {
+          const itemData = itemsData.find((i: any) => i.id === item.item_id);
+          const previousRank = previousItemsMap.get(item.item_id) || null;
+          const currentRank = item.current_rank || index + 1;
+          const { direction, change } = getTrendDirection(currentRank, previousRank);
+          return {
+            ...item,
+            current_rank: currentRank,
+            previous_rank: previousRank,
+            trend_direction: direction,
+            rank_change: change,
+            data: itemData,
+          };
+        })
+        .filter((item) => item.data);
+
+      // Enriquecer los datos de quests
+      const enrichedQuests = (trendingQuests || [])
+        .map((quest: any, index: number) => {
+          const questData = questsData.find((q: any) => q.id === quest.quest_id);
+          const previousRank = previousQuestsMap.get(quest.quest_id) || null;
+          const currentRank = quest.current_rank || index + 1;
+          const { direction, change } = getTrendDirection(currentRank, previousRank);
+          return {
+            ...quest,
+            current_rank: currentRank,
+            previous_rank: previousRank,
+            trend_direction: direction,
+            rank_change: change,
+            data: questData,
+          };
+        })
+        .filter((quest) => quest.data);
+
+      trendingData = {
+        period: "24h",
+        items: enrichedItems,
+        quests: enrichedQuests,
+      };
+    } else {
+      // Fallback: usar items y quests aleatorios del JSON local cuando no hay Supabase
+      console.log("Supabase not configured, using fallback data for trending");
+
+      // Seleccionar items aleatorios
+      const shuffledItems = [...itemsData].sort(() => Math.random() - 0.5).slice(0, 12);
+      const shuffledQuests = [...questsData].sort(() => Math.random() - 0.5).slice(0, 12);
+
+      const fallbackItems = shuffledItems.map((item: any, index: number) => ({
+        item_id: item.id,
+        view_count: Math.floor(Math.random() * 100) + 10,
+        last_viewed: new Date().toISOString(),
+        current_rank: index + 1,
+        previous_rank: null,
+        trend_direction: "new" as const,
+        rank_change: 0,
+        data: item,
+      }));
+
+      const fallbackQuests = shuffledQuests.map((quest: any, index: number) => ({
+        quest_id: quest.id,
+        view_count: Math.floor(Math.random() * 50) + 5,
+        last_viewed: new Date().toISOString(),
+        current_rank: index + 1,
+        previous_rank: null,
+        trend_direction: "new" as const,
+        rank_change: 0,
+        data: quest,
+      }));
+
+      trendingData = {
+        period: "24h",
+        items: fallbackItems,
+        quests: fallbackQuests,
+      };
     }
-
-    // Enriquecer los datos
-    const enrichedItems = (trendingItems || [])
-      .map((item: any) => {
-        const itemData = itemsData.find((i: any) => i.id === item.item_id);
-        return {
-          ...item,
-          data: itemData,
-        };
-      })
-      .filter((item) => item.data);
-
-    const enrichedQuests = (trendingQuests || [])
-      .map((quest: any) => {
-        const questData = questsData.find((q: any) => q.id === quest.quest_id);
-        return {
-          ...quest,
-          data: questData,
-        };
-      })
-      .filter((quest) => quest.data);
-
-    trendingData = {
-      period: "24h",
-      items: enrichedItems,
-      quests: enrichedQuests,
-    };
   } catch (error) {
     console.error("Error fetching trending data:", error);
   }
