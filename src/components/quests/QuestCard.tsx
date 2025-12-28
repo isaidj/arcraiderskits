@@ -95,7 +95,7 @@ export default function QuestCard({ quest, lang, viewMode = "normal", topRightVa
         <div className="flex items-center gap-4 text-xs text-gray-500 pt-4 border-t border-[#00ffff]/10">
           {(quest.objectives?.length ?? 0) > 0 && <span>📋 {quest.objectives?.length} objectives</span>}
           {(quest.requiredItemIds?.length ?? 0) > 0 && <span>📦 {quest.requiredItemIds?.length} items needed</span>}
-          {quest.map && <span className="capitalize">📍 {quest.map.replace(/_/g, " ")}</span>}
+          {quest.map && typeof quest.map === "string" && <span className="capitalize">📍 {quest.map.replace(/_/g, " ")}</span>}
         </div>
       </div>
     </Link>
