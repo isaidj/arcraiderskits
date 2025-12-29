@@ -44,7 +44,7 @@ export default function QuestDetailView({ quest, allQuests, allItems, lang }: Qu
             <div className="flex items-center gap-3 flex-wrap">
               <span className={`px-4 py-2 rounded-full text-sm font-semibold border ${getTraderBadgeColor(quest.trader)}`}>{quest.trader}</span>
               {quest.xp > 0 && <span className="px-4 py-2 rounded-full text-sm font-semibold bg-green-500/20 border border-green-500/50 text-green-400">+{quest.xp} XP</span>}
-              {quest.map && (
+              {quest.map && typeof quest.map === "string" && (
                 <span className="px-4 py-2 rounded-full text-sm font-semibold bg-blue-500/20 border border-blue-500/50 text-blue-400 capitalize">
                   📍 {quest.map.replace(/_/g, " ")}
                 </span>
