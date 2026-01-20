@@ -46,3 +46,4 @@ next-env.d.ts
 # Arc Raiders downloaded data (images and large files)
 public/data/images/
 public/data/*.json
+public/data/images/**
