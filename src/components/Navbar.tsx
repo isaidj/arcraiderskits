@@ -62,6 +62,8 @@ export default function Navbar() {
               onClick={toggleAds}
               className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider"
               title={adsEnabled ? "Disable ads" : "Enable ads"}
+              aria-label={adsEnabled ? "Disable ads" : "Enable ads"}
+              aria-pressed={adsEnabled}
             >
               <div className={`relative w-11 h-6 rounded-full transition-colors ${adsEnabled ? "bg-red-600" : "bg-gray-700"}`}>
                 <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform shadow-lg ${adsEnabled ? "translate-x-5" : ""}`} />
@@ -78,6 +80,9 @@ export default function Navbar() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+              aria-label="Toggle menu"
+              aria-expanded={isOpen}
+              aria-controls="mobile-menu"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isOpen ? (
@@ -93,7 +98,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden bg-black/95 border-t border-red-900/20">
+        <div id="mobile-menu" className="md:hidden bg-black/95 border-t border-red-900/20">
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               href={`/${currentLang}`}
@@ -124,6 +129,8 @@ export default function Navbar() {
             <button
               onClick={toggleAds}
               className="flex items-center justify-between w-full px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-md text-base font-medium uppercase tracking-wider transition-colors"
+              aria-label={adsEnabled ? "Disable ads" : "Enable ads"}
+              aria-pressed={adsEnabled}
             >
               <span>ADS</span>
               <div className={`relative w-11 h-6 rounded-full transition-colors ${adsEnabled ? "bg-red-600" : "bg-gray-700"}`}>
