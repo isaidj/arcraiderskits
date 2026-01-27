@@ -14,6 +14,8 @@ export default function LanguageSelector({ currentLang, isMobile = false }: Lang
   const router = useRouter();
   const pathname = usePathname();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const itemsRef = useRef<(HTMLButtonElement | null)[]>([]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -25,9 +27,19 @@ export default function LanguageSelector({ currentLang, isMobile = false }: Lang
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+
+      // Focus the current language or the first one when opening
+      const currentIndex = locales.indexOf(currentLang);
+      const targetIndex = currentIndex >= 0 ? currentIndex : 0;
+
+      // Use setTimeout to ensure the element is rendered
+      setTimeout(() => {
+        itemsRef.current[targetIndex]?.focus();
+      }, 0);
+
       return () => document.removeEventListener("mousedown", handleClickOutside);
     }
-  }, [isOpen]);
+  }, [isOpen, currentLang]);
 
   const handleLanguageChange = (newLang: Locale) => {
     // Extract the current path without the language prefix
@@ -51,6 +63,45 @@ export default function LanguageSelector({ currentLang, isMobile = false }: Lang
     // Navigate to the new language path
     router.push(`/${newLang}${pathWithoutLang === "/" ? "" : pathWithoutLang}`);
     setIsOpen(false);
+    triggerRef.current?.focus();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        const nextIndex = (index + 1) % locales.length;
+        itemsRef.current[nextIndex]?.focus();
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        const prevIndex = (index - 1 + locales.length) % locales.length;
+        itemsRef.current[prevIndex]?.focus();
+        break;
+      case "Escape":
+        e.preventDefault();
+        setIsOpen(false);
+        triggerRef.current?.focus();
+        break;
+      case "Tab":
+        setIsOpen(false);
+        break;
+      case "Home":
+        e.preventDefault();
+        itemsRef.current[0]?.focus();
+        break;
+      case "End":
+        e.preventDefault();
+        itemsRef.current[locales.length - 1]?.focus();
+        break;
+    }
+  };
+
+  const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      setIsOpen(true);
+    }
   };
 
   if (isMobile) {
@@ -75,9 +126,13 @@ export default function LanguageSelector({ currentLang, isMobile = false }: Lang
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        ref={triggerRef}
         onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={handleTriggerKeyDown}
         className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider"
         aria-label="Select language"
+        aria-haspopup="true"
+        aria-expanded={isOpen}
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -95,13 +150,19 @@ export default function LanguageSelector({ currentLang, isMobile = false }: Lang
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-black/95 border border-red-900/20 rounded-lg shadow-lg overflow-hidden z-50 backdrop-blur-md">
+        <div
+          className="absolute right-0 mt-2 w-48 bg-black/95 border border-red-900/20 rounded-lg shadow-lg overflow-hidden z-50 backdrop-blur-md"
+          role="menu"
+        >
           <div className="max-h-96 overflow-y-auto">
-            {locales.map((locale) => (
+            {locales.map((locale, index) => (
               <button
                 key={locale}
+                ref={(el) => { itemsRef.current[index] = el; }}
                 onClick={() => handleLanguageChange(locale)}
-                className={`w-full text-left px-4 py-2 text-sm transition-colors ${
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                role="menuitem"
+                className={`w-full text-left px-4 py-2 text-sm transition-colors focus:outline-none focus:bg-gray-800 ${
                   locale === currentLang ? "bg-red-600 text-white" : "text-gray-300 hover:bg-gray-800 hover:text-white"
                 }`}
               >
