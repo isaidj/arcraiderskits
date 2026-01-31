@@ -73,13 +73,19 @@ export default function ItemsFilter({ items, lang }: ItemsFilterProps) {
             <SortSelector value={sortBy} onChange={handleSortChange} />
 
             {/* View Mode Toggle */}
-            <div className="flex rounded-lg overflow-hidden border border-gray-700 h-10">
+            <div
+              className="flex rounded-lg overflow-hidden border border-gray-700 h-10"
+              role="group"
+              aria-label={lang === "es" ? "Modo de vista" : "View mode"}
+            >
               <button
                 onClick={() => setViewMode("normal")}
                 className={`px-2 py-2 text-sm font-medium transition-colors ${viewMode === "normal" ? "bg-gray-100 text-gray-700" : "bg-gray-700 text-gray-400 hover:bg-gray-600"}`}
                 title={lang === "es" ? "Vista normal" : "Normal view"}
+                aria-label={lang === "es" ? "Vista normal" : "Normal view"}
+                aria-pressed={viewMode === "normal"}
               >
-                <SvgGridBig className="w-5 h-5" />
+                <SvgGridBig aria-hidden="true" className="w-5 h-5" />
               </button>
               <button
                 onClick={() => setViewMode("compact")}
@@ -87,8 +93,10 @@ export default function ItemsFilter({ items, lang }: ItemsFilterProps) {
                   viewMode === "compact" ? "bg-gray-100 text-gray-700" : "bg-gray-700 text-gray-400 hover:bg-gray-600"
                 }`}
                 title={lang === "es" ? "Vista compacta" : "Compact view"}
+                aria-label={lang === "es" ? "Vista compacta" : "Compact view"}
+                aria-pressed={viewMode === "compact"}
               >
-                <SvgGridSmall className="w-5 h-5" />
+                <SvgGridSmall aria-hidden="true" className="w-5 h-5" />
               </button>
             </div>
           </div>
