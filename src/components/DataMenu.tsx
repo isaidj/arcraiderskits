@@ -67,15 +67,25 @@ export default function DataMenu() {
             return (
               <li key={item.path} className="relative">
                 {item.disabled ? (
-                  <div className="relative group">
+                  <div
+                    className="relative group focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00ffff] rounded"
+                    tabIndex={0}
+                    role="button"
+                    aria-disabled="true"
+                    aria-label={`${t[item.key]} - ${t.comingSoon}`}
+                  >
                     <div
                       className="px-3 py-1.5 rounded text-xs sm:text-sm
                       transition-all duration-300 whitespace-nowrap uppercase tracking-wider font-medium
                       border bg-transparent text-gray-600 border-gray-700 cursor-not-allowed opacity-50"
+                      aria-hidden="true"
                     >
                       {t[item.key]}
                     </div>
-                    <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-[#00ffff] text-[#00ffff] text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+                    <span
+                      className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-[#00ffff] text-[#00ffff] text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50"
+                      aria-hidden="true"
+                    >
                       {t.comingSoon}
                     </span>
                   </div>
@@ -106,15 +116,25 @@ export default function DataMenu() {
               return (
                 <li key={item.path} className="relative shrink-0">
                   {item.disabled ? (
-                    <div className="relative group">
+                    <div
+                      className="relative group focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00ffff] rounded"
+                      tabIndex={0}
+                      role="button"
+                      aria-disabled="true"
+                      aria-label={`${t[item.key]} - ${t.comingSoon}`}
+                    >
                       <div
                         className="px-3 py-1.5 rounded text-xs
                         transition-all duration-300 whitespace-nowrap uppercase tracking-wider font-medium
                         border bg-transparent text-gray-600 border-gray-700 cursor-not-allowed opacity-50"
+                        aria-hidden="true"
                       >
                         {t[item.key]}
                       </div>
-                      <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-[#00ffff] text-[#00ffff] text-xs px-2 py-1 rounded opacity-0 group-active:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+                      <span
+                        className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-[#00ffff] text-[#00ffff] text-xs px-2 py-1 rounded opacity-0 group-active:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50"
+                        aria-hidden="true"
+                      >
                         {t.comingSoon}
                       </span>
                     </div>
