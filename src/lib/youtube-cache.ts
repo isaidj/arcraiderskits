@@ -42,23 +42,20 @@ function isCacheValid(updatedAt: string): boolean {
  * @returns Resultado de caché o null si no existe/expiró
  */
 export async function getCachedVideo(query: string): Promise<YouTubeCacheRow | null> {
+  if (!supabase) return null;
   try {
     const normalizedQuery = normalizeQuery(query);
 
     const { data, error } = await supabase.from("youtube_cache").select("*").ilike("query", normalizedQuery).single();
 
     if (error) {
-      // No encontrado o error
       console.log(`📭 Cache miss for: "${query}"`);
       return null;
     }
 
-    // Verificar si el caché sigue siendo válido
     if (!isCacheValid(data.updated_at)) {
       console.log(`⏰ Cache expired for: "${query}" (updated: ${data.updated_at})`);
-      // Opcionalmente, borrar el registro expirado
       await supabase.from("youtube_cache").delete().eq("id", data.id);
-
       return null;
     }
 
@@ -87,10 +84,10 @@ export async function saveCachedVideo(
     publishedAt?: string;
   }
 ): Promise<void> {
+  if (!supabase || !supabaseAdmin) return;
   try {
     const normalizedQuery = normalizeQuery(query);
 
-    // Primero intentar buscar si existe un registro con este query (usando cliente normal)
     const { data: existing } = await supabase.from("youtube_cache").select("id").ilike("query", normalizedQuery).single();
 
     const cacheData = {
@@ -136,6 +133,7 @@ export async function saveCachedVideo(
  * (Útil para ejecutar manualmente o en cron job)
  */
 export async function cleanupExpiredCache(): Promise<number> {
+  if (!supabaseAdmin) return 0;
   try {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() - CACHE_EXPIRATION_DAYS);
@@ -165,6 +163,7 @@ export async function getCacheStats(): Promise<{
   validEntries: number;
   expiredEntries: number;
 }> {
+  if (!supabase) return { totalEntries: 0, validEntries: 0, expiredEntries: 0 };
   try {
     const { data, error } = await supabase.from("youtube_cache").select("updated_at");
 

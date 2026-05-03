@@ -5,49 +5,29 @@
  * Usa variables de entorno para configuración segura
  */
 
-import { createClient } from "@supabase/supabase-js";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-// Validar que existan las variables de entorno
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("⚠️ Missing Supabase environment variables. " + "Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local");
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const supabase: SupabaseClient | null =
+  supabaseUrl && supabaseAnonKey
+    ? createClient(supabaseUrl, supabaseAnonKey, {
+        auth: { persistSession: false, autoRefreshToken: false },
+        db: { schema: "public" },
+      })
+    : null;
 
-/**
- * Cliente de Supabase con autenticación anónima
- * - Permite lectura pública (SELECT)
- * - Usar solo para operaciones de lectura
- */
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: false, // No necesitamos sesión en servidor
-    autoRefreshToken: false,
-  },
-  db: {
-    schema: "public",
-  },
-});
-
-/**
- * Cliente de Supabase con service_role key (admin)
- * - Bypasea Row Level Security (RLS)
- * - Usar SOLO en servidor (API routes, server components)
- * - NUNCA exponer al cliente
- */
-export const supabaseAdmin = supabaseServiceRoleKey
-  ? createClient(supabaseUrl, supabaseServiceRoleKey, {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-      },
-      db: {
-        schema: "public",
-      },
-    })
-  : supabase; // Fallback al cliente normal si no hay service_role key
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const supabaseAdmin: SupabaseClient | null =
+  supabaseUrl && supabaseServiceRoleKey
+    ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+        auth: { persistSession: false, autoRefreshToken: false },
+        db: { schema: "public" },
+      })
+    : supabase;
 
 /**
  * Tipos TypeScript para la tabla youtube_cache
