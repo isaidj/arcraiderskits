@@ -18,7 +18,15 @@ import {
   relatedBotsText,
   combatInfoText,
   rewardsText,
+  weaknessText,
+  foundInText,
 } from "@/app/[lang]/arc/[id]/translations";
+
+interface MapEntry {
+  id: string;
+  name: { en: string; [key: string]: string };
+  image: string;
+}
 
 interface BotDetailViewProps {
   bot: Bot;
@@ -26,9 +34,10 @@ interface BotDetailViewProps {
   allBots: Bot[];
   lang: Locale;
   items?: Array<any>;
+  maps?: MapEntry[];
 }
 
-export default function BotDetailView({ bot, relatedBots, allBots, lang, items = [] }: BotDetailViewProps) {
+export default function BotDetailView({ bot, relatedBots, allBots, lang, items = [], maps = [] }: BotDetailViewProps) {
   const threatColors = getThreatColors(bot.threat || "");
 
   const t = {
@@ -42,6 +51,15 @@ export default function BotDetailView({ bot, relatedBots, allBots, lang, items =
     relatedBots: relatedBotsText[lang],
     combatInfo: combatInfoText[lang],
     rewards: rewardsText[lang],
+    weakness: weaknessText[lang],
+    foundIn: foundInText[lang],
+  };
+
+  const getMapName = (mapId: string): string => {
+    const mapEntry = maps.find((m) => m.id === mapId);
+    if (!mapEntry) return mapId.replace(/_/g, " ");
+    const langKey = lang === "kr" ? "ko-KR" : lang;
+    return mapEntry.name[langKey] || mapEntry.name.en || mapId;
   };
 
   // Encontrar item por nombre del drop
@@ -113,6 +131,30 @@ export default function BotDetailView({ bot, relatedBots, allBots, lang, items =
                 <div className="mb-3">
                   <h3 className="text-xs font-semibold text-gray-400 uppercase mb-1">{t.description}</h3>
                   <p className="text-sm md:text-base text-gray-300 leading-relaxed">{getText(bot.description, lang)}</p>
+                </div>
+              )}
+
+              {/* Weakness */}
+              {bot.weakness && (
+                <div className="mb-3">
+                  <h3 className="text-xs font-semibold text-yellow-500 uppercase mb-1">{t.weakness}</h3>
+                  <p className="text-sm md:text-base text-yellow-200 leading-relaxed bg-yellow-950/30 border border-yellow-700/40 rounded-lg px-3 py-2">
+                    ⚠️ {bot.weakness}
+                  </p>
+                </div>
+              )}
+
+              {/* Maps */}
+              {bot.maps && bot.maps.length > 0 && (
+                <div className="mb-3">
+                  <h3 className="text-xs font-semibold text-gray-400 uppercase mb-2">{t.foundIn}</h3>
+                  <div className="flex flex-wrap gap-1.5">
+                    {bot.maps.map((mapId) => (
+                      <span key={mapId} className="px-2 py-1 rounded text-xs font-medium bg-gray-800 border border-gray-600 text-gray-300">
+                        {getMapName(mapId)}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               )}
 

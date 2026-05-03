@@ -11,6 +11,7 @@ export const menuTranslations: Record<
     skillNodes: string;
     expeditions: string;
     arc: string;
+    maps: string;
     comingSoon: string;
   }
 > = {
@@ -23,6 +24,7 @@ export const menuTranslations: Record<
     skillNodes: "Skill Nodes",
     expeditions: "Expeditions",
     arc: "ARC",
+    maps: "Maps",
     comingSoon: "Coming Soon",
   },
   es: {
@@ -34,6 +36,7 @@ export const menuTranslations: Record<
     skillNodes: "Nodos de Habilidad",
     expeditions: "Expediciones",
     arc: "ARC",
+    maps: "Mapas",
     comingSoon: "Próximamente",
   },
   de: {
@@ -45,6 +48,7 @@ export const menuTranslations: Record<
     skillNodes: "Fähigkeitsknoten",
     expeditions: "Expeditionen",
     arc: "ARC",
+    maps: "Karten",
     comingSoon: "Demnächst",
   },
   fr: {
@@ -56,6 +60,7 @@ export const menuTranslations: Record<
     skillNodes: "Nœuds de Compétence",
     expeditions: "Expéditions",
     arc: "ARC",
+    maps: "Cartes",
     comingSoon: "Bientôt Disponible",
   },
   pt: {
@@ -67,6 +72,7 @@ export const menuTranslations: Record<
     skillNodes: "Nós de Habilidade",
     expeditions: "Expedições",
     arc: "ARC",
+    maps: "Mapas",
     comingSoon: "Em Breve",
   },
   pl: {
@@ -78,6 +84,7 @@ export const menuTranslations: Record<
     skillNodes: "Węzły Umiejętności",
     expeditions: "Ekspedycje",
     arc: "ARC",
+    maps: "Mapy",
     comingSoon: "Wkrótce",
   },
   no: {
@@ -89,6 +96,7 @@ export const menuTranslations: Record<
     skillNodes: "Ferdighetsnoder",
     expeditions: "Ekspedisjoner",
     arc: "ARC",
+    maps: "Kart",
     comingSoon: "Kommer Snart",
   },
   da: {
@@ -100,6 +108,7 @@ export const menuTranslations: Record<
     skillNodes: "Færdighedsnoder",
     expeditions: "Ekspeditioner",
     arc: "ARC",
+    maps: "Kort",
     comingSoon: "Kommer Snart",
   },
   it: {
@@ -111,6 +120,7 @@ export const menuTranslations: Record<
     skillNodes: "Nodi Abilità",
     expeditions: "Spedizioni",
     arc: "ARC",
+    maps: "Mappe",
     comingSoon: "Prossimamente",
   },
   uk: {
@@ -122,6 +132,7 @@ export const menuTranslations: Record<
     skillNodes: "Вузли Навичок",
     expeditions: "Експедиції",
     arc: "ARC",
+    maps: "Карти",
     comingSoon: "Незабаром",
   },
   kr: {
@@ -133,6 +144,7 @@ export const menuTranslations: Record<
     skillNodes: "스킬 노드",
     expeditions: "원정",
     arc: "ARC",
+    maps: "지도",
     comingSoon: "출시 예정",
   },
   ru: {
@@ -144,6 +156,7 @@ export const menuTranslations: Record<
     skillNodes: "Узлы Навыков",
     expeditions: "Экспедиции",
     arc: "ARC",
+    maps: "Карты",
     comingSoon: "Скоро",
   },
   "zh-CN": {
@@ -155,6 +168,7 @@ export const menuTranslations: Record<
     skillNodes: "技能节点",
     expeditions: "探险",
     arc: "ARC",
+    maps: "地图",
     comingSoon: "即将推出",
   },
   ja: {
@@ -166,6 +180,7 @@ export const menuTranslations: Record<
     skillNodes: "スキルノード",
     expeditions: "遠征",
     arc: "ARC",
+    maps: "マップ",
     comingSoon: "近日公開",
   },
   tr: {
@@ -177,6 +192,7 @@ export const menuTranslations: Record<
     skillNodes: "Yetenek Düğümleri",
     expeditions: "Seferler",
     arc: "ARC",
+    maps: "Haritalar",
     comingSoon: "Yakında",
   },
   "zh-TW": {
@@ -188,6 +204,7 @@ export const menuTranslations: Record<
     skillNodes: "技能節點",
     expeditions: "探險",
     arc: "ARC",
+    maps: "地圖",
     comingSoon: "即將推出",
   },
   sr: {
@@ -199,6 +216,7 @@ export const menuTranslations: Record<
     skillNodes: "Чворови Вештина",
     expeditions: "Експедиције",
     arc: "ARC",
+    maps: "Mape",
     comingSoon: "Ускоро",
   },
   hr: {
@@ -210,6 +228,7 @@ export const menuTranslations: Record<
     skillNodes: "Čvorovi Vještina",
     expeditions: "Ekspedicije",
     arc: "ARC",
+    maps: "Karte",
     comingSoon: "Uskoro",
   },
 };

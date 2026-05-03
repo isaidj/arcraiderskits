@@ -30,6 +30,17 @@ async function getItems(): Promise<any[]> {
   }
 }
 
+async function getMaps(): Promise<any[]> {
+  try {
+    const filePath = path.join(process.cwd(), "public", "data", "maps.json");
+    const fileContents = await fs.readFile(filePath, "utf8");
+    return JSON.parse(fileContents);
+  } catch (error) {
+    console.error("Error loading maps:", error);
+    return [];
+  }
+}
+
 // Generar todos los parámetros estáticos (lang × bot)
 export async function generateStaticParams() {
   const bots = await getBots();
@@ -69,6 +80,7 @@ export default async function BotPage({ params }: { params: Promise<{ lang: Loca
   const { lang, id } = await params;
   const bots = await getBots();
   const items = await getItems();
+  const maps = await getMaps();
 
   // Buscar bot por slug
   const bot = bots.find((b) => generateSlug(b.name, b.id) === id);
@@ -88,7 +100,7 @@ export default async function BotPage({ params }: { params: Promise<{ lang: Loca
   return (
     <main className="min-h-screen pt-10 pb-20 px-4">
       <div className="container mx-auto max-w-7xl">
-        <BotDetailView bot={bot} relatedBots={relatedBots} allBots={bots} lang={lang} items={items} />
+        <BotDetailView bot={bot} relatedBots={relatedBots} allBots={bots} lang={lang} items={items} maps={maps} />
       </div>
     </main>
   );

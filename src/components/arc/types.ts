@@ -5,6 +5,8 @@ export interface Bot {
   type: string;
   threat: string;
   description: string;
+  weakness?: string;
+  maps?: string[];
   destroyXp: number;
   lootXp: number;
   drops: string[];

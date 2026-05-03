@@ -210,6 +210,48 @@ export const rewardsText: Record<Locale, string> = {
   hr: "Nagrade",
 };
 
+export const weaknessText: Record<Locale, string> = {
+  en: "Weakness",
+  es: "Debilidad",
+  de: "Schwäche",
+  fr: "Faiblesse",
+  pt: "Fraqueza",
+  pl: "Słabość",
+  no: "Svakhet",
+  da: "Svaghed",
+  it: "Debolezza",
+  uk: "Слабкість",
+  kr: "약점",
+  ru: "Слабость",
+  "zh-CN": "弱点",
+  ja: "弱点",
+  tr: "Zayıflık",
+  "zh-TW": "弱點",
+  sr: "Слабост",
+  hr: "Slabost",
+};
+
+export const foundInText: Record<Locale, string> = {
+  en: "Found In",
+  es: "Aparece en",
+  de: "Gefunden in",
+  fr: "Trouvé dans",
+  pt: "Encontrado em",
+  pl: "Znaleziono w",
+  no: "Finnes i",
+  da: "Fundet i",
+  it: "Trovato in",
+  uk: "Знаходиться в",
+  kr: "발견 위치",
+  ru: "Находится в",
+  "zh-CN": "出现于",
+  ja: "出現場所",
+  tr: "Bulunduğu Yer",
+  "zh-TW": "出現於",
+  sr: "Нађено у",
+  hr: "Pronađeno u",
+};
+
 export const notFoundTitles: Record<Locale, string> = {
   en: "Bot Not Found - Arc Raiders Kits",
   es: "Bot No Encontrado - Arc Raiders Kits",
