@@ -87,7 +87,7 @@ try {
   combineHideoutFiles(path.join(TEMP_DIR, "hideout"), "hideoutModules.json");
 
   // Copiar archivos JSON directos que aún existen en la raíz
-  const directFiles = ["projects.json", "skillNodes.json", "bots.json", "trades.json"];
+  const directFiles = ["projects.json", "skillNodes.json", "bots.json", "trades.json", "maps.json"];
 
   directFiles.forEach((file) => {
     const source = path.join(TEMP_DIR, file);
@@ -100,6 +100,16 @@ try {
       console.warn(`⚠️  ${file} not found in repository`);
     }
   });
+
+  // Copiar map-events.json desde subcarpeta
+  const mapEventsSource = path.join(TEMP_DIR, "map-events", "map-events.json");
+  const mapEventsDest = path.join(DATA_DIR, "map-events.json");
+  if (fs.existsSync(mapEventsSource)) {
+    fs.copyFileSync(mapEventsSource, mapEventsDest);
+    console.log("✅ Copied map-events.json");
+  } else {
+    console.warn("⚠️  map-events/map-events.json not found in repository");
+  }
 
   // Copiar también la carpeta de imágenes si existe
   const imagesSource = path.join(TEMP_DIR, "images");
