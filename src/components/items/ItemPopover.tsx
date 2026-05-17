@@ -22,7 +22,12 @@ export default function ItemPopover({ item, lang = "en", children }: ItemPopover
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+        <div
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setOpen(false)}
+        >
           {children}
         </div>
       </PopoverTrigger>
@@ -35,6 +40,7 @@ export default function ItemPopover({ item, lang = "en", children }: ItemPopover
         }}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
+        onOpenAutoFocus={(e) => e.preventDefault()}
       >
         {/* Header con imagen y nombre */}
         <div className="flex items-start gap-3 mb-3">
