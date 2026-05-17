@@ -15,7 +15,7 @@ const menuItems: Array<{ key: MenuItemKey; path: string; disabled: boolean }> = 
   { key: "arc", path: "/arc", disabled: false },
   { key: "expeditions", path: "/expeditions", disabled: false },
   // { key: "projects", path: "/projects", disabled: true },
-  { key: "hideoutModules", path: "/hideout", disabled: true },
+  { key: "hideoutModules", path: "/hideout-modules", disabled: false },
   // { key: "skillNodes", path: "/skills", disabled: true },
 ];
 
