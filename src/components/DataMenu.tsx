@@ -69,19 +69,24 @@ export default function DataMenu() {
                 {item.disabled ? (
                   <div className="relative group">
                     <div
+                      tabIndex={0}
+                      role="button"
+                      aria-disabled="true"
                       className="px-3 py-1.5 rounded text-xs sm:text-sm
                       transition-all duration-300 whitespace-nowrap uppercase tracking-wider font-medium
-                      border bg-transparent text-gray-600 border-gray-700 cursor-not-allowed opacity-50"
+                      border bg-transparent text-gray-600 border-gray-700 cursor-not-allowed opacity-50
+                      focus:outline-none focus:ring-2 focus:ring-[#00ffff]"
                     >
                       {t[item.key]}
                     </div>
-                    <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-[#00ffff] text-[#00ffff] text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+                    <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-[#00ffff] text-[#00ffff] text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
                       {t.comingSoon}
                     </span>
                   </div>
                 ) : (
                   <Link
                     href={localizedPath}
+                    aria-current={isActive ? "page" : undefined}
                     className={`
                       px-3 py-1.5 rounded text-xs sm:text-sm
                       transition-all duration-300 whitespace-nowrap uppercase tracking-wider font-medium
@@ -108,19 +113,24 @@ export default function DataMenu() {
                   {item.disabled ? (
                     <div className="relative group">
                       <div
+                        tabIndex={0}
+                        role="button"
+                        aria-disabled="true"
                         className="px-3 py-1.5 rounded text-xs
                         transition-all duration-300 whitespace-nowrap uppercase tracking-wider font-medium
-                        border bg-transparent text-gray-600 border-gray-700 cursor-not-allowed opacity-50"
+                        border bg-transparent text-gray-600 border-gray-700 cursor-not-allowed opacity-50
+                        focus:outline-none focus:ring-2 focus:ring-[#00ffff]"
                       >
                         {t[item.key]}
                       </div>
-                      <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-[#00ffff] text-[#00ffff] text-xs px-2 py-1 rounded opacity-0 group-active:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+                      <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black border border-[#00ffff] text-[#00ffff] text-xs px-2 py-1 rounded opacity-0 group-active:opacity-100 group-focus-within:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
                         {t.comingSoon}
                       </span>
                     </div>
                   ) : (
                     <Link
                       href={localizedPath}
+                      aria-current={isActive ? "page" : undefined}
                       className={`
                         px-3 py-1.5 rounded text-xs
                         transition-all duration-300 whitespace-nowrap uppercase tracking-wider font-medium
